@@ -1,6 +1,5 @@
 import React from 'react';
 import useModal from '../../../hooks/useModal';
-import LoginForm from '../Forms/LoginForm';
 
 const HomeNav = () => {
     const { showModal } = useModal();
