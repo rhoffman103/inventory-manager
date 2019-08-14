@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import appContext from '../context/appContext';
 import Navigator from '../components/common/Nav';
-import SignupForm from '../components/login/SignUpForm';
+import SignupForm from '../components/common/Forms/SignUpForm';
 
 const Admin = () => {
 
@@ -21,7 +21,7 @@ const Admin = () => {
 
     return (
         <>
-        <Navigator adminPage={true} />
+            <Navigator adminPage={true} />
             <div className="container">
                 {state.admin 
                     ? state.admin.mounted &&
