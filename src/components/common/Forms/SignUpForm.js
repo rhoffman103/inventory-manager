@@ -17,7 +17,13 @@ const SignupForm = () => {
         confirmPassword: ''
     });
     const { closeModal } = useModal();
-    const [validation, validateDispatch] = useReducer(formReducer, { isDirty: false });
+    const [validation, validateDispatch] = useReducer(formReducer, {});
+
+    
+    const onSubmit = () => {
+        console.log('Form Credentails: ', values);
+        closeModal();
+    };
 
     useEffect(() => {
         const { email, confirmEmail, password, confirmPassword } = values;
@@ -26,10 +32,6 @@ const SignupForm = () => {
         validateDispatch(checkPasswordStrength(password));
         validateDispatch(checkMatchingPasswords(password, confirmPassword));
     }, [values]);
-
-    const onSubmit = () => {
-        closeModal();
-    };
 
     return (
         <ModalContainer title='Register'>
@@ -78,6 +80,7 @@ const SignupForm = () => {
                     variant="primary"
                     type="button"
                     onClick={onSubmit}
+                    disabled={!(validation.isEmail && validation.emailsMatch && validation.isPassword && validation.passwordsMatch)}
                 >
                     Submit
                 </Button>
