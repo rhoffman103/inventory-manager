@@ -4,7 +4,7 @@ export const checkValidEmail = ({ key = '', value = ''}) => ({
     value
 });
 
-export const checkMatchingEmails = ({ email = '', confirmEmail = '' }) => ({
+export const checkMatchingEmails = (email = '', confirmEmail = '') => ({
     type: 'COMPARE_EMAILS',
     email,
     confirmEmail

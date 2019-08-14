@@ -28,7 +28,7 @@ const SignupForm = () => {
     useEffect(() => {
         const { email, confirmEmail, password, confirmPassword } = values;
         validateDispatch(checkValidEmail({ key: 'isEmail', value: email }));
-        validateDispatch(checkMatchingEmails({ email, confirmEmail }));
+        validateDispatch(checkMatchingEmails(email, confirmEmail));
         validateDispatch(checkPasswordStrength(password));
         validateDispatch(checkMatchingPasswords(password, confirmPassword));
     }, [values]);
