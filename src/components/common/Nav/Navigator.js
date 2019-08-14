@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import HomeNav from './HomeNav';
 import AdminNav from './AdminNav';
 
 const Navigator = (props) => {
@@ -15,7 +16,7 @@ const Navigator = (props) => {
                     <Nav className="ml-auto">
                         { !props.homePage && <Link to="/" className="nav-link">Home</Link> }
                         { !props.adminPage
-                            ? <Link to="/admin" className="nav-link">Admin</Link>
+                            ? <HomeNav />
                             : <AdminNav />
                         }
                     </Nav>
