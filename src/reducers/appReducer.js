@@ -10,6 +10,8 @@ const appReducer = (state, action) => {
             return newState;
         case 'LOGIN_ERROR':
             return newState;
+        case 'RESET_LOGIN_ERROR':
+            return newState;
         default:
             return state;
     };

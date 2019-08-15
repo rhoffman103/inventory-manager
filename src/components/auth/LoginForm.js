@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useContext } from 'react';
 import appContext from '../../context/appContext';
 import useHandleInputChange from '../../hooks/useHandleInputChange';
 import { checkValidEmail } from '../../actions/authFormActions';
-import { signIn } from '../../actions/authActions';
+import { signIn, resetLoginError } from '../../actions/authActions';
 import useModal from '../../hooks/useModal';
 import ModalContainer from '../common/Modals/ModalContainer';
 import Form from 'react-bootstrap/Form';
@@ -13,7 +13,7 @@ import formReducer from '../../reducers/formReducer';
 
 const LoginForm = () => {
 
-    const { stateDispatch } = useContext(appContext);
+    const { state, stateDispatch } = useContext(appContext);
     const { values, handleInputChange } = useHandleInputChange({
         email: '',
         password: ''
@@ -29,6 +29,10 @@ const LoginForm = () => {
     useEffect(() => {
         validationDispatch(checkValidEmail(values.email));
     }, [values.email]);
+
+    useEffect(() => {
+        return () => resetLoginError(stateDispatch);
+    }, [stateDispatch]);
 
     return (
         <ModalContainer title='Login' footer={false}>
@@ -50,6 +54,14 @@ const LoginForm = () => {
                     placeholder="Password"
                     inputChange={handleInputChange}
                 />
+
+                {!state.auth
+                    ?   <></>
+                    :   state.auth.loginError &&
+                        <Form.Row className="justify-content-center">
+                            <p className="text-danger">Incorrect Login Credentails!</p>
+                        </Form.Row>
+                }
 
                 <Form.Row>
                     <Col>

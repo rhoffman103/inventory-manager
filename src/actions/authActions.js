@@ -24,10 +24,23 @@ export const signIn = (user, dispatch) => {
         dispatch({
             type: 'LOGIN_ERROR',
             stateUpdate: {
-                loginError: { code, message }
+                auth: {
+                    loginError: { code, message }
+                }
             }
         });
     })
+};
+
+export const resetLoginError = (dispatch) => {
+    dispatch({
+        type: 'RESET_LOGIN_ERROR',
+        stateUpdate: {
+            auth: {
+                loginError: false
+            }
+        }
+    });
 };
 
 export const addNewUser = (user, dispatch) => {
