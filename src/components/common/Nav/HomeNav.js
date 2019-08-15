@@ -1,5 +1,6 @@
 import React from 'react';
 import useModal from '../../../hooks/useModal';
+import { Link } from 'react-router-dom';
 
 const HomeNav = () => {
     const { showModal } = useModal();
@@ -12,7 +13,7 @@ const HomeNav = () => {
             >
                 Login
             </span>
-            {/* <Link to="/admin" className="nav-link">Admin</Link> */}
+            <Link to="/admin" className="nav-link">Admin</Link>
         </>
     );
 };

@@ -8,11 +8,14 @@ const FormField = ({ label, controlId, message, name, type, placeholder, inputCh
             <Col xs={6}>
                 <Form.Label>{label}</Form.Label>
             </Col>
-            <Col xs={6}>
-                { message && <div className="float-right">{message}</div> }
-            </Col>
+            { message &&
+                <Col xs={6}>
+                    <div className="float-right">{message}</div>
+                </Col>
+            }
         </Form.Row>
         <Form.Control
+            className='br-sharp'
             name={name}
             type={type}
             placeholder={placeholder}
