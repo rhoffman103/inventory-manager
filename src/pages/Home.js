@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import appContext from '../context/appContext';
 import Navigator from '../components/common/Nav';
-import LoginForm from '../components/common/Forms/LoginForm';
+import LoginForm from '../components/auth/LoginForm';
 
 const Home = () => {
 

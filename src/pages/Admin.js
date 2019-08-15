@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import appContext from '../context/appContext';
 import Navigator from '../components/common/Nav';
-import SignupForm from '../components/common/Forms/SignUpForm';
+import SignupForm from '../components/auth/SignUpForm';
 
 const Admin = () => {
 
