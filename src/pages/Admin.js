@@ -10,21 +10,29 @@ const Admin = () => {
     useEffect(() => {
         stateDispatch({
             type: 'SIMPLE_STATE_UPDATE',
-            key: 'admin',
+            key: 'adminPage',
             value: {
                 msg: 'Admin Page'
             }
         })
-    }, []);
+
+        return () => {
+            stateDispatch({
+                type: 'SIMPLE_STATE_UPDATE',
+                key: 'adminPage',
+                value: null
+            })
+        }
+    }, [stateDispatch]);
 
     return (
         <>
             <Navigator adminPage={true} />
             <div className="container">
-                {state.admin 
-                    ? state.admin.msg &&
+                {state.adminPage 
+                    ? state.adminPage.msg &&
                         <>
-                            <h1>{state.admin.msg} page</h1>
+                            <h1>{state.adminPage.msg} page</h1>
                         </>
                     :   <></>
                 }

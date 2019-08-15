@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useContext } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import useHandleInputChange from '../../hooks/useHandleInputChange';
 import { checkValidEmail, compareEmails, checkPasswordStrength, checkMatchingPasswords } from '../../actions/authFormActions';
 import formReducer from '../../reducers/formReducer';

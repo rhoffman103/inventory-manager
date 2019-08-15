@@ -15,7 +15,7 @@ const ModalContainer = ({ children, title, footer }) => {
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>{children}</Modal.Body>
-                { footer || (typeof footer === 'undefined') &&
+                { (footer || (typeof footer === 'undefined')) &&
                     <Modal.Footer>
                         <Button variant="secondary" onClick={closeModal}>
                             Close
