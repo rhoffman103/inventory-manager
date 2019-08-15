@@ -1,6 +1,6 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useContext } from 'react';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
-import { checkValidEmail, checkMatchingEmails, checkPasswordStrength, checkMatchingPasswords } from '../../../actions/authFormActions';
+import { checkValidEmail, compareEmails, checkPasswordStrength, checkMatchingPasswords } from '../../../actions/authFormActions';
 import formReducer from '../../../reducers/formReducer';
 import useModal from '../../../hooks/useModal';
 import ModalContainer from '../Modals/ModalContainer';
@@ -18,7 +18,6 @@ const SignupForm = () => {
     });
     const { closeModal } = useModal();
     const [validation, validateDispatch] = useReducer(formReducer, {});
-
     
     const onSubmit = () => {
         console.log('Form Credentails: ', values);
@@ -27,8 +26,8 @@ const SignupForm = () => {
 
     useEffect(() => {
         const { email, confirmEmail, password, confirmPassword } = values;
-        validateDispatch(checkValidEmail({ key: 'isEmail', value: email }));
-        validateDispatch(checkMatchingEmails(email, confirmEmail));
+        validateDispatch(checkValidEmail(email));
+        validateDispatch(compareEmails(email, confirmEmail));
         validateDispatch(checkPasswordStrength(password));
         validateDispatch(checkMatchingPasswords(password, confirmPassword));
     }, [values]);

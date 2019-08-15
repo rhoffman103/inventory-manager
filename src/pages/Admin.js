@@ -8,15 +8,13 @@ const Admin = () => {
     const { state, stateDispatch } = useContext(appContext);
 
     useEffect(() => {
-        if (!state.admin) {
-            stateDispatch({
-                type: 'MOUNT_PAGE',
-                component: 'admin',
-                data: {
-                    msg: 'Admin Page'
-                }
-            })
-        }
+        stateDispatch({
+            type: 'SIMPLE_STATE_UPDATE',
+            key: 'admin',
+            value: {
+                msg: 'Admin Page'
+            }
+        })
     }, []);
 
     return (
@@ -24,7 +22,7 @@ const Admin = () => {
             <Navigator adminPage={true} />
             <div className="container">
                 {state.admin 
-                    ? state.admin.mounted &&
+                    ? state.admin.msg &&
                         <>
                             <h1>{state.admin.msg} page</h1>
                         </>

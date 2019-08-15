@@ -23,7 +23,7 @@ const LoginForm = () => {
     };
 
     useEffect(() => {
-        validationDispatch(checkValidEmail({ key: 'isEmail', value: values.email }));
+        validationDispatch(checkValidEmail(values.email));
     }, [values.email]);
 
     return (
