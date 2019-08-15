@@ -9,7 +9,7 @@ const StateProvider = ({ children }) => {
     useEffect(() => {
         stateDispatch({
             type: 'INITIAL_LOAD',
-            hello: 'Hello!!!'
+            stateUpdate: { hello: 'Hello!!!' }
         });
     }, []);
 

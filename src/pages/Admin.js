@@ -1,30 +1,28 @@
 import React, { useContext, useEffect } from 'react';
 import appContext from '../context/appContext';
 import Navigator from '../components/common/Nav';
-import SignupForm from '../components/login/SignUpForm';
+import SignupForm from '../components/common/Forms/SignUpForm';
 
 const Admin = () => {
 
     const { state, stateDispatch } = useContext(appContext);
 
     useEffect(() => {
-        if (!state.admin) {
-            stateDispatch({
-                type: 'MOUNT_PAGE',
-                component: 'admin',
-                data: {
-                    msg: 'Admin Page'
-                }
-            })
-        }
+        stateDispatch({
+            type: 'SIMPLE_STATE_UPDATE',
+            key: 'admin',
+            value: {
+                msg: 'Admin Page'
+            }
+        })
     }, []);
 
     return (
         <>
-        <Navigator adminPage={true} />
+            <Navigator adminPage={true} />
             <div className="container">
                 {state.admin 
-                    ? state.admin.mounted &&
+                    ? state.admin.msg &&
                         <>
                             <h1>{state.admin.msg} page</h1>
                         </>

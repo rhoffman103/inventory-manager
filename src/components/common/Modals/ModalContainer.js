@@ -4,7 +4,7 @@ import useModal from '../../../hooks/useModal';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-const ModalContainer = ({ children }) => {
+const ModalContainer = ({ children, title }) => {
     const { state } = useContext(appContext);
     const { closeModal } = useModal();
 
@@ -12,7 +12,7 @@ const ModalContainer = ({ children }) => {
         <>
             <Modal show={state.isModal} onHide={closeModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>{children}</Modal.Body>
                 <Modal.Footer>
