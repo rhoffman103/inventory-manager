@@ -1,11 +1,11 @@
-import React, { useReducer, useEffect, useContext } from 'react';
-import useHandleInputChange from '../../../hooks/useHandleInputChange';
-import { checkValidEmail, compareEmails, checkPasswordStrength, checkMatchingPasswords } from '../../../actions/authFormActions';
-import formReducer from '../../../reducers/formReducer';
-import useModal from '../../../hooks/useModal';
-import ModalContainer from '../Modals/ModalContainer';
+import React, { useReducer, useEffect } from 'react';
+import useHandleInputChange from '../../hooks/useHandleInputChange';
+import { checkValidEmail, compareEmails, checkPasswordStrength, checkMatchingPasswords } from '../../actions/authFormActions';
+import formReducer from '../../reducers/formReducer';
+import useModal from '../../hooks/useModal';
+import ModalContainer from '../common/Modals/ModalContainer';
 import Form from 'react-bootstrap/Form';
-import FormField from './FormField';
+import FormField from '../common/Forms/FormField';
 import Button from 'react-bootstrap/Button';
 
 const SignupForm = () => {

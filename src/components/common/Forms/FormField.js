@@ -2,7 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 
-const FormField = ({ label, controlId, message, name, type, placeholder, inputChange, }) => (
+const FormField = ({ label, controlId, message, name, type, placeholder, inputChange, value }) => (
     <Form.Group controlId={controlId}>
         <Form.Row>
             <Col xs={6}>
@@ -15,9 +15,10 @@ const FormField = ({ label, controlId, message, name, type, placeholder, inputCh
             }
         </Form.Row>
         <Form.Control
-            className='br-sharp'
             name={name}
             type={type}
+            value={value}
+            className='br-sharp'
             placeholder={placeholder}
             onChange={inputChange}
         />

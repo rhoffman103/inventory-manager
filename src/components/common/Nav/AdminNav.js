@@ -1,17 +1,16 @@
-import React from 'react';
-import useModal from '../../../hooks/useModal';
+import React, { useContext } from 'react';
+import navContext from '../../../context/navContext';
+import { Link } from 'react-router-dom'
+import AddNewEmployee from './links/AddNewEmployee';
 
 const AdminNav = () => {
-    const { showModal } = useModal();
+    const { navState } = useContext(navContext);
 
     return (
         <>
-            <span
-                className="nav-link pointer"
-                onClick={showModal}
-            >
-                Make an Account
-            </span>
+            { navState.page !== 'home' && <Link to="/" className="nav-link">Production</Link> }
+            { navState.page !== 'admin' && <Link to="/admin" className="nav-link">Admin</Link>}
+            { navState.page === 'admin' && <AddNewEmployee /> }
         </>
     );
 };
