@@ -14,16 +14,16 @@ import formReducer from '../../reducers/formReducer';
 const LoginForm = () => {
 
     const { state, stateDispatch } = useContext(appContext);
-    const { values, handleInputChange } = useHandleInputChange({
+    const { values, handleInputChange, emptyValues } = useHandleInputChange({
         email: '',
         password: ''
     });
     const [validation, validationDispatch] = useReducer(formReducer, false);
     const { closeModal } = useModal();
 
-    const onSubmit = () => {
-        console.log('Login Credentails: ', values);
-        signIn(values, stateDispatch);
+    const onSubmit = (e) => {
+        if (validation.isEmail && e.which === 13) signIn(values, stateDispatch);
+        else if (!e.which) signIn(values, stateDispatch);
     };
 
     useEffect(() => {
@@ -31,16 +31,25 @@ const LoginForm = () => {
     }, [values.email]);
 
     useEffect(() => {
+        if (state.auth) {
+            if (state.auth.loginError){
+                emptyValues(['email', 'password']);
+            }
+        }
+    }, [state.auth]);
+
+    useEffect(() => {
         return () => resetLoginError(stateDispatch);
     }, [stateDispatch]);
 
     return (
         <ModalContainer title='Login' footer={false}>
-            <Form>
+            <Form onKeyPress={onSubmit}>
                 <FormField
                     controlId='formEmail'
                     name='email'
                     type='email'
+                    value={values.email}
                     label='Enter Email'
                     placeholder='Enter Email'
                     inputChange={handleInputChange}
@@ -50,6 +59,7 @@ const LoginForm = () => {
                     controlId="formPassword"
                     name="password"
                     type="password"
+                    value={values.password}
                     label='Password'
                     placeholder="Password"
                     inputChange={handleInputChange}

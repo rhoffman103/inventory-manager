@@ -9,7 +9,10 @@ const formReducer = (state, action) => {
         case 'CHECK_PASSWORD_STRENGTH':
             return newState;
         case 'CHECK_MATCHING_PASSWORDS':
-            return newState;    
+            return newState;   
+        case 'EMPTY_FORM':
+            console.log('state update reducer: ', newState);
+            return newState; 
         default:
             return { idiot: true };
     };
