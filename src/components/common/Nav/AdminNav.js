@@ -8,8 +8,8 @@ const AdminNav = () => {
 
     return (
         <>
-            { navState.page != 'home' && <Link to="/" className="nav-link">Production</Link> }
-            { navState.page != 'admin' && <Link to="/admin" className="nav-link">Admin</Link>}
+            { navState.page !== 'home' && <Link to="/" className="nav-link">Production</Link> }
+            { navState.page !== 'admin' && <Link to="/admin" className="nav-link">Admin</Link>}
             { navState.page === 'admin' && <AddNewEmployee /> }
         </>
     );

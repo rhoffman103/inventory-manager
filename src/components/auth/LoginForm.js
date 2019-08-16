@@ -34,7 +34,7 @@ const LoginForm = () => {
             if (state.loginError){
                 emptyValues('email password');
             }
-    }, [state.loginError]);
+    }, [state.loginError, emptyValues]);
 
     useEffect(() => {
         return () => resetLoginError(stateDispatch);

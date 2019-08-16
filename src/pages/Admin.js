@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import appContext from '../context/appContext';
+import { Redirect } from 'react-router-dom';
 import NavBar from '../components/common/Nav';
 import SignupForm from '../components/auth/SignUpForm';
 
 const Admin = () => {
 
     const { state, stateDispatch } = useContext(appContext);
+    const { auth } = state;
 
     useEffect(() => {
         stateDispatch({
@@ -14,7 +16,7 @@ const Admin = () => {
             value: {
                 msg: 'Admin Page'
             }
-        })
+        });
 
         return () => {
             stateDispatch({
@@ -22,11 +24,12 @@ const Admin = () => {
                 key: 'adminPage',
                 value: null
             })
-        }
+        };
     }, [stateDispatch]);
 
     return (
         <>
+            { !auth && <Redirect to='/' /> }
             <NavBar page='admin' />
             <div className="container">
                 {state.adminPage 
