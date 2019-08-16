@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import navContext from '../../../context/navContext';
+import { updatePageState } from '../../../actions/navActions';
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import HomeNav from './HomeNav';
-import AdminNav from './AdminNav';
+import AuthNav from './AuthNav';
 
 const Navigator = (props) => {
+
+    const { navDispatch } = useContext(navContext);
+
+    useEffect(() => {
+        navDispatch(updatePageState(props.page))
+    }, [props, navDispatch]);
 
     return (
         <Navbar bg="light" expand="md">
@@ -14,11 +21,7 @@ const Navigator = (props) => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
-                        { !props.homePage && <Link to="/" className="nav-link">Home</Link> }
-                        { !props.adminPage
-                            ? <HomeNav />
-                            : <AdminNav />
-                        }
+                        <AuthNav {...props} />
                     </Nav>
                 </Navbar.Collapse>
             </div>

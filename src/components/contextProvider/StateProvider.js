@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 import appContext from '../../context/appContext';
 import appReducer from '../../reducers/appReducer';
+import { getUser } from '../../actions/authActions';
 
 const StateProvider = ({ children }) => {
 
@@ -11,6 +12,7 @@ const StateProvider = ({ children }) => {
             type: 'INITIAL_LOAD',
             stateUpdate: { hello: 'Hello!!!' }
         });
+        getUser(stateDispatch);
     }, []);
 
     useEffect(() => {

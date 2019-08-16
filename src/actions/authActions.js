@@ -10,11 +10,11 @@ export const signIn = (user, dispatch) => {
             type: 'LOGIN_USER',
             stateUpdate: {
                 auth: {
-                    loginError: false,
                     name: displayName,
                     email,
                     uid
                 },
+                loginError: false,
                 isModal: false
             }
         });
@@ -23,10 +23,8 @@ export const signIn = (user, dispatch) => {
         const { code, message } = err;
         dispatch({
             type: 'LOGIN_ERROR',
-            stateUpdate: {
-                auth: {
-                    loginError: { code, message }
-                }
+            stateUpdate: { 
+                loginError: { code, message }
             }
         });
     })
@@ -35,20 +33,62 @@ export const signIn = (user, dispatch) => {
 export const resetLoginError = (dispatch) => {
     dispatch({
         type: 'RESET_LOGIN_ERROR',
-        stateUpdate: {
-            auth: {
-                loginError: false
+        stateUpdate: { loginError: false }
+    });
+};
+
+export const signOut = (dispatch) => {
+    firebase.auth().signOut()
+    .then(() => {
+        dispatch({
+            type: 'SIGNOUT',
+            stateUpdate: {
+                auth: null
             }
+        });
+    });
+};
+
+export const getUser = (dispatch) => {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            const { displayName, email, uid } = user;
+            dispatch({
+                type: 'LOGIN_USER',
+                stateUpdate: {
+                    auth: {
+                        name: displayName,
+                        email,
+                        uid
+                    }
+                }
+            });
+        }
+        else {
+            dispatch({
+                type: 'SIGNOUT',
+                stateUpdate: {
+                    auth: null
+                }
+            });
         }
     });
 };
 
-export const addNewUser = (user, dispatch) => {
+export const addNewUser = (user, state, dispatch) => {
     database.collection('users').add(user).then((ref) => {
+        let newEmployees = [];
+
+        if (state.newEmployees) {
+            const stateEmployees = Object.keys(state.newEmployees);
+            newEmployees = stateEmployees.map((employee) => employee);
+        }
+
+        else newEmployees.push({ userName: user.email, id: ref.id });
+
         dispatch({ 
-            type: 'LOGIN_USER',
-            userName: user.email,
-            id: ref.id 
+            type: 'ADD_NEW_EMPLOYEE_SUCCESS',
+            stateUpdate: { newEmployees }
         });
     });
 };

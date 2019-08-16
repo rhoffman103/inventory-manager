@@ -31,12 +31,10 @@ const LoginForm = () => {
     }, [values.email]);
 
     useEffect(() => {
-        if (state.auth) {
-            if (state.auth.loginError){
-                emptyValues(['email', 'password']);
+            if (state.loginError){
+                emptyValues('email password');
             }
-        }
-    }, [state.auth]);
+    }, [state.loginError]);
 
     useEffect(() => {
         return () => resetLoginError(stateDispatch);
@@ -65,12 +63,10 @@ const LoginForm = () => {
                     inputChange={handleInputChange}
                 />
 
-                {!state.auth
-                    ?   <></>
-                    :   state.auth.loginError &&
-                        <Form.Row className="justify-content-center">
-                            <p className="text-danger">Incorrect Login Credentails!</p>
-                        </Form.Row>
+                {state.loginError &&
+                    <Form.Row className="justify-content-center">
+                        <p className="text-danger">Incorrect Login Credentails!</p>
+                    </Form.Row>
                 }
 
                 <Form.Row>

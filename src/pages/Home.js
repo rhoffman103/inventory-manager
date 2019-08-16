@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import appContext from '../context/appContext';
-import Navigator from '../components/common/Nav';
+import NavBar from '../components/common/Nav';
 import LoginForm from '../components/auth/LoginForm';
 
 const Home = () => {
@@ -16,7 +16,7 @@ const Home = () => {
 
     return (
         <>
-            <Navigator homePage={true} />
+            <NavBar page='home' />
             <div className="container">
                 <h1>Home Page</h1>
                 { state.hello && <p>Context Message: {state.hello}</p> }
