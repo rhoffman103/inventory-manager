@@ -60,7 +60,8 @@ export const getUser = (dispatch) => {
                         name: displayName,
                         email,
                         uid
-                    }
+                    },
+                    onFirebaseAuth: true
                 }
             });
         }
@@ -68,7 +69,8 @@ export const getUser = (dispatch) => {
             dispatch({
                 type: 'SIGNOUT',
                 stateUpdate: {
-                    auth: null
+                    auth: null,
+                    onFirebaseAuth: true
                 }
             });
         }

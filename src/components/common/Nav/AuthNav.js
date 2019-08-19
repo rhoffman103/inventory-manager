@@ -12,7 +12,8 @@ const AuthNav = () => {
 
     return (
         <>
-            { state.auth
+            {(state.onFirebaseAuth &&
+                (state.auth
                 ?   navState.page === 'admin'
                         ?   
                             <>
@@ -28,8 +29,9 @@ const AuthNav = () => {
                     <>
                         <ProductionNav />
                         <LogIn />
-                    </>   
-            }
+                    </>
+                )
+            )}
         </>
     );
 };
