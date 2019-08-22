@@ -41,10 +41,6 @@ const SignupForm = () => {
         validateDispatch(checkHasInput({ value: employeeId, msgName: 'employeeIdMsg', validator: 'isEmployeeId', type: 'CHECK_EMPLOYEE_ID' }));
     }, [values]);
 
-    useEffect(() => {
-        console.log(validation);
-    }, [validation])
-
     return (
         <ModalContainer title='Register' footer={false}>
             <Form>
