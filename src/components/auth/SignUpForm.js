@@ -1,15 +1,20 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useContext } from 'react';
+import appContext from '../../context/appContext';
 import useHandleInputChange from '../../hooks/useHandleInputChange';
-import { checkValidEmail, compareEmails, checkPasswordStrength, checkMatchingPasswords } from '../../actions/authFormActions';
+import { checkValidEmail, compareEmails, checkPasswordStrength, checkMatchingPasswords, checkHasInput } from '../../actions/authFormActions';
 import formReducer from '../../reducers/formReducer';
 import useModal from '../../hooks/useModal';
+import { addNewEmployee } from '../../actions/authActions';
 import ModalContainer from '../common/Modals/ModalContainer';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FormField from '../common/Forms/FormField';
 import Button from 'react-bootstrap/Button';
 
 const SignupForm = () => {
 
+    const { state, stateDispatch } = useContext(appContext);
     const { values, handleInputChange } = useHandleInputChange({
         email: '',
         confirmEmail: '',
@@ -21,19 +26,23 @@ const SignupForm = () => {
     
     const onSubmit = () => {
         console.log('Form Credentails: ', values);
+        addNewEmployee(values, state, stateDispatch);
         closeModal();
     };
 
     useEffect(() => {
-        const { email, confirmEmail, password, confirmPassword } = values;
+        const { email, confirmEmail, password, confirmPassword, firstName, lastName, employeeId } = values;
         validateDispatch(checkValidEmail(email));
         validateDispatch(compareEmails(email, confirmEmail));
         validateDispatch(checkPasswordStrength(password));
         validateDispatch(checkMatchingPasswords(password, confirmPassword));
+        validateDispatch(checkHasInput({ value: firstName, msgName: 'firstNameMsg', validator: 'isFirstName', type: 'CHECK_FIRST_NAME' }));
+        validateDispatch(checkHasInput({ value: lastName, msgName: 'lastNameMsg', validator: 'isLastName', type: 'CHECK_LAST_NAME' }));
+        validateDispatch(checkHasInput({ value: employeeId, msgName: 'employeeIdMsg', validator: 'isEmployeeId', type: 'CHECK_EMPLOYEE_ID' }));
     }, [values]);
 
     return (
-        <ModalContainer title='Register'>
+        <ModalContainer title='Register' footer={false}>
             <Form>
                 <FormField
                     controlId='formEmail'
@@ -42,17 +51,7 @@ const SignupForm = () => {
                     label='Enter Email'
                     placeholder='Enter email'
                     inputChange={handleInputChange}
-                    message={!validation.isEmail && values.email ? 'Invalid Email' : ''}
-                />
-                
-                <FormField
-                    controlId="formConfirmEmail"
-                    name="confirmEmail"
-                    type="email"
-                    label='Confirm Email Address'
-                    placeholder="Confirm Email"
-                    inputChange={handleInputChange}
-                    message={!validation.emailsMatch && values.confirmEmail ? 'Emails do not match' : ''}
+                    message={!validation.isEmail && values.email ? 'Invalid Email' : null}
                 />
 
                 <FormField
@@ -75,14 +74,63 @@ const SignupForm = () => {
                     message={validation.confirmPassMsg}
                 />
 
-                <Button
-                    variant="primary"
-                    type="button"
-                    onClick={onSubmit}
-                    disabled={!(validation.isEmail && validation.emailsMatch && validation.isPassword && validation.passwordsMatch)}
-                >
-                    Submit
-                </Button>
+                <Row>
+                    <Col xs={12} sm={6}>
+                        <FormField 
+                            controlId="firstName"
+                            name="firstName"
+                            type="test"
+                            label='First Name'
+                            placeholder="First Name"
+                            inputChange={handleInputChange}
+                            message={validation.firstNameMsg}
+                        />
+                    </Col>
+                    <Col xs={12} sm={6}>
+                        <FormField 
+                            controlId="lastName"
+                            name="lastName"
+                            type="test"
+                            label='Last Name'
+                            placeholder="Last Name"
+                            inputChange={handleInputChange}
+                            message={validation.lastNameMsg}
+                        />
+                    </Col>
+                </Row>
+
+                <FormField 
+                    controlId="employeeId"
+                    name="employeeId"
+                    type="number"
+                    label='Employee ID'
+                    placeholder="Employee ID"
+                    inputChange={handleInputChange}
+                    message={validation.employeeIdMsg}
+                />
+
+                <Form.Row>
+                    <Col>
+                        <div className="float-right">
+                        <Button
+                            variant="primary"
+                            type="button"
+                            onClick={onSubmit}
+                            disabled={!(validation.isEmail && validation.isPassword  && validation.passwordsMatch && validation.isFirstName && validation.isLastName && validation.isEmployeeId)}
+                        >
+                            Submit
+                        </Button>
+
+                            <span 
+                                className="pointer align-middle ml-2"
+                                onClick={closeModal}
+                            >
+                                <u>cancel</u>
+                            </span>
+                        </div>
+                    </Col>
+                </Form.Row>
+
             </Form>
         </ModalContainer>
     );
