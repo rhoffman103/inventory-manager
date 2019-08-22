@@ -11,8 +11,13 @@ const formReducer = (state, action) => {
         case 'CHECK_MATCHING_PASSWORDS':
             return newState;   
         case 'EMPTY_FORM':
-            console.log('state update reducer: ', newState);
-            return newState; 
+            return newState;
+        case 'CHECK_FIRST_NAME':
+            return newState;
+        case 'CHECK_LAST_NAME':
+            return newState;
+        case 'CHECK_EMPLOYEE_ID':
+            return newState;
         default:
             return { idiot: true };
     };

@@ -1,5 +1,4 @@
-import database from '../config/firebaseConfig';
-import { firebase } from '../config/firebaseConfig';
+import database, { firebase, secondaryApp } from '../config/firebaseConfig';
 
 export const signIn = (user, dispatch) => {
     const { email, password } = user;
@@ -77,20 +76,41 @@ export const getUser = (dispatch) => {
     });
 };
 
-export const addNewUser = (user, state, dispatch) => {
-    database.collection('users').add(user).then((ref) => {
-        let newEmployees = [];
+export const addNewEmployee = (newEmployee, state, dispatch) => {
+    let user = { displayName: `${newEmployee.firstName} ${newEmployee.lastName}`}
+    
+    secondaryApp.auth().createUserWithEmailAndPassword(newEmployee.email, newEmployee.password)
+        .then((res) => {
+            secondaryApp.auth().signOut();
+            user.uid = res.user.uid
+            
+            return database.collection('employees').doc(user.uid).set({
+                firstName: newEmployee.firstName,
+                lastName: newEmployee.lastName,
+                displayName: user.displayName,
+                employeeId: newEmployee.employeeId
+            });
+        })
+        .then(() => {
+            let newEmployees = [];
 
-        if (state.newEmployees) {
-            const stateEmployees = Object.keys(state.newEmployees);
-            newEmployees = stateEmployees.map((employee) => employee);
-        }
+            if (state.newEmployees) newEmployees = Object.keys(state.newEmployees).map((employee) => state.newEmployees[employee]);
 
-        else newEmployees.push({ userName: user.email, id: ref.id });
+            newEmployees.push({ employee: user.displayName, id: newEmployee.employeeId, uid: user.uid });
 
-        dispatch({ 
-            type: 'ADD_NEW_EMPLOYEE_SUCCESS',
-            stateUpdate: { newEmployees }
+            dispatch({
+                type: 'ADD_NEW_EMPLOYEE_SUCCESS',
+                stateUpdate: { newEmployees }
+            });
+        })
+        .catch((err) => {
+            const { code, message } = err;
+            console.log(err);
+            dispatch({
+                type: 'ADD_NEW_EMPLOYEE_ERR',
+                stateUpdate: {
+                    addNewEmployeeError: { code, message }
+                }
+            });
         });
-    });
 };

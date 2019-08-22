@@ -52,3 +52,49 @@ export const checkMatchingPasswords = (password = '', confirmPassword = '') => {
         }
     };
 };
+
+export const checkHasFirstName = (firstName) => {
+    let firstNameMsg = null;
+
+    if (typeof firstName === 'string')
+        if (firstName.length === 0) firstNameMsg = "Required!";
+
+    return {
+        type: 'CHECK_FIRST_NAME',
+        stateUpdate: {
+            firstNameMsg
+        }
+    };
+};
+
+export const checkHasLastName = (lastName) => {
+    let lastNameMsg = null;
+
+    if (typeof lastName === 'string')
+        if (lastName.length === 0) lastNameMsg = "Required!";
+
+    return {
+        type: 'CHECK_LAST_NAME',
+        stateUpdate: {
+            lastNameMsg
+        }
+    };
+};
+
+export const checkHasInput = ({ value, msgName, validator, type }) => {
+    let message = null;
+    let validated = false;
+
+    if (typeof value === 'string') {
+        if (value.length === 0) (message = "Required!");
+        else validated = true;
+    }
+
+    return {
+        type,
+        stateUpdate: {
+            [msgName]: message,
+            [validator]: validated
+        }
+    };
+};

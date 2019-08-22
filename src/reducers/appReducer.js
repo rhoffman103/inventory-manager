@@ -16,6 +16,8 @@ const appReducer = (state, action) => {
             return newState;
         case 'ADD_NEW_EMPLOYEE_SUCCESS':
             return newState;
+        case 'ADD_NEW_EMPLOYEE_ERR':
+            return newState;
         default:
             return state;
     };
