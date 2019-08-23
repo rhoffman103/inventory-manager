@@ -15,7 +15,7 @@ const Navigator = (props) => {
     }, [props, navDispatch]);
 
     return (
-        <Navbar bg="light" expand="md">
+        <Navbar bg="light" expand="sm" className="sticky-top">
             <div className="container">
                 <Link to="/" className="navbar-brand">Inventory Manager</Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />

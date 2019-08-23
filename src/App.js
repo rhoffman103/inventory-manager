@@ -4,7 +4,8 @@ import StateProvider from './components/contextProvider/StateProvider';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
-import './App.css'
+import './App.css';
+import './responsive.css';
 
 const App = () => (
 	<Router>

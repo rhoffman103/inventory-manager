@@ -2,4 +2,12 @@ import { createContext } from 'react';
 
 const appContext = createContext();
 
-export default appContext;
+const initialState = {
+    adminPage: {
+        msg: null,
+        components: {}
+    },
+    auth: null
+};
+
+export { initialState, appContext as default };
