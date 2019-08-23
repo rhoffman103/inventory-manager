@@ -1,11 +1,11 @@
 import React, { useEffect, useReducer } from 'react';
-import appContext from '../../context/appContext';
+import appContext, { initialState } from '../../context/appContext';
 import appReducer from '../../reducers/appReducer';
 import { getUser } from '../../actions/authActions';
 
 const StateProvider = ({ children }) => {
 
-    const [state, stateDispatch] = useReducer(appReducer, {});
+    const [state, stateDispatch] = useReducer(appReducer, initialState);
 
     useEffect(() => {
         stateDispatch({

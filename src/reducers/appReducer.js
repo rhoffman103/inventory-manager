@@ -18,6 +18,8 @@ const appReducer = (state, action) => {
             return newState;
         case 'ADD_NEW_EMPLOYEE_ERR':
             return newState;
+        case 'UPDATE_ADMIN_PAGE':
+            return newState;
         default:
             return state;
     };
