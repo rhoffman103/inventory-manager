@@ -7,6 +7,7 @@ import AdminSidebar from '../components/SideBar/AdminSidebar';
 import MainContainer from '../components/common/Main/MainContainer';
 import Main from '../components/common/Main';
 import SignupForm from '../components/auth/SignUpForm';
+import Spinner from '../components/common/Modals/Spinner';
 
 const Admin = () => {
 
@@ -42,6 +43,7 @@ const Admin = () => {
                     { components.addNewEmployee && <SignupForm /> }
                 </Main>
             </MainContainer>
+            <Spinner />
         </>
     );
 };

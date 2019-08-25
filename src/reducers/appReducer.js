@@ -20,6 +20,8 @@ const appReducer = (state, action) => {
             return newState;
         case 'UPDATE_ADMIN_PAGE':
             return newState;
+        case 'SET_MODAL_SPINNER':
+            return newState;
         default:
             return state;
     };

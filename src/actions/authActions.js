@@ -26,7 +26,7 @@ export const signIn = (user, dispatch) => {
                 loginError: { code, message }
             }
         });
-    })
+    });
 };
 
 export const resetLoginError = (dispatch) => {
@@ -78,6 +78,13 @@ export const getUser = (dispatch) => {
 
 export const addNewEmployee = (newEmployee, state, dispatch) => {
     let user = { displayName: `${newEmployee.firstName} ${newEmployee.lastName}`}
+
+    dispatch({
+        type: 'SET_MODAL_SPINNER',
+        stateUpdate: {
+            showSpinner: true
+        }
+    });
     
     secondaryApp.auth().createUserWithEmailAndPassword(newEmployee.email, newEmployee.password)
         .then((res) => {
@@ -100,7 +107,7 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
 
             dispatch({
                 type: 'ADD_NEW_EMPLOYEE_SUCCESS',
-                stateUpdate: { newEmployees }
+                stateUpdate: { newEmployees, showSpinner: false }
             });
         })
         .catch((err) => {
@@ -109,7 +116,8 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
             dispatch({
                 type: 'ADD_NEW_EMPLOYEE_ERR',
                 stateUpdate: {
-                    addNewEmployeeError: { code, message }
+                    addNewEmployeeError: { code, message },
+                    showSpinner: false
                 }
             });
         });
