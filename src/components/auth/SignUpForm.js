@@ -1,9 +1,9 @@
 import React, { useReducer, useEffect, useContext } from 'react';
 import appContext from '../../context/appContext';
 import useHandleInputChange from '../../hooks/useHandleInputChange';
-import { checkValidEmail, compareEmails, checkPasswordStrength, checkMatchingPasswords, checkHasInput } from '../../actions/authFormActions';
+import { checkValidEmail, checkPasswordStrength, checkMatchingPasswords } from '../../actions/authFormActions';
+import { setEmptyCurrentFormState, checkHasInput, removeHasInput } from '../../actions/formActions';
 import formReducer from '../../reducers/formReducer';
-import useModal from '../../hooks/useModal';
 import { addNewEmployee } from '../../actions/authActions';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -15,31 +15,53 @@ import Button from 'react-bootstrap/Button';
 const SignupForm = () => {
 
     const { state, stateDispatch } = useContext(appContext);
-    const { values, handleInputChange } = useHandleInputChange({
-        email: '',
-        confirmEmail: '',
-        password: '',
-        confirmPassword: ''
+    const { emptyCurrentForm } = state;
+    const { values, handleInputChange, emptyValues } = useHandleInputChange({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        firstName: "",
+        lastName: "",
+        employeeId: ""
     });
-    const { closeModal } = useModal();
-    const [validation, validateDispatch] = useReducer(formReducer, {});
+    const [validation, validateDispatch] = useReducer(formReducer, {
+        email: { hasHadInput: false },
+        password: { hasHadInput: false },
+        confirmPassword: { hasHadInput: false },
+        firstName: { hasHadInput: false },
+        lastName: { hasHadInput: false },
+        employeeId: { hasHadInput: false }
+    });
+
+    const clearForm = () => {
+        emptyValues();
+        validateDispatch(removeHasInput(validation));
+    }
     
     const onSubmit = () => {
-        console.log('Form Credentails: ', values);
-        addNewEmployee(values, state, stateDispatch);
-        closeModal();
+        addNewEmployee(values, state, stateDispatch)
+        .then((newEmployee) => {
+            console.log('new employee: ', newEmployee);
+        })
+        .catch(err => console.log('submit error: ', err));
     };
 
     useEffect(() => {
-        const { email, confirmEmail, password, confirmPassword, firstName, lastName, employeeId } = values;
-        validateDispatch(checkValidEmail(email));
-        validateDispatch(compareEmails(email, confirmEmail));
-        validateDispatch(checkPasswordStrength(password));
-        validateDispatch(checkMatchingPasswords(password, confirmPassword));
-        validateDispatch(checkHasInput({ value: firstName, msgName: 'firstNameMsg', validator: 'isFirstName', type: 'CHECK_FIRST_NAME' }));
-        validateDispatch(checkHasInput({ value: lastName, msgName: 'lastNameMsg', validator: 'isLastName', type: 'CHECK_LAST_NAME' }));
-        validateDispatch(checkHasInput({ value: employeeId, msgName: 'employeeIdMsg', validator: 'isEmployeeId', type: 'CHECK_EMPLOYEE_ID' }));
+        const { email, password, confirmPassword, firstName, lastName, employeeId } = values;
+        validateDispatch(checkValidEmail({ value: email, hasHadInput: validation.email.hasHadInput }));
+        validateDispatch(checkPasswordStrength({ value: password, hasHadInput: validation.password.hasHadInput }));
+        validateDispatch(checkMatchingPasswords({ password, confirmPassword, hasHadInput: validation.confirmPassword.hasHadInput }));
+        validateDispatch(checkHasInput({ key: 'firstName', value: firstName, hasHadInput: validation.firstName.hasHadInput, type: 'CHECK_HAS_INPUT' }));
+        validateDispatch(checkHasInput({ key: 'lastName', value: lastName, hasHadInput: validation.lastName.hasHadInput, type: 'CHECK_HAS_INPUT' }));
+        validateDispatch(checkHasInput({ key: 'employeeId', value: employeeId, hasHadInput: validation.employeeId.hasHadInput, type: 'CHECK_HAS_INPUT' }));
     }, [values]);
+
+    useEffect(() => {
+        if (emptyCurrentForm) {
+            clearForm();
+            stateDispatch(setEmptyCurrentFormState(false));
+        }
+    }, [emptyCurrentForm, clearForm, stateDispatch]);
 
     return (
         <Row className="p-0 m-0">
@@ -50,84 +72,90 @@ const SignupForm = () => {
                         <Form className="overflow-scroll">
                             <FormField
                                 controlId='formEmail'
+                                value={values.email}
                                 name='email'
                                 type='email'
                                 label='Enter Email'
                                 placeholder='Enter email'
                                 inputChange={handleInputChange}
-                                message={!validation.isEmail && values.email ? 'Invalid Email' : null}
+                                message={validation.email.message}
                             />
 
                             <FormField
                                 controlId="formPassword"
+                                value={values.password}
                                 name="password"
                                 type="password"
                                 label='Password'
                                 placeholder="Password"
                                 inputChange={handleInputChange}
-                                message={validation.passwordMsg}
+                                message={validation.password.message}
                             />
 
                             <FormField 
                                 controlId="formConfirmPassword"
+                                value={values.confirmPassword}
                                 name="confirmPassword"
                                 type="password"
                                 label='Confirm Password'
                                 placeholder="Confirm Password"
                                 inputChange={handleInputChange}
-                                message={validation.confirmPassMsg}
+                                message={validation.confirmPassword.message}
                             />
 
                             <Row>
                                 <Col xs={12} sm={6}>
                                     <FormField 
                                         controlId="firstName"
+                                        value={values.firstName}
                                         name="firstName"
                                         type="test"
                                         label='First Name'
                                         placeholder="First Name"
                                         inputChange={handleInputChange}
-                                        message={validation.firstNameMsg}
+                                        message={validation.firstName.message}
                                     />
                                 </Col>
                                 <Col xs={12} sm={6}>
                                     <FormField 
                                         controlId="lastName"
+                                        value={values.lastName}
                                         name="lastName"
                                         type="test"
                                         label='Last Name'
                                         placeholder="Last Name"
                                         inputChange={handleInputChange}
-                                        message={validation.lastNameMsg}
+                                        message={validation.lastName.message}
                                     />
                                 </Col>
                             </Row>
 
                             <FormField 
                                 controlId="employeeId"
+                                value={values.employeeId}
                                 name="employeeId"
                                 type="number"
                                 label='Employee ID'
                                 placeholder="Employee ID"
                                 inputChange={handleInputChange}
-                                message={validation.employeeIdMsg}
+                                message={validation.employeeId.message}
                             />
 
                             <Form.Row>
                                 <Col>
                                     <div className="float-right">
-                                    <Button
-                                        variant="primary"
-                                        type="button"
-                                        onClick={onSubmit}
-                                        disabled={!(validation.isEmail && validation.isPassword  && validation.passwordsMatch && validation.isFirstName && validation.isLastName && validation.isEmployeeId)}
-                                    >
-                                        Submit
-                                    </Button>
+                                        <Button
+                                            variant="primary"
+                                            type="button"
+                                            onClick={onSubmit}
+                                            disabled={!(validation.email.validated && validation.password.validated  && validation.confirmPassword.validated && !validation.firstName.message && !validation.lastName.message && !validation.employeeId.message)}
+                                        >
+                                            Submit
+                                        </Button>
 
                                         <span 
                                             className="pointer align-middle ml-2"
-                                            onClick={closeModal}
+                                            onClick={clearForm}
                                         >
                                             <u>cancel</u>
                                         </span>

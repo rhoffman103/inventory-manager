@@ -12,12 +12,11 @@ const formReducer = (state, action) => {
             return newState;   
         case 'EMPTY_FORM':
             return newState;
-        case 'CHECK_FIRST_NAME':
+        case 'CHECK_HAS_INPUT':
             return newState;
-        case 'CHECK_LAST_NAME':
-            return newState;
-        case 'CHECK_EMPLOYEE_ID':
-            return newState;
+        case 'RESET_VALIDATION':
+            console.log('newState: ', {...action.stateUpdate});
+            return {...action.stateUpdate};
         default:
             return { idiot: true };
     };

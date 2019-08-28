@@ -1,100 +1,90 @@
 import isEmail from 'isemail';
 import zxcvbn from "zxcvbn";
 
-export const checkValidEmail = (email = '') => ({
-    type: 'IS_EMAIL',
-    stateUpdate: { isEmail: isEmail.validate(email, false) }
-});
+export const checkValidEmail = ({ value = '', hasHadInput }) => {
+    let message = null;
+    const validated = isEmail.validate(value, false);
+    
+    if (value.length > 0) {
+        hasHadInput = true;
+        if (!validated && hasHadInput)
+            message = 'Invalid Email!';
+    }
+
+    else if (!value.length && hasHadInput)
+        message = 'Email Is Required!'
+    
+
+    return {
+        type: 'IS_EMAIL',
+        stateUpdate: { 
+            email: {
+                message,
+                hasHadInput,
+                validated
+            }
+        }
+    };
+};
 
 export const compareEmails = (email = '', confirmEmail = '') => ({
     type: 'COMPARE_EMAILS',
     stateUpdate: { emailsMatch: (email.toLowerCase() === confirmEmail.toLowerCase()) }
 });
 
-export const checkPasswordStrength = (password = '') => {
+export const checkPasswordStrength = ({ value: password = '', hasHadInput }) => {
     const minStrength = 3;
     const passwordStrength = zxcvbn(password).score;
     let passwordObj = {};
 
     if (password.length > 0 ) {
+        hasHadInput = true;
         if ((passwordStrength >= minStrength) && (password.length >= 8)) {
-            passwordObj.isPassword = true;
-            passwordObj.passwordMsg = '';
+            passwordObj.validated = true;
+            passwordObj.message = '';
         }
         else {
-            passwordObj.isPassword = false;
-            passwordObj.passwordMsg = 'Password not strong enough!';
+            passwordObj.validated = false;
+            passwordObj.message = 'Password not strong enough!';
         }
     }
     
+    else if (hasHadInput) passwordObj.message = 'Password is Required!';
+
     else {
-        passwordObj.isPassword = false;
-        passwordObj.passwordMsg = '';
+        passwordObj.validated = false;
+        passwordObj.message = '';
     }
 
     return {
         type: 'CHECK_PASSWORD_STRENGTH',
-        stateUpdate: { ...passwordObj }
+        stateUpdate: {
+            password: { ...passwordObj, hasHadInput }
+        }
     };
 };
 
-export const checkMatchingPasswords = (password = '', confirmPassword = '') => {
+export const checkMatchingPasswords = ({ password = '', confirmPassword = '', hasHadInput }) => {
     const validated = (password === confirmPassword);
-    let confirmPassMsg = '';
+    let message = '';
     
-    if (!validated && ( confirmPassword.length > 0 )) confirmPassMsg = 'Passwords do not match!';
+    if (confirmPassword.length > 0) {
+        hasHadInput = true;
+        if (!validated && ( confirmPassword.length > 0 ))
+            message = 'Passwords do not match!';
+    }
+
+    else if (!confirmPassword && hasHadInput)
+        message = 'Please Confirm Password!'
 
     return {
         type: 'CHECK_MATCHING_PASSWORDS',
         stateUpdate: {
-            passwordsMatch: validated,
-            confirmPassMsg
-        }
-    };
-};
-
-export const checkHasFirstName = (firstName) => {
-    let firstNameMsg = null;
-
-    if (typeof firstName === 'string')
-        if (firstName.length === 0) firstNameMsg = "Required!";
-
-    return {
-        type: 'CHECK_FIRST_NAME',
-        stateUpdate: {
-            firstNameMsg
-        }
-    };
-};
-
-export const checkHasLastName = (lastName) => {
-    let lastNameMsg = null;
-
-    if (typeof lastName === 'string')
-        if (lastName.length === 0) lastNameMsg = "Required!";
-
-    return {
-        type: 'CHECK_LAST_NAME',
-        stateUpdate: {
-            lastNameMsg
-        }
-    };
-};
-
-export const checkHasInput = ({ value, msgName, validator, type }) => {
-    let message = null;
-    let validated = false;
-
-    if (typeof value === 'string') {
-        if (value.length === 0) (message = "Required!");
-        else validated = true;
-    }
-
-    return {
-        type,
-        stateUpdate: {
-            [msgName]: message,
-            [validator]: validated
+            confirmPassword: {
+                validated,
+                message,
+                hasHadInput
+            }
         }
     };
 };

@@ -86,7 +86,7 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
         }
     });
     
-    secondaryApp.auth().createUserWithEmailAndPassword(newEmployee.email, newEmployee.password)
+    return secondaryApp.auth().createUserWithEmailAndPassword(newEmployee.email, newEmployee.password)
         .then((res) => {
             secondaryApp.auth().signOut();
             user.uid = res.user.uid
@@ -107,8 +107,13 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
 
             dispatch({
                 type: 'ADD_NEW_EMPLOYEE_SUCCESS',
-                stateUpdate: { newEmployees, showSpinner: false }
+                stateUpdate: { 
+                    newEmployees,
+                    showSpinner: false,
+                    emptyCurrentForm: true
+                }
             });
+            return Promise.resolve({ employee: user.displayName, id: newEmployee.employeeId, uid: user.uid })
         })
         .catch((err) => {
             const { code, message } = err;
@@ -120,5 +125,6 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
                     showSpinner: false
                 }
             });
+            return Promise.reject({ code, message });
         });
 };

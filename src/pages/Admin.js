@@ -12,8 +12,8 @@ import Spinner from '../components/common/Modals/Spinner';
 const Admin = () => {
 
     const { state, stateDispatch } = useContext(appContext);
-    const { auth } = state;
-    const { components } = state.adminPage;
+    const { auth, adminPage } = state;
+    const { components } = adminPage;
     const { unmountAll } = useHandleComponents();
 
     useEffect(() => {
