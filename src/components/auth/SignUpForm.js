@@ -1,10 +1,12 @@
-import React, { useReducer, useEffect, useContext } from 'react';
+import React, { useState, useReducer, useEffect, useContext } from 'react';
 import appContext from '../../context/appContext';
 import useHandleInputChange from '../../hooks/useHandleInputChange';
 import { checkValidEmail, checkPasswordStrength, checkMatchingPasswords } from '../../actions/authFormActions';
 import { setEmptyCurrentFormState, checkHasInput, removeHasInput } from '../../actions/formActions';
 import formReducer from '../../reducers/formReducer';
 import { addNewEmployee } from '../../actions/authActions';
+import AddEmployeeSuccess from '../adminCompnents/modals/AddEmployeeSuccess';
+import useModal from '../../hooks/useModal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -33,6 +35,11 @@ const SignupForm = () => {
         employeeId: { hasHadInput: false }
     });
 
+    const [newEmployeeName, setEmployeeName] = useState('');
+    const [newEmployeeError, setNewEmployeeError] = useState(null);
+
+    const { showModal } = useModal();
+
     const clearForm = () => {
         emptyValues();
         validateDispatch(removeHasInput(validation));
@@ -42,8 +49,14 @@ const SignupForm = () => {
         addNewEmployee(values, state, stateDispatch)
         .then((newEmployee) => {
             console.log('new employee: ', newEmployee);
+            setEmployeeName(newEmployee.employee);
+            showModal();
         })
-        .catch(err => console.log('submit error: ', err));
+        .catch(err => {
+            console.log('submit error: ', err.message)
+            setNewEmployeeError(err.message);
+            showModal();
+        });
     };
 
     useEffect(() => {
@@ -64,109 +77,112 @@ const SignupForm = () => {
     }, [emptyCurrentForm, clearForm, stateDispatch]);
 
     return (
-        <Row className="p-0 m-0">
-            <Col xs={12} md={10} lg={8} className="p-0 m-0">
-                <Card>
-                    <Card.Header>Add New Employee</Card.Header>
-                    <Card.Body>
-                        <Form className="overflow-scroll">
-                            <FormField
-                                controlId='formEmail'
-                                value={values.email}
-                                name='email'
-                                type='email'
-                                label='Enter Email'
-                                placeholder='Enter email'
-                                inputChange={handleInputChange}
-                                message={validation.email.message}
-                            />
+        <>
+            <Row className="p-0 m-0">
+                <Col xs={12} md={10} lg={8} className="p-0 m-0">
+                    <Card>
+                        <Card.Header>Add New Employee</Card.Header>
+                        <Card.Body>
+                            <Form className="overflow-scroll">
+                                <FormField
+                                    controlId='formEmail'
+                                    value={values.email}
+                                    name='email'
+                                    type='email'
+                                    label='Enter Email'
+                                    placeholder='Enter email'
+                                    inputChange={handleInputChange}
+                                    message={validation.email.message}
+                                />
 
-                            <FormField
-                                controlId="formPassword"
-                                value={values.password}
-                                name="password"
-                                type="password"
-                                label='Password'
-                                placeholder="Password"
-                                inputChange={handleInputChange}
-                                message={validation.password.message}
-                            />
+                                <FormField
+                                    controlId="formPassword"
+                                    value={values.password}
+                                    name="password"
+                                    type="password"
+                                    label='Password'
+                                    placeholder="Password"
+                                    inputChange={handleInputChange}
+                                    message={validation.password.message}
+                                />
 
-                            <FormField 
-                                controlId="formConfirmPassword"
-                                value={values.confirmPassword}
-                                name="confirmPassword"
-                                type="password"
-                                label='Confirm Password'
-                                placeholder="Confirm Password"
-                                inputChange={handleInputChange}
-                                message={validation.confirmPassword.message}
-                            />
+                                <FormField 
+                                    controlId="formConfirmPassword"
+                                    value={values.confirmPassword}
+                                    name="confirmPassword"
+                                    type="password"
+                                    label='Confirm Password'
+                                    placeholder="Confirm Password"
+                                    inputChange={handleInputChange}
+                                    message={validation.confirmPassword.message}
+                                />
 
-                            <Row>
-                                <Col xs={12} sm={6}>
-                                    <FormField 
-                                        controlId="firstName"
-                                        value={values.firstName}
-                                        name="firstName"
-                                        type="test"
-                                        label='First Name'
-                                        placeholder="First Name"
-                                        inputChange={handleInputChange}
-                                        message={validation.firstName.message}
-                                    />
-                                </Col>
-                                <Col xs={12} sm={6}>
-                                    <FormField 
-                                        controlId="lastName"
-                                        value={values.lastName}
-                                        name="lastName"
-                                        type="test"
-                                        label='Last Name'
-                                        placeholder="Last Name"
-                                        inputChange={handleInputChange}
-                                        message={validation.lastName.message}
-                                    />
-                                </Col>
-                            </Row>
+                                <Row>
+                                    <Col xs={12} sm={6}>
+                                        <FormField 
+                                            controlId="firstName"
+                                            value={values.firstName}
+                                            name="firstName"
+                                            type="test"
+                                            label='First Name'
+                                            placeholder="First Name"
+                                            inputChange={handleInputChange}
+                                            message={validation.firstName.message}
+                                        />
+                                    </Col>
+                                    <Col xs={12} sm={6}>
+                                        <FormField 
+                                            controlId="lastName"
+                                            value={values.lastName}
+                                            name="lastName"
+                                            type="test"
+                                            label='Last Name'
+                                            placeholder="Last Name"
+                                            inputChange={handleInputChange}
+                                            message={validation.lastName.message}
+                                        />
+                                    </Col>
+                                </Row>
 
-                            <FormField 
-                                controlId="employeeId"
-                                value={values.employeeId}
-                                name="employeeId"
-                                type="number"
-                                label='Employee ID'
-                                placeholder="Employee ID"
-                                inputChange={handleInputChange}
-                                message={validation.employeeId.message}
-                            />
+                                <FormField 
+                                    controlId="employeeId"
+                                    value={values.employeeId}
+                                    name="employeeId"
+                                    type="number"
+                                    label='Employee ID'
+                                    placeholder="Employee ID"
+                                    inputChange={handleInputChange}
+                                    message={validation.employeeId.message}
+                                />
 
-                            <Form.Row>
-                                <Col>
-                                    <div className="float-right">
-                                        <Button
-                                            variant="primary"
-                                            type="button"
-                                            onClick={onSubmit}
-                                            disabled={!(validation.email.validated && validation.password.validated  && validation.confirmPassword.validated && !validation.firstName.message && !validation.lastName.message && !validation.employeeId.message)}
-                                        >
-                                            Submit
-                                        </Button>
+                                <Form.Row>
+                                    <Col>
+                                        <div className="float-right">
+                                            <Button
+                                                variant="primary"
+                                                type="button"
+                                                onClick={onSubmit}
+                                                disabled={!(validation.email.validated && validation.password.validated  && validation.confirmPassword.validated && !validation.firstName.message && !validation.lastName.message && !validation.employeeId.message)}
+                                            >
+                                                Submit
+                                            </Button>
 
-                                        <span 
-                                            className="pointer align-middle ml-2"
-                                            onClick={clearForm}
-                                        >
-                                            <u>cancel</u>
-                                        </span>
-                                    </div>
-                                </Col>
-                            </Form.Row>
-                        </Form>
-                    </Card.Body>
-                </Card>
-            </Col>
-        </Row>
+                                            <span 
+                                                className="pointer align-middle ml-2"
+                                                onClick={clearForm}
+                                            >
+                                                <u>cancel</u>
+                                            </span>
+                                        </div>
+                                    </Col>
+                                </Form.Row>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+            { state.isModal && <AddEmployeeSuccess employeeName={newEmployeeName} err={newEmployeeError} /> }
+        </>
     );
 };
 
