@@ -49,35 +49,52 @@ export const signOut = (dispatch) => {
 };
 
 export const getUser = (dispatch) => {
+    const exit = () => {
+        dispatch({
+            type: 'SIGNOUT',
+            stateUpdate: {
+                auth: null,
+                onFirebaseAuth: true
+            }
+        });
+    };
+
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             const { displayName, email, uid } = user;
-            dispatch({
-                type: 'LOGIN_USER',
-                stateUpdate: {
-                    auth: {
-                        name: displayName,
-                        email,
-                        uid
-                    },
-                    onFirebaseAuth: true
-                }
-            });
+            
+            return database.collection('employees').doc(uid).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const { employeeId, admin } = doc.data();
+                        dispatch({
+                            type: 'LOGIN_USER',
+                            stateUpdate: {
+                                auth: {
+                                    name: displayName,
+                                    employeeId,
+                                    admin,
+                                    email,
+                                    uid
+                                },
+                                onFirebaseAuth: true
+                            }
+                        });
+                    }
+                    else exit();
+                })
+                .catch(() => exit());
         }
-        else {
-            dispatch({
-                type: 'SIGNOUT',
-                stateUpdate: {
-                    auth: null,
-                    onFirebaseAuth: true
-                }
-            });
-        }
+        else exit();
+
     });
 };
 
 export const addNewEmployee = (newEmployee, state, dispatch) => {
-    let user = { displayName: `${newEmployee.firstName} ${newEmployee.lastName}`}
+    let user = {
+        displayName: `${newEmployee.firstName} ${newEmployee.lastName}`,
+        uid: null
+    };
 
     dispatch({
         type: 'SET_MODAL_SPINNER',
@@ -88,14 +105,21 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
     
     return secondaryApp.auth().createUserWithEmailAndPassword(newEmployee.email, newEmployee.password)
         .then((res) => {
+            user.uid = res.user.uid;
+
+            return secondaryApp.auth().currentUser.updateProfile({
+                displayName: user.displayName
+            });
+        })
+        .then(() => {
             secondaryApp.auth().signOut();
-            user.uid = res.user.uid
             
             return database.collection('employees').doc(user.uid).set({
                 firstName: newEmployee.firstName,
                 lastName: newEmployee.lastName,
                 displayName: user.displayName,
-                employeeId: newEmployee.employeeId
+                employeeId: newEmployee.employeeId,
+                admin: newEmployee.admin
             });
         })
         .then(() => {
