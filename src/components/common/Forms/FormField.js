@@ -10,7 +10,7 @@ const FormField = ({ label, controlId, message, name, type, placeholder, inputCh
             </Col>
             { message &&
                 <Col xs={6}>
-                    <div className="float-right">{message}</div>
+                    <div className="float-right text-danger">{message}</div>
                 </Col>
             }
         </Form.Row>

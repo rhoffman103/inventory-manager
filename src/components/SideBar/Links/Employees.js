@@ -1,20 +1,20 @@
 import React from 'react';
 import useHandleComponents from '../../../hooks/useHandleComponents';
 
-const AddNewEmployee = () => {
+const Employees = () => {
 
     const { handleOneVisibleComponent } = useHandleComponents();
 
-    const handleClick = () => handleOneVisibleComponent({ page: 'adminPage', title: 'Add New Employees', component: 'addNewEmployee', mount: true });
+    const handleClick = () => handleOneVisibleComponent({ page: 'adminPage', title: 'Employees & Permissions', component: 'employees', mount: true });
 
     return (
         <span
             className="nav-link pointer"
             onClick={handleClick}
         >
-            Add New Employee
+            Employees / Permissions
         </span>
     );
 };
 
-export default AddNewEmployee;
+export default Employees;

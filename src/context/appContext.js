@@ -7,7 +7,8 @@ const initialState = {
         msg: null,
         components: {}
     },
-    auth: null
+    auth: null,
+    emptyCurrentForm: false
 };
 
 export { initialState, appContext as default };

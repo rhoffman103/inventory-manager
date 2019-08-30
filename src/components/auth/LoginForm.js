@@ -18,7 +18,7 @@ const LoginForm = () => {
         email: '',
         password: ''
     });
-    const [validation, validationDispatch] = useReducer(formReducer, false);
+    const [validation, validationDispatch] = useReducer(formReducer, {email: {}});
     const { closeModal } = useModal();
 
     const onSubmit = (e) => {
@@ -27,7 +27,7 @@ const LoginForm = () => {
     };
 
     useEffect(() => {
-        validationDispatch(checkValidEmail(values.email));
+        validationDispatch(checkValidEmail({ value: values.email }));
     }, [values.email]);
 
     useEffect(() => {
@@ -74,7 +74,7 @@ const LoginForm = () => {
                                 variant="primary"
                                 type="button"
                                 onClick={onSubmit}
-                                disabled={!validation.isEmail}
+                                disabled={!validation.email.validated}
                             >
                                 Login
                             </Button>
@@ -90,7 +90,7 @@ const LoginForm = () => {
                 </Form.Row>
             </Form>
         </ModalContainer>
-    )
+    );
 };
 
 export default LoginForm;

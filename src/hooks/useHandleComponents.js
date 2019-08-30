@@ -22,7 +22,7 @@ const useHandleComponents = () => {
         };
     };
 
-    const handleOneVisibleComponent = ({ page, component, mount }) => {
+    const handleOneVisibleComponent = ({ page, component, mount, title }) => {
         
         const actionType = returnActionType(page);
         const newComponentState = getComponents();
@@ -34,6 +34,7 @@ const useHandleComponents = () => {
             stateUpdate: {
                 [page]: {
                     ...state[page],
+                    title,
                     components: {
                         ...newComponentState,
                         [component]: mount

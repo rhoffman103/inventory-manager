@@ -3,30 +3,32 @@ import { useState } from 'react';
 const useHandleInputChange = (initial) => {
     const [values, setValue] = useState(initial || {});
     
+    const resetValues = (arr) => {
+        let obj = {};
+        arr.forEach((key) => obj[key] = "");
+        return obj;
+    };
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setValue({ ...values, [name]: value });
     };
 
     const emptyValues = (keys) => {
-        let newObj = {}
-        const setNewObj = (arr) => {
-            arr.forEach((key) => {
-                newObj[key] = ''
-            });
-        };
         
         if (keys) {
+            let newObj;
             if (typeof keys === 'string') {
                 const keysArr = keys.split(' ');
-                setNewObj(keysArr);
+                newObj = resetValues(keysArr);
             }
-            else setNewObj(keys);
+            else newObj = resetValues(keys);
+
+            setValue({ ...values, ...newObj });
         }
 
-        else setNewObj(Object.keys(values));
+        else setValue({ ...resetValues(Object.keys(values)) });
     
-        setValue({ ...values, ...newObj });
     };
     return { values, handleInputChange, emptyValues };
 };
