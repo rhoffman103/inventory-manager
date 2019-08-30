@@ -8,7 +8,8 @@ const initialState = {
         components: {}
     },
     auth: null,
-    emptyCurrentForm: false
+    emptyCurrentForm: false,
+    updateEmployee: {}
 };
 
 export { initialState, appContext as default };

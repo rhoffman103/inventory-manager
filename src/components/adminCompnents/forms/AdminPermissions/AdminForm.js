@@ -1,20 +1,29 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect, useContext } from 'react';
+import appContext from '../../../../context/appContext';
 import useHandleInputChange from '../../../../hooks/useHandleInputChange';
 import { clickedGivePermission } from '../../../../actions/adminPermissionActions';
 import permissionsReducer from '../../../../reducers/permissionsReducer';
+import { updateAdminStatus } from '../../../../actions/databaseActions';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import PermissionWarning from './PermissionWarning';
 import FormField from '../../../common/Forms/FormField';
 
-const AdminForm = ({ name, id }) => {
+const AdminForm = ({ employee }) => {
+    const { stateDispatch } = useContext(appContext);
     const { values, handleInputChange } = useHandleInputChange({ employeeName: "" });
     const [validation, validationDispatch] = useReducer(permissionsReducer, {
         employee: {
             message: ""
         }
     });
+
+    useEffect(() => {
+        if (validation.employee.admin)
+            updateAdminStatus(stateDispatch, employee);
+    }, [validation.employee])
+
     return (
         <>
             <PermissionWarning />
@@ -36,8 +45,8 @@ const AdminForm = ({ name, id }) => {
                         type='button'
                         onClick={() => validationDispatch(clickedGivePermission({
                             enteredName: values.employeeName,
-                            correctName: name,
-                            id
+                            correctName: employee.displayName,
+                            id: employee.employeeId
                         }))}
                     >
                         Promote To Admin
