@@ -91,9 +91,14 @@ export const getUser = (dispatch) => {
 };
 
 export const addNewEmployee = (newEmployee, state, dispatch) => {
-    let user = {
-        displayName: `${newEmployee.firstName} ${newEmployee.lastName}`,
-        uid: null
+    let newUID = null;
+    const user = {
+        firstName: newEmployee.firstName.trim(),
+        lastName: newEmployee.lastName.trim(),
+        displayName: `${newEmployee.firstName.trim()} ${newEmployee.lastName.trim()}`,
+        employeeId: newEmployee.employeeId,
+        email: newEmployee.email.trim(),
+        admin: false
     };
 
     dispatch({
@@ -103,9 +108,26 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
         }
     });
     
-    return secondaryApp.auth().createUserWithEmailAndPassword(newEmployee.email, newEmployee.password)
+    return database.collection('employees').where('employeeId', '==', newEmployee.employeeId).get()
+        .then((querySnapshot) => {
+            let idExists = false;
+            querySnapshot.forEach(doc => {
+                if (doc.exists) {
+                    idExists = true;
+                    return false;
+                }
+            })
+            if (idExists) {
+                return Promise.reject({
+                    code: 'Employee ID exists',
+                    message: `Employee ID: ${newEmployee.employeeId} already exists`
+                });
+            }
+            else return Promise.resolve();
+        })
+        .then(() => secondaryApp.auth().createUserWithEmailAndPassword(newEmployee.email, newEmployee.password))
         .then((res) => {
-            user.uid = res.user.uid;
+            newUID = res.user.uid;
 
             return secondaryApp.auth().currentUser.updateProfile({
                 displayName: user.displayName
@@ -114,31 +136,25 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
         .then(() => {
             secondaryApp.auth().signOut();
             
-            return database.collection('employees').doc(user.uid).set({
-                firstName: newEmployee.firstName,
-                lastName: newEmployee.lastName,
-                displayName: user.displayName,
-                employeeId: newEmployee.employeeId,
-                admin: false,
-                email: newEmployee.email
-            });
+            return database.collection('employees').doc(newUID).set(user);
         })
         .then(() => {
             let newEmployees = [];
 
             if (state.newEmployees) newEmployees = Object.keys(state.newEmployees).map((employee) => state.newEmployees[employee]);
 
-            newEmployees.push({ employee: user.displayName, id: newEmployee.employeeId, uid: user.uid });
+            newEmployees.push({ employee: user.displayName, id: newEmployee.employeeId, uid: newUID });
 
             dispatch({
                 type: 'ADD_NEW_EMPLOYEE_SUCCESS',
                 stateUpdate: { 
                     newEmployees,
                     showSpinner: false,
-                    emptyCurrentForm: true
+                    emptyCurrentForm: true,
+                    addNewEmployeeError: false
                 }
             });
-            return Promise.resolve({ employee: user.displayName, id: newEmployee.employeeId, uid: user.uid })
+            return Promise.resolve({ employee: user.displayName, id: newEmployee.employeeId, uid: newUID })
         })
         .catch((err) => {
             const { code, message } = err;

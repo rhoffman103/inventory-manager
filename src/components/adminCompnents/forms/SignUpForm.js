@@ -43,17 +43,17 @@ const SignupForm = () => {
     const clearForm = () => {
         emptyValues();
         validateDispatch(removeHasInput(validation));
-    }
+    };
     
     const onSubmit = () => {
+        setEmployeeName('');
+        setNewEmployeeError(null);
         addNewEmployee(values, state, stateDispatch)
         .then((newEmployee) => {
-            console.log('new employee: ', newEmployee);
             setEmployeeName(newEmployee.employee);
             showModal();
         })
         .catch(err => {
-            console.log('submit error: ', err.message)
             setNewEmployeeError(err.message);
             showModal();
         });
