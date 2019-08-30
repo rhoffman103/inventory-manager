@@ -119,7 +119,8 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
                 lastName: newEmployee.lastName,
                 displayName: user.displayName,
                 employeeId: newEmployee.employeeId,
-                admin: newEmployee.admin
+                admin: false,
+                email: newEmployee.email
             });
         })
         .then(() => {

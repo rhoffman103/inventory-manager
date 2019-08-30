@@ -6,8 +6,9 @@ import NavBar from '../components/common/Nav';
 import AdminSidebar from '../components/SideBar/AdminSidebar';
 import MainContainer from '../components/common/Main/MainContainer';
 import Main from '../components/common/Main';
-import SignupForm from '../components/auth/SignUpForm';
+import SignupForm from '../components/adminCompnents/forms/SignUpForm';
 import Spinner from '../components/common/Modals/Spinner';
+import Employees from '../components/adminCompnents/Employees';
 
 const Admin = () => {
 
@@ -22,7 +23,8 @@ const Admin = () => {
             key: 'adminPage',
             value: {
                 ...state.adminPage,
-                msg: 'Admin Page'
+                msg: 'Admin Page',
+                title: 'Dashboard'
             }
         });
 
@@ -39,8 +41,9 @@ const Admin = () => {
             <MainContainer>
                 <AdminSidebar />
                 <Main>
-                    { state.adminPage.msg && <h1>{state.adminPage.msg}</h1> }
+                    <h1>{state.adminPage.title}</h1>
                     { components.addNewEmployee && <SignupForm /> }
+                    { components.employees && <Employees /> }
                 </Main>
             </MainContainer>
             <Spinner />

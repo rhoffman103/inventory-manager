@@ -1,17 +1,17 @@
 import React, { useState, useReducer, useEffect, useContext } from 'react';
-import appContext from '../../context/appContext';
-import useHandleInputChange from '../../hooks/useHandleInputChange';
-import { checkValidEmail, checkPasswordStrength, checkMatchingPasswords } from '../../actions/authFormActions';
-import { setEmptyCurrentFormState, checkHasInput, removeHasInput } from '../../actions/formActions';
-import formReducer from '../../reducers/formReducer';
-import { addNewEmployee } from '../../actions/authActions';
-import AddEmployeeSuccess from '../adminCompnents/modals/AddEmployeeSuccess';
-import useModal from '../../hooks/useModal';
+import appContext from '../../../context/appContext';
+import useHandleInputChange from '../../../hooks/useHandleInputChange';
+import { checkValidEmail, checkPasswordStrength, checkMatchingPasswords } from '../../../actions/authFormActions';
+import { setEmptyCurrentFormState, checkHasInput, removeHasInput } from '../../../actions/formActions';
+import formReducer from '../../../reducers/formReducer';
+import { addNewEmployee } from '../../../actions/authActions';
+import AddEmployeeSuccess from '../modals/AddEmployeeSuccess';
+import useModal from '../../../hooks/useModal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import FormField from '../common/Forms/FormField';
+import FormField from '../../common/Forms/FormField';
 import Button from 'react-bootstrap/Button';
 
 const SignupForm = () => {
@@ -142,18 +142,19 @@ const SignupForm = () => {
                                             message={validation.lastName.message}
                                         />
                                     </Col>
+                                    <Col xs={12} sm={6}>
+                                        <FormField 
+                                            controlId="employeeId"
+                                            value={values.employeeId}
+                                            name="employeeId"
+                                            type="number"
+                                            label='Employee ID'
+                                            placeholder="Employee ID"
+                                            inputChange={handleInputChange}
+                                            message={validation.employeeId.message}
+                                        />
+                                    </Col>
                                 </Row>
-
-                                <FormField 
-                                    controlId="employeeId"
-                                    value={values.employeeId}
-                                    name="employeeId"
-                                    type="number"
-                                    label='Employee ID'
-                                    placeholder="Employee ID"
-                                    inputChange={handleInputChange}
-                                    message={validation.employeeId.message}
-                                />
 
                                 <Form.Row>
                                     <Col>
