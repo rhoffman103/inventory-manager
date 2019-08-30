@@ -22,6 +22,8 @@ const appReducer = (state, action) => {
             return newState;
         case 'SET_MODAL_SPINNER':
             return newState;
+        case 'PROMOTE_ADMIN_COMPLETE':
+            return { ...state, showSpinner: action.showSpinner, isModal: action.isModal, updateEmployee: action.updateEmployee }
         default:
             return state;
     };
