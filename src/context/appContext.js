@@ -7,7 +7,7 @@ const initialState = {
         msg: null,
         components: {}
     },
-    auth: null,
+    auth: {},
     emptyCurrentForm: false,
     updateEmployee: {}
 };

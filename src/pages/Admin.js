@@ -36,7 +36,7 @@ const Admin = () => {
 
     return (
         <>
-            { !auth && <Redirect to='/' /> }
+            { !auth.admin && <Redirect to='/' /> }
             <NavBar page='admin' />
             <MainContainer>
                 <AdminSidebar />

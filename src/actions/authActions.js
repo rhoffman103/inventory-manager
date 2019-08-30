@@ -1,32 +1,47 @@
 import database, { firebase, secondaryApp } from '../config/firebaseConfig';
 
+const loginUser = (dispatch, user) => {
+    dispatch({
+        type: 'LOGIN_USER',
+        stateUpdate: {
+            auth: {
+                ...user,
+                name: user.displayName,
+            },
+            onFirebaseAuth: true,
+            isModal: false
+        }
+    });
+};
+
+const exit = (dispatch) => {
+    dispatch({
+        type: 'SIGNOUT',
+        stateUpdate: {
+            auth: {},
+            onFirebaseAuth: true
+        }
+    });
+};
+
 export const signIn = (user, dispatch) => {
     const { email, password } = user;
     firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((ref) => {
-        const { displayName, email, uid } = ref.user
-        dispatch({
-            type: 'LOGIN_USER',
-            stateUpdate: {
-                auth: {
-                    name: displayName,
-                    email,
-                    uid
-                },
-                loginError: false,
-                isModal: false
-            }
+        .then((ref) => {
+            return database.collection('employees').doc(ref.user.uid).get()
+        })
+        .then(doc => {
+            loginUser(dispatch, { ...doc.data(), uid: doc.id });
+        })
+        .catch((err) => {
+            const { code, message } = err;
+            dispatch({
+                type: 'LOGIN_ERROR',
+                stateUpdate: { 
+                    loginError: { code, message }
+                }
+            });
         });
-    })
-    .catch((err) => {
-        const { code, message } = err;
-        dispatch({
-            type: 'LOGIN_ERROR',
-            stateUpdate: { 
-                loginError: { code, message }
-            }
-        });
-    });
 };
 
 export const resetLoginError = (dispatch) => {
@@ -42,52 +57,28 @@ export const signOut = (dispatch) => {
         dispatch({
             type: 'SIGNOUT',
             stateUpdate: {
-                auth: null
+                auth: {}
             }
         });
     });
 };
 
 export const getUser = (dispatch) => {
-    const exit = () => {
-        dispatch({
-            type: 'SIGNOUT',
-            stateUpdate: {
-                auth: null,
-                onFirebaseAuth: true
-            }
-        });
-    };
-
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            const { displayName, email, uid } = user;
-            
-            return database.collection('employees').doc(uid).get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        const { employeeId, admin } = doc.data();
-                        dispatch({
-                            type: 'LOGIN_USER',
-                            stateUpdate: {
-                                auth: {
-                                    name: displayName,
-                                    employeeId,
-                                    admin,
-                                    email,
-                                    uid
-                                },
-                                onFirebaseAuth: true
-                            }
-                        });
-                    }
-                    else exit();
-                })
-                .catch(() => exit());
-        }
-        else exit();
-
-    });
+    return new Promise((resolve, reject) => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) return resolve(user);
+            else return reject();
+        })
+    })
+    .then(user => {
+        return database.collection('employees').doc(user.uid).get()
+    })
+    .then((doc) => {
+        doc.exists
+            ? loginUser(dispatch, { ...doc.data(), uid: doc.id })
+            : exit(dispatch)
+    })
+    .catch(() => exit(dispatch));
 };
 
 export const addNewEmployee = (newEmployee, state, dispatch) => {

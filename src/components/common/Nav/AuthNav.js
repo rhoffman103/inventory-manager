@@ -9,11 +9,11 @@ import LogIn from './links/LogIn';
 const AuthNav = () => {
     const { state } = useContext(appContext);
     const { navState } = useContext(navContext);
-
+    
     return (
         <>
             {(state.onFirebaseAuth &&
-                (state.auth
+                (state.auth.admin
                 ?   navState.page === 'admin'
                         ?   
                             <>

@@ -6,7 +6,7 @@ const ProductionNav = () => {
     const { state } = useContext(appContext);
 
     return (
-        state.auth 
+        state.auth.admin
             ?   <Link to="/admin" className="nav-link">Admin</Link>
             :   <></>
     );
