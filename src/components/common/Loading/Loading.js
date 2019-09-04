@@ -3,6 +3,7 @@ import Spinner from 'react-bootstrap/Spinner';
 
 const Loading = () => {
 
+    let timerIdOne, timerIdTwo;
     const [spinnerTwo, setSpinnerTwo] = useState(false);
     const [spinnerThree, setSpinnerThree] = useState(false);
 
@@ -13,8 +14,13 @@ const Loading = () => {
     };
 
     useEffect(() => {
-        delaySpinner(200, setSpinnerTwo);
-        delaySpinner(400, setSpinnerThree);
+        timerIdOne = delaySpinner(200, setSpinnerTwo);
+        timerIdTwo = delaySpinner(400, setSpinnerThree);
+
+        return () => {
+            clearTimeout(timerIdOne);
+            clearTimeout(timerIdTwo);
+        }
     }, []);
 
     return (
