@@ -4,6 +4,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import SideBar from './SideBar';
 import AddNewEmployee from './Links/AddNewEmployee';
 import Employees from './Links/Employees';
+import CreateNewProduct from './Links/CreateNewProduct';
 
 const AdminSidebar = () => {
     return (
@@ -32,7 +33,7 @@ const AdminSidebar = () => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="Products">
                     <div className="border-top border-bottom border-light">
-                        <Nav.Link>Create New Product</Nav.Link>
+                        <CreateNewProduct />
                         <Nav.Link>Update Product</Nav.Link>
                     </div>
                 </Accordion.Collapse>

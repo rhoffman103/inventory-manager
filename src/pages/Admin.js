@@ -9,6 +9,7 @@ import Main from '../components/common/Main';
 import SignupForm from '../components/adminCompnents/forms/SignUpForm';
 import Spinner from '../components/common/Modals/Spinner';
 import Employees from '../components/adminCompnents/Employees';
+import NewProduct from '../components/adminCompnents/Products/NewProduct';
 
 const Admin = () => {
 
@@ -44,6 +45,7 @@ const Admin = () => {
                     <h1>{state.adminPage.title}</h1>
                     { components.addNewEmployee && <SignupForm /> }
                     { components.employees && <Employees /> }
+                    { components.newProduct && <NewProduct /> }
                 </Main>
             </MainContainer>
             <Spinner />
