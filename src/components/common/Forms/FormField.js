@@ -1,10 +1,12 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
 import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row'
 
 const FormField = ({ label, controlId, message, name, type, placeholder, inputChange, value }) => (
     <Form.Group controlId={controlId}>
-        <Form.Row>
+        <Row>
             <Col xs={6}>
                 <Form.Label>{label}</Form.Label>
             </Col>
@@ -13,8 +15,8 @@ const FormField = ({ label, controlId, message, name, type, placeholder, inputCh
                     <div className="float-right text-danger">{message}</div>
                 </Col>
             }
-        </Form.Row>
-        <Form.Control
+        </Row>
+        <FormControl
             name={name}
             type={type}
             value={value}
