@@ -46,3 +46,55 @@ export const updateAdminStatus = (stateDispatch, employee) => {
             });
         });
 };
+
+export const addNewProduct = (product, dispatch) => {
+    dispatch({
+        type: 'SET_MODAL_SPINNER',
+        stateUpdate: {
+            showSpinner: true
+        }
+    });
+
+    return database.collection('products').where('id', '==', product.id).get()
+    .then(querySnapshot => {
+        let idExists = false;
+            querySnapshot.forEach(doc => {
+                if (doc.exists) {
+                    idExists = true;
+                    return false;
+                }
+            })
+            if (idExists) {
+                return Promise.reject({
+                    code: 'Product ID exists',
+                    message: `Product ID: ${product.id} already exists!`
+                });
+            }
+            else return Promise.resolve();
+    })
+    .then(() => database.collection('products').add(product))
+    .then((docRef) => {
+        console.log('ADDED NEW PRODUCT!!!');
+        dispatch({
+            type: 'FORM_REQUEST',
+            showSpinner: false,
+            isModal: true,
+            formRequest: {
+                code: 'Add Product Success',
+                message: `Successfully added product ID: ${product.id}`
+            }
+        });
+        return Promise.resolve();
+    })
+    .catch((err) => {
+        const { code, message } = err;
+        console.log(err);
+        dispatch({
+            type: 'FORM_REQUEST',
+            formRequest: { code, err: message },
+            showSpinner: false,
+            isModal: true
+        });
+        return Promise.reject({ code, message });
+    });
+};
