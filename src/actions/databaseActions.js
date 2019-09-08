@@ -24,10 +24,10 @@ export const updateAdminStatus = (stateDispatch, employee) => {
         .update({ admin: true })
         .then(() => {
             stateDispatch({
-                type: 'PROMOTE_ADMIN_COMPLETE',
+                type: 'FORM_REQUEST_COMPLETE',
                 showSpinner: false,
                 isModal: true,
-                updateEmployee: { 
+                formRequest: { 
                     ...employee,
                     message: `${employee.displayName} now has Admin permissions.`
                 }
@@ -36,10 +36,10 @@ export const updateAdminStatus = (stateDispatch, employee) => {
         })
         .catch(err => {
             stateDispatch({
-                type: 'PROMOTE_ADMIN_COMPLETE',
+                type: 'FORM_REQUEST_COMPLETE',
                 showSpinner: false,
                 isModal: true,
-                updateEmployee: {
+                formRequest: {
                     ...employee,
                     err: err.message
                 }
@@ -76,7 +76,7 @@ export const addNewProduct = (product, dispatch) => {
     .then((docRef) => {
         console.log('ADDED NEW PRODUCT!!!');
         dispatch({
-            type: 'FORM_REQUEST',
+            type: 'FORM_REQUEST_COMPLETE',
             showSpinner: false,
             isModal: true,
             formRequest: {
@@ -88,9 +88,8 @@ export const addNewProduct = (product, dispatch) => {
     })
     .catch((err) => {
         const { code, message } = err;
-        console.log(err);
         dispatch({
-            type: 'FORM_REQUEST',
+            type: 'FORM_REQUEST_COMPLETE',
             formRequest: { code, err: message },
             showSpinner: false,
             isModal: true

@@ -138,11 +138,12 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
 
             dispatch({
                 type: 'ADD_NEW_EMPLOYEE_SUCCESS',
-                stateUpdate: { 
-                    newEmployees,
-                    showSpinner: false,
-                    emptyCurrentForm: true,
-                    addNewEmployeeError: false
+                newEmployees,
+                showSpinner: false,
+                emptyCurrentForm: true,
+                addNewEmployeeError: false,
+                formRequest: {
+                    message: `Added new employee: ${user.displayName}`
                 }
             });
             return Promise.resolve({ employee: user.displayName, id: newEmployee.employeeId, uid: newUID })
@@ -152,9 +153,10 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
             console.log(err);
             dispatch({
                 type: 'ADD_NEW_EMPLOYEE_ERR',
-                stateUpdate: {
-                    addNewEmployeeError: { code, message },
-                    showSpinner: false
+                showSpinner: false,
+                addNewEmployeeError: { code, message },
+                formRequest: {
+                    err: message 
                 }
             });
             return Promise.reject({ code, message });
