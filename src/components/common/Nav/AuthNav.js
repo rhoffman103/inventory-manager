@@ -3,33 +3,22 @@ import appContext from '../../../context/appContext';
 import navContext from '../../../context/navContext';
 import ProductionNav from './ProductionNav';
 import AdminNav from './AdminNav';
-import LogOut from './links/LogOut';
 import LogIn from './links/LogIn';
 
 const AuthNav = () => {
     const { state } = useContext(appContext);
     const { navState } = useContext(navContext);
-
+    
     return (
         <>
             {(state.onFirebaseAuth &&
-                (state.auth
-                ?   navState.page === 'admin'
-                        ?   
-                            <>
-                                <AdminNav />
-                                <LogOut />
-                            </>
-                        :   
-                            <>
-                                <ProductionNav />
-                                <LogOut />
-                            </>
+                (state.auth.email ?
+                   (state.auth.admin
+                    ?   <AdminNav />
+                    :   <ProductionNav />
+                    )
                 :
-                    <>
-                        <ProductionNav />
-                        <LogIn />
-                    </>
+                   <LogIn />
                 )
             )}
         </>

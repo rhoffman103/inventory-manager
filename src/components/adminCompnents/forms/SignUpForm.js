@@ -1,11 +1,11 @@
-import React, { useState, useReducer, useEffect, useContext } from 'react';
+import React, { useReducer, useEffect, useContext } from 'react';
 import appContext from '../../../context/appContext';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
 import { checkValidEmail, checkPasswordStrength, checkMatchingPasswords } from '../../../actions/authFormActions';
 import { setEmptyCurrentFormState, checkHasInput, removeHasInput } from '../../../actions/formActions';
 import formReducer from '../../../reducers/formReducer';
 import { addNewEmployee } from '../../../actions/authActions';
-import AddEmployeeSuccess from '../modals/AddEmployeeSuccess';
+import FormRequestModal from '../modals/FormRequestModal';
 import useModal from '../../../hooks/useModal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -34,10 +34,6 @@ const SignupForm = () => {
         lastName: { hasHadInput: false },
         employeeId: { hasHadInput: false }
     });
-
-    const [newEmployeeName, setEmployeeName] = useState('');
-    const [newEmployeeError, setNewEmployeeError] = useState(null);
-
     const { showModal } = useModal();
 
     const clearForm = () => {
@@ -46,17 +42,9 @@ const SignupForm = () => {
     };
     
     const onSubmit = () => {
-        setEmployeeName('');
-        setNewEmployeeError(null);
         addNewEmployee(values, state, stateDispatch)
-        .then((newEmployee) => {
-            setEmployeeName(newEmployee.employee);
-            showModal();
-        })
-        .catch(err => {
-            setNewEmployeeError(err.message);
-            showModal();
-        });
+        .then(() => showModal())
+        .catch(() => showModal());
     };
 
     useEffect(() => {
@@ -182,7 +170,7 @@ const SignupForm = () => {
                     </Card>
                 </Col>
             </Row>
-            { state.isModal && <AddEmployeeSuccess employeeName={newEmployeeName} err={newEmployeeError} /> }
+            { state.isModal && <FormRequestModal /> }
         </>
     );
 };

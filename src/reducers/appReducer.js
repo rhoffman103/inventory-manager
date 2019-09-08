@@ -15,15 +15,24 @@ const appReducer = (state, action) => {
         case 'SIGNOUT':
             return newState;
         case 'ADD_NEW_EMPLOYEE_SUCCESS':
-            return newState;
+            return { 
+                ...state,
+                showSpinner: action.showSpinner,
+                formRequest: action.formRequest,
+                emptyCurrentForm: action.emptyCurrentForm
+            };
         case 'ADD_NEW_EMPLOYEE_ERR':
-            return newState;
+            return { 
+                ...state,
+                showSpinner: action.showSpinner,
+                formRequest: action.formRequest
+            };
         case 'UPDATE_ADMIN_PAGE':
             return newState;
         case 'SET_MODAL_SPINNER':
             return newState;
-        case 'PROMOTE_ADMIN_COMPLETE':
-            return { ...state, showSpinner: action.showSpinner, isModal: action.isModal, updateEmployee: action.updateEmployee }
+        case 'FORM_REQUEST_COMPLETE':
+            return { ...state, showSpinner: action.showSpinner, isModal: action.isModal, formRequest: action.formRequest };
         default:
             return state;
     };
