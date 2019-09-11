@@ -6,6 +6,8 @@ const appReducer = (state, action) => {
             return newState;
         case 'SIMPLE_STATE_UPDATE':
             return { ...state, [action.key]: action.value };
+        case 'HANDLE_MODAL':
+            return { ...state, showSpinner: false, isModal: action.isModal}
         case 'LOGIN_USER':
             return newState;
         case 'LOGIN_ERROR':
@@ -14,14 +16,7 @@ const appReducer = (state, action) => {
             return newState;
         case 'SIGNOUT':
             return newState;
-        case 'ADD_NEW_EMPLOYEE_SUCCESS':
-            return { 
-                ...state,
-                showSpinner: action.showSpinner,
-                formRequest: action.formRequest,
-                emptyCurrentForm: action.emptyCurrentForm
-            };
-        case 'ADD_NEW_EMPLOYEE_ERR':
+        case 'ADD_NEW_EMPLOYEE_COMPLETE':
             return { 
                 ...state,
                 showSpinner: action.showSpinner,
@@ -32,7 +27,12 @@ const appReducer = (state, action) => {
         case 'SET_MODAL_SPINNER':
             return newState;
         case 'FORM_REQUEST_COMPLETE':
-            return { ...state, showSpinner: action.showSpinner, isModal: action.isModal, formRequest: action.formRequest };
+            return {
+                ...state,
+                showSpinner: action.showSpinner,
+                formRequest: action.formRequest,
+                isModal: action.isModal
+            };
         default:
             return state;
     };

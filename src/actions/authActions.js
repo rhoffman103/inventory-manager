@@ -137,7 +137,7 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
             newEmployees.push({ employee: user.displayName, id: newEmployee.employeeId, uid: newUID });
 
             dispatch({
-                type: 'ADD_NEW_EMPLOYEE_SUCCESS',
+                type: 'ADD_NEW_EMPLOYEE_COMPLETE',
                 newEmployees,
                 showSpinner: false,
                 emptyCurrentForm: true,
@@ -152,7 +152,7 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
             const { code, message } = err;
             console.log(err);
             dispatch({
-                type: 'ADD_NEW_EMPLOYEE_ERR',
+                type: 'ADD_NEW_EMPLOYEE_COMPLETE',
                 showSpinner: false,
                 addNewEmployeeError: { code, message },
                 formRequest: {

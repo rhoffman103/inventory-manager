@@ -26,11 +26,11 @@ export const updateAdminStatus = (stateDispatch, employee) => {
             stateDispatch({
                 type: 'FORM_REQUEST_COMPLETE',
                 showSpinner: false,
-                isModal: true,
                 formRequest: { 
                     ...employee,
                     message: `${employee.displayName} now has Admin permissions.`
-                }
+                },
+                isModal: true
             });
             return Promise.resolve(employee);
         })
@@ -38,11 +38,11 @@ export const updateAdminStatus = (stateDispatch, employee) => {
             stateDispatch({
                 type: 'FORM_REQUEST_COMPLETE',
                 showSpinner: false,
-                isModal: true,
                 formRequest: {
                     ...employee,
                     err: err.message
-                }
+                },
+                isModal: true
             });
         });
 };
@@ -73,16 +73,15 @@ export const addNewProduct = (product, dispatch) => {
             else return Promise.resolve();
     })
     .then(() => database.collection('products').add(product))
-    .then((docRef) => {
-        console.log('ADDED NEW PRODUCT!!!');
+    .then(() => {
         dispatch({
             type: 'FORM_REQUEST_COMPLETE',
             showSpinner: false,
-            isModal: true,
             formRequest: {
                 code: 'Add Product Success',
                 message: `Successfully added product ID: ${product.id}`
-            }
+            },
+            isModal: true
         });
         return Promise.resolve();
     })
@@ -90,8 +89,8 @@ export const addNewProduct = (product, dispatch) => {
         const { code, message } = err;
         dispatch({
             type: 'FORM_REQUEST_COMPLETE',
-            formRequest: { code, err: message },
             showSpinner: false,
+            formRequest: { code, err: message },
             isModal: true
         });
         return Promise.reject({ code, message });

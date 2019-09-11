@@ -7,17 +7,17 @@ const useModal = () => {
 
     const showModal = () => {
         stateDispatch({
-            type: 'SIMPLE_STATE_UPDATE',
-            key: 'isModal',
-            value: true
+            type: 'HANDLE_MODAL',
+            showSpinner: false,
+            isModal: true
         });
     };
 
     const closeModal = () => {
         stateDispatch({
-            type: 'SIMPLE_STATE_UPDATE',
-            key: 'isModal',
-            value: false
+            type: 'HANDLE_MODAL',
+            showSpinner: false,
+            isModal: false
         });
     };
 
