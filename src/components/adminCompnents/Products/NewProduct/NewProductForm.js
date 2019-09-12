@@ -17,7 +17,7 @@ const NewProductForm = () => {
     const onSubmit = () => {
         addNewProduct(collectForm(values), stateDispatch)
             .then(() => emptyValues())
-            .catch((err) => console.log(err));
+            .catch((err) => console.error(err));
     };
 
     const clearForm = () => {

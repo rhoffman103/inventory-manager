@@ -30,10 +30,10 @@ const Employees = () => {
                             <span className='font-weight-bold'>{employee.displayName}</span>, employee id: <span className='font-weight-bold'>{employee.employeeId}</span>
                         </p>
                         <AdminPermissions employee={employee} />
-                        { state.isModal && <FormRequestModal />}
                     </React.Fragment>
                 )
             })}
+            { state.isModal && <FormRequestModal /> }
         </>
     );
 };

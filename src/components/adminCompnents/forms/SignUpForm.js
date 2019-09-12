@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useContext } from 'react';
 import appContext from '../../../context/appContext';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
 import { checkValidEmail, checkPasswordStrength, checkMatchingPasswords } from '../../../actions/authFormActions';
-import { setEmptyCurrentFormState, checkHasInput, removeHasInput } from '../../../actions/formActions';
+import { checkHasInput, removeHasInput } from '../../../actions/formActions';
 import formReducer from '../../../reducers/formReducer';
 import { addNewEmployee } from '../../../actions/authActions';
 import FormRequestModal from '../modals/FormRequestModal';
@@ -17,7 +17,6 @@ import Button from 'react-bootstrap/Button';
 const SignupForm = () => {
 
     const { state, stateDispatch } = useContext(appContext);
-    const { emptyCurrentForm } = state;
     const { values, handleInputChange, emptyValues } = useHandleInputChange({
         email: "",
         password: "",
@@ -43,8 +42,12 @@ const SignupForm = () => {
     
     const onSubmit = () => {
         addNewEmployee(values, state, stateDispatch)
-        .then(() => showModal())
-        .catch(() => showModal());
+        .then(() => {
+            emptyValues();
+            showModal();
+            validateDispatch(removeHasInput(validation));
+        })
+        .catch((err) => showModal());
     };
 
     useEffect(() => {
@@ -56,13 +59,6 @@ const SignupForm = () => {
         validateDispatch(checkHasInput({ key: 'lastName', value: lastName, hasHadInput: validation.lastName.hasHadInput, type: 'CHECK_HAS_INPUT' }));
         validateDispatch(checkHasInput({ key: 'employeeId', value: employeeId, hasHadInput: validation.employeeId.hasHadInput, type: 'CHECK_HAS_INPUT' }));
     }, [values]);
-
-    useEffect(() => {
-        if (emptyCurrentForm) {
-            clearForm();
-            stateDispatch(setEmptyCurrentFormState(false));
-        }
-    }, [emptyCurrentForm, clearForm, stateDispatch]);
 
     return (
         <>

@@ -22,7 +22,7 @@ const AdminForm = ({ employee }) => {
     useEffect(() => {
         if (validation.employee.admin)
             updateAdminStatus(stateDispatch, employee);
-    }, [validation.employee])
+    }, [validation.employee]);
 
     return (
         <>
