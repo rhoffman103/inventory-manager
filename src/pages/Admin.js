@@ -10,6 +10,7 @@ import SignupForm from '../components/adminCompnents/forms/SignUpForm';
 import Spinner from '../components/common/Modals/Spinner';
 import Employees from '../components/adminCompnents/Employees';
 import NewProduct from '../components/adminCompnents/Products/NewProduct';
+import AddNewJobJacket from '../components/adminCompnents/AddNewJobJacket';
 
 const Admin = () => {
 
@@ -46,6 +47,7 @@ const Admin = () => {
                     { components.addNewEmployee && <SignupForm /> }
                     { components.employees && <Employees /> }
                     { components.newProduct && <NewProduct /> }
+                    { components.addNewJobJacket && <AddNewJobJacket />}
                 </Main>
             </MainContainer>
             <Spinner />
