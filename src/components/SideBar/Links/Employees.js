@@ -4,7 +4,7 @@ import SidebarLink from './SidebarLink';
 const Employees = () => (
     <SidebarLink
         page='adminPage'
-        title='Employees & permissions'
+        title='Employees & Permissions'
         component='employees'
     >
         Employees / Permissions
