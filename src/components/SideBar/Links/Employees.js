@@ -1,20 +1,14 @@
 import React from 'react';
-import useHandleComponents from '../../../hooks/useHandleComponents';
+import SidebarLink from './SidebarLink';
 
-const Employees = () => {
-
-    const { handleOneVisibleComponent } = useHandleComponents();
-
-    const handleClick = () => handleOneVisibleComponent({ page: 'adminPage', title: 'Employees & Permissions', component: 'employees', mount: true });
-
-    return (
-        <span
-            className="nav-link pointer"
-            onClick={handleClick}
-        >
-            Employees / Permissions
-        </span>
-    );
-};
+const Employees = () => (
+    <SidebarLink
+        page='adminPage'
+        title='Employees & Permissions'
+        component='employees'
+    >
+        Employees / Permissions
+    </SidebarLink>
+);
 
 export default Employees;

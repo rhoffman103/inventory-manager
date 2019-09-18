@@ -10,27 +10,30 @@ import SignupForm from '../components/adminCompnents/forms/SignUpForm';
 import Spinner from '../components/common/Modals/Spinner';
 import Employees from '../components/adminCompnents/Employees';
 import NewProduct from '../components/adminCompnents/Products/NewProduct';
+import AddNewJobJacket from '../components/adminCompnents/AddNewJobJacket';
 
 const Admin = () => {
 
     const { state, stateDispatch } = useContext(appContext);
-    const { auth, adminPage } = state;
-    const { components } = adminPage;
+    const { auth, currentPage } = state;
+    const { components } = currentPage;
     const { unmountAll } = useHandleComponents();
 
     useEffect(() => {
         stateDispatch({
-            type: 'SIMPLE_STATE_UPDATE',
-            key: 'adminPage',
-            value: {
-                ...state.adminPage,
+            type: 'UPDATE_PAGE',
+            currentPage: {
+                ...state.currentPage,
+                components: {
+                    title: 'Dashboard'
+                },
+                page: 'adminPage',
                 msg: 'Admin Page',
-                title: 'Dashboard'
             }
         });
 
         return () => {
-            unmountAll('adminPage');
+            unmountAll();
         };
 
     }, [stateDispatch]);
@@ -42,10 +45,11 @@ const Admin = () => {
             <MainContainer>
                 <AdminSidebar />
                 <Main>
-                    <h1>{state.adminPage.title}</h1>
+                    <h1>{components.title}</h1>
                     { components.addNewEmployee && <SignupForm /> }
                     { components.employees && <Employees /> }
                     { components.newProduct && <NewProduct /> }
+                    { components.addNewJobJacket && <AddNewJobJacket />}
                 </Main>
             </MainContainer>
             <Spinner />

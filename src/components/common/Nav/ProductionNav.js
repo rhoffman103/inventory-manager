@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import appContext from '../../../context/appContext'
-import { Link } from 'react-router-dom';
+import appContext from '../../../context/appContext';
 import LogOut from './links/LogOut';
 
 const ProductionNav = () => {

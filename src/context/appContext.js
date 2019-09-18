@@ -3,13 +3,16 @@ import { createContext } from 'react';
 const appContext = createContext();
 
 const initialState = {
-    adminPage: {
-        msg: null,
-        components: {}
-    },
     auth: {},
+    currentPage: {
+        page: 'homePage',
+        msg: null,
+        components: {},
+        title: ''
+    },
     emptyCurrentForm: false,
-    updateEmployee: {}
+    updateEmployee: {},
+    navbar: { page: 'home' }
 };
 
 export { initialState, appContext as default };

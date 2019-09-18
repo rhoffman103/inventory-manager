@@ -18,7 +18,7 @@ const FormField = ({ label, controlId, message, name, type, placeholder, inputCh
         </Row>
         <FormControl
             name={name}
-            type={type}
+            type={type || 'text'}
             value={value}
             className='br-sharp'
             placeholder={placeholder}

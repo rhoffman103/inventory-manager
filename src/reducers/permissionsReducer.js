@@ -1,7 +1,6 @@
 const permissionsReducer = (state, action) => {
     switch(action.type) {
         case 'GIVE_ADMIN_PERMISSION':
-            console.log('promoting to admin')
             return {
                 ...state,
                 employee: {
