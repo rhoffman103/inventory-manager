@@ -11,7 +11,8 @@ const initialState = {
         title: ''
     },
     emptyCurrentForm: false,
-    updateEmployee: {}
+    updateEmployee: {},
+    navbar: { page: 'home' }
 };
 
 export { initialState, appContext as default };
