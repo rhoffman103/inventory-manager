@@ -20,7 +20,6 @@ const Admin = () => {
     const { unmountAll } = useHandleComponents();
 
     useEffect(() => {
-        console.log('ADMIN MOUNT: ', currentPage)
         stateDispatch({
             type: 'UPDATE_PAGE',
             currentPage: {
