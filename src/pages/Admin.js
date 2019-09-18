@@ -15,23 +15,25 @@ import AddNewJobJacket from '../components/adminCompnents/AddNewJobJacket';
 const Admin = () => {
 
     const { state, stateDispatch } = useContext(appContext);
-    const { auth, adminPage } = state;
-    const { components } = adminPage;
+    const { auth, currentPage } = state;
+    const { components, title } = currentPage;
     const { unmountAll } = useHandleComponents();
 
     useEffect(() => {
+        console.log('ADMIN MOUNT: ', currentPage)
         stateDispatch({
-            type: 'SIMPLE_STATE_UPDATE',
-            key: 'adminPage',
-            value: {
-                ...state.adminPage,
+            type: 'UPDATE_PAGE',
+            currentPage: {
+                ...state.currentPage,
+                components: {},
+                page: 'adminPage',
                 msg: 'Admin Page',
                 title: 'Dashboard'
             }
         });
 
         return () => {
-            unmountAll('adminPage');
+            unmountAll();
         };
 
     }, [stateDispatch]);
@@ -43,7 +45,7 @@ const Admin = () => {
             <MainContainer>
                 <AdminSidebar />
                 <Main>
-                    <h1>{state.adminPage.title}</h1>
+                    <h1>{title}</h1>
                     { components.addNewEmployee && <SignupForm /> }
                     { components.employees && <Employees /> }
                     { components.newProduct && <NewProduct /> }

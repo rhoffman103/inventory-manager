@@ -5,74 +5,50 @@ const useHandleComponents = () => {
 
     const { state, stateDispatch } = useContext(appContext);
 
-    const getComponents = () => {
-        const { components } = state.adminPage;
+    const resetComponents = () => {
+        const { components } = state.currentPage;
         const componentKeys = Object.keys(components)
         return componentKeys.forEach(compKey => components[compKey] = null);
     };
 
-    const returnActionType = (page) => {
-        switch(page) {
-            case 'adminPage':
-                return 'UPDATE_ADMIN_PAGE';
-            case 'homePage':
-                return 'UPDATE_HOME_PAGE';
-            default:
-                return 'NONE';
-        };
-    };
-
-    const handleOneVisibleComponent = ({ page, component, mount, title }) => {
+    const handleOneVisibleComponent = ({ component, mount, title }) => {
         
-        const actionType = returnActionType(page);
-        const newComponentState = getComponents();
+        const newComponentState = resetComponents();
         
         if (!mount) mount = true;
 
         stateDispatch({
-            type: actionType,
-            stateUpdate: {
-                [page]: {
-                    ...state[page],
-                    title,
-                    components: {
-                        ...newComponentState,
-                        [component]: mount
-                    }
-                }
-            }
+            type: 'HANDLE_COMPONENT',
+            components: {
+                ...state.currentPage.components,
+                ...newComponentState,
+                [component]: mount,
+                title
+            },
+            currentPage: state.currentPage
         });
     };
 
-    const handleComponents = ({ page, component, mount}) => {
-       
-        const actionType = returnActionType(page);
+    const handleComponents = ({ component, mount }) => {
 
         stateDispatch({
-            type: actionType,
-            stateUpdate: {
-                [page]: {
-                    ...state[page],
-                    components: {
-                        ...state[page].components,
-                        [component]: mount
-                    }
-                }
-            }
+            type: 'HANDLE_COMPONENT',
+            components: {
+                ...state.currentPage.components,
+                [component]: mount
+            },
+            currentPage: state.currentPage
         });
     };
 
-    const unmountAll = (page) => {
-
-        const actionType = returnActionType(page);
+    const unmountAll = (page = '') => {
 
         stateDispatch({
-            type: actionType,
-            stateUpdate: {
-                [page]: {
-                    ...state[page],
-                    components: {}
-                }
+            type: 'UPDATE_PAGE',
+            currentPage: {
+                page,
+                msg: null,
+                components: {}
             }
         });
     }
