@@ -16,7 +16,7 @@ const Admin = () => {
 
     const { state, stateDispatch } = useContext(appContext);
     const { auth, currentPage } = state;
-    const { components, title } = currentPage;
+    const { components } = currentPage;
     const { unmountAll } = useHandleComponents();
 
     useEffect(() => {
@@ -24,10 +24,11 @@ const Admin = () => {
             type: 'UPDATE_PAGE',
             currentPage: {
                 ...state.currentPage,
-                components: {},
+                components: {
+                    title: 'Dashboard'
+                },
                 page: 'adminPage',
                 msg: 'Admin Page',
-                title: 'Dashboard'
             }
         });
 
@@ -44,7 +45,7 @@ const Admin = () => {
             <MainContainer>
                 <AdminSidebar />
                 <Main>
-                    <h1>{title}</h1>
+                    <h1>{components.title}</h1>
                     { components.addNewEmployee && <SignupForm /> }
                     { components.employees && <Employees /> }
                     { components.newProduct && <NewProduct /> }
