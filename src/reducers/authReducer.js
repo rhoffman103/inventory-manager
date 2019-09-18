@@ -1,15 +1,21 @@
 const authenticationReducer = (state = {}, action) => {
-    const newState = { ...state, ...action.stateUpdate };
-
     switch (action.type) {
         case 'LOGIN_USER':
-            return newState;
-        case 'LOGIN_ERROR':
-            return newState;
-        case 'RESET_LOGIN_ERROR':
-            return newState;
+            return {
+                ...state,
+                auth: { ...action.auth },
+                isModal: action.isModal
+            };
+        case 'SET_LOGIN_ERROR':
+            return {
+                ...state,
+                auth: {
+                    ...state.auth,
+                    loginError: action.loginError
+                }
+            };
         case 'SIGNOUT':
-            return newState;
+            return { ...state, auth: action.auth };
         default:
             return state;
     };

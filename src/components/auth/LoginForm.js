@@ -19,6 +19,7 @@ const LoginForm = () => {
         password: ''
     });
     const [validation, validationDispatch] = useReducer(formReducer, {email: {}});
+    const { loginError } = state.auth;
     const { closeModal } = useModal();
 
     const onSubmit = (e) => {
@@ -31,8 +32,8 @@ const LoginForm = () => {
     }, [values.email]);
 
     useEffect(() => {
-            if (state.loginError) emptyValues('email password');
-    }, [state.loginError]);
+            if (loginError) emptyValues('email password');
+    }, [loginError]);
 
     useEffect(() => {
         return () => resetLoginError(stateDispatch);
@@ -61,7 +62,7 @@ const LoginForm = () => {
                     inputChange={handleInputChange}
                 />
 
-                {state.loginError &&
+                {loginError &&
                     <Form.Row className="justify-content-center">
                         <p className="text-danger">Incorrect Login Credentails!</p>
                     </Form.Row>

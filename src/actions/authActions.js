@@ -3,24 +3,19 @@ import database, { firebase, secondaryApp } from '../config/firebaseConfig';
 const loginUser = (dispatch, user) => {
     dispatch({
         type: 'LOGIN_USER',
-        stateUpdate: {
-            auth: {
-                ...user,
-                name: user.displayName,
-            },
-            onFirebaseAuth: true,
-            isModal: false
-        }
+        auth: {
+            ...user,
+            name: user.displayName,
+            onFirebaseAuth: true
+        },
+        isModal: false
     });
 };
 
 const exit = (dispatch) => {
     dispatch({
         type: 'SIGNOUT',
-        stateUpdate: {
-            auth: {},
-            onFirebaseAuth: true
-        }
+        auth: { onFirebaseAuth: true }
     });
 };
 
@@ -36,31 +31,22 @@ export const signIn = (user, dispatch) => {
         .catch((err) => {
             const { code, message } = err;
             dispatch({
-                type: 'LOGIN_ERROR',
-                stateUpdate: { 
-                    loginError: { code, message }
-                }
+                type: 'SET_LOGIN_ERROR',
+                loginError: { code, message }
             });
         });
 };
 
 export const resetLoginError = (dispatch) => {
     dispatch({
-        type: 'RESET_LOGIN_ERROR',
-        stateUpdate: { loginError: false }
+        type: 'SET_LOGIN_ERROR',
+        loginError: false
     });
 };
 
 export const signOut = (dispatch) => {
     firebase.auth().signOut()
-    .then(() => {
-        dispatch({
-            type: 'SIGNOUT',
-            stateUpdate: {
-                auth: {}
-            }
-        });
-    });
+    .then(() => exit(dispatch));
 };
 
 export const getUser = (dispatch) => {
