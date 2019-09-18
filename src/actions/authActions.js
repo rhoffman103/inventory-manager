@@ -94,9 +94,7 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
 
     dispatch({
         type: 'SET_MODAL_SPINNER',
-        stateUpdate: {
-            showSpinner: true
-        }
+        showSpinner: true
     });
     
     return database.collection('employees').where('employeeId', '==', newEmployee.employeeId).get()

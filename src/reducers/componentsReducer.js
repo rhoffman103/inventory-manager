@@ -7,7 +7,7 @@ const componentsReducer = (state, action) => {
         case 'UPDATE_PAGE':
             return { ...state, currentPage: action.currentPage };
         case 'SET_MODAL_SPINNER':
-            return { ...state, ...action.stateUpdate };;
+            return { ...state, showSpinner: action.showSpinner };
         case 'HANDLE_COMPONENT':
             return {
                 ...state,

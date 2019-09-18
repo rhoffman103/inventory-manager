@@ -15,9 +15,7 @@ export const getEmployeesByPermission = () => {
 export const updateAdminStatus = (stateDispatch, employee) => {
     stateDispatch({
         type: 'SET_MODAL_SPINNER',
-        stateUpdate: {
-            showSpinner: true
-        }
+        showSpinner: true
     });
 
     return database.collection('employees').doc(employee.dbId)
@@ -50,9 +48,7 @@ export const updateAdminStatus = (stateDispatch, employee) => {
 export const addNewProduct = (product, dispatch) => {
     dispatch({
         type: 'SET_MODAL_SPINNER',
-        stateUpdate: {
-            showSpinner: true
-        }
+        showSpinner: true
     });
 
     return database.collection('products').where('id', '==', product.id).get()
