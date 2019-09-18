@@ -6,7 +6,8 @@ const loginUser = (dispatch, user) => {
         auth: {
             ...user,
             name: user.displayName,
-            onFirebaseAuth: true
+            onFirebaseAuth: true,
+            loginError: false
         },
         isModal: false
     });
@@ -37,9 +38,10 @@ export const signIn = (user, dispatch) => {
         });
 };
 
-export const resetLoginError = (dispatch) => {
+export const resetLoginError = (auth, dispatch) => {
     dispatch({
         type: 'SET_LOGIN_ERROR',
+        auth,
         loginError: false
     });
 };

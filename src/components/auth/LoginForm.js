@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useContext } from 'react';
 import appContext from '../../context/appContext';
 import useHandleInputChange from '../../hooks/useHandleInputChange';
 import { checkValidEmail } from '../../actions/authFormActions';
-import { signIn, resetLoginError } from '../../actions/authActions';
+import { signIn } from '../../actions/authActions';
 import useModal from '../../hooks/useModal';
 import ModalContainer from '../common/Modals/ModalContainer';
 import Form from 'react-bootstrap/Form';
@@ -34,10 +34,6 @@ const LoginForm = () => {
     useEffect(() => {
             if (loginError) emptyValues('email password');
     }, [loginError]);
-
-    useEffect(() => {
-        return () => resetLoginError(stateDispatch);
-    }, [stateDispatch]);
 
     return (
         <ModalContainer title='Login' footer={false}>

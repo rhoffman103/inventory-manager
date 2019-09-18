@@ -1,4 +1,4 @@
-const authenticationReducer = (state = {}, action) => {
+const authenticationReducer = (state, action) => {
     switch (action.type) {
         case 'LOGIN_USER':
             return {
@@ -10,7 +10,7 @@ const authenticationReducer = (state = {}, action) => {
             return {
                 ...state,
                 auth: {
-                    ...state.auth,
+                    ...action.auth,
                     loginError: action.loginError
                 }
             };
