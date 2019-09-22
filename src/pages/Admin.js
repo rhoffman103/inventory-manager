@@ -23,7 +23,7 @@ const Admin = () => {
         stateDispatch({
             type: 'UPDATE_PAGE',
             currentPage: {
-                ...state.currentPage,
+                ...currentPage,
                 components: {
                     title: 'Dashboard'
                 },

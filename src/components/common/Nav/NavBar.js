@@ -12,7 +12,7 @@ const NavBar = (props) => {
 
     useEffect(() => {
         stateDispatch(updatePageState(props.page))
-    }, [ stateDispatch]);
+    }, [ stateDispatch, props.page]);
 
     return (
         <BootNavbar bg="light" expand="sm" className="sticky-top">
