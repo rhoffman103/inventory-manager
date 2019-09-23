@@ -62,6 +62,7 @@ const SignupForm = () => {
 
     return (
         <>
+            <h1>Add New Employee</h1>
             <Row className="p-0 m-0">
                 <Col xs={12} md={10} lg={8} className="p-0 m-0">
                     <Card>
