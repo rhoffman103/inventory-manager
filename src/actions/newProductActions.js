@@ -35,7 +35,8 @@ export const collectForm = (values) => {
             color: values.color,
             gauge: values.gauge,
             width: values.width
-        }
+        },
+        type: values.webType
     };
 
 }

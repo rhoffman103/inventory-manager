@@ -38,7 +38,7 @@ const NewProductForm = () => {
                         inputChange={handleInputChange}
                     />
                 </Col>
-                <Col xs={12}>
+                <Col xs={12} md={6}>
                     <FormField
                         controlId='productDescription'
                         value={values.productDescription || ''}
@@ -48,6 +48,21 @@ const NewProductForm = () => {
                         placeholder='WH 1.2 PP 38"'
                         inputChange={handleInputChange}
                     />
+                </Col>
+                <Col xs={12} md={6}>
+                    <Form.Group controlId="productTypeSelector">
+                        <Form.Label>Production type</Form.Label>
+                        <Form.Control
+                            as='select'
+                            name='webType'
+                            value={values.webType}
+                            onChange={handleInputChange}
+                        >
+                            <option>Release</option>
+                            <option>TPO</option>
+                            <option>Friction</option>
+                        </Form.Control>
+                    </Form.Group>
                 </Col>
             </Form.Row>
 
