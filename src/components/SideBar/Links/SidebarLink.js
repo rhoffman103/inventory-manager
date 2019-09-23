@@ -1,25 +1,13 @@
 import React from 'react';
-import useHandleComponents from '../../../hooks/useHandleComponents';
+import { Link } from 'react-router-dom';
 
-const SidebarLink = ({ children, title, page, component }) => {
-
-    const { handleOneVisibleComponent } = useHandleComponents();
-
-    const handleClick = () => handleOneVisibleComponent({
-        mount: true,
-        page,
-        title,
-        component
-    });
-
-    return (
-        <span
-            className="nav-link pointer"
-            onClick={handleClick}
-        >
-            { children }
-        </span>
-    );
-};
+const SidebarLink = ({ component, children }) => (
+    <Link
+        className="nav-link pointer"
+        to={`/admin/${component}`}
+    >
+        { children }
+    </Link>
+);
 
 export default SidebarLink;

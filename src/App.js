@@ -13,7 +13,7 @@ const App = () => (
 			<StateProvider>
 				<Switch>
 					<Route exact path="/" component={Home} />
-					<Route exact path="/admin" component={Admin} />
+					<Route path="/admin" component={Admin} />
 				</Switch>
 			</StateProvider>
 		</ScrollToTop>

@@ -23,6 +23,8 @@ const Employees = () => {
     return (
         <>
             {loader && <Loading />}
+            
+            <h1>Employees & Permissions</h1>
             {employeeList.employees.map(employee => {
                 return (
                     <React.Fragment key={employee.employeeId}>

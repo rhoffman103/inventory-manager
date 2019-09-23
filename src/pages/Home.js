@@ -17,11 +17,15 @@ const Home = () => {
     return (
         <>
             <NavBar page='home' />
-            <div className="container">
-                <h1>Home Page</h1>
-                { state.hello && <p>Context Message: {state.hello}</p> }
-                { localState.msg && <p>Local State: {localState.msg}</p>}
-            </div>
+            {state.auth.onFirebaseAuth
+            ?
+                <div className="container">
+                    <h1>Home Page</h1>
+                    { state.hello && <p>Context Message: {state.hello}</p> }
+                    { localState.msg && <p>Local State: {localState.msg}</p> }
+                </div>
+            :   <></>
+            }
             { state.isModal && <LoginForm /> }
         </>
     );

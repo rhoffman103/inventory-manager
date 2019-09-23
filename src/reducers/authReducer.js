@@ -14,6 +14,8 @@ const authenticationReducer = (state, action) => {
                     loginError: action.loginError
                 }
             };
+        case 'IS_ADMIN_AT_LOGIN':
+            return { ...state, redirectTo: action.redirectTo };
         case 'SIGNOUT':
             return { ...state, auth: action.auth };
         default:

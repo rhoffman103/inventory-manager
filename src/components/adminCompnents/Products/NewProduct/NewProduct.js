@@ -8,10 +8,13 @@ const NewProduct = () => {
     const { state } = useContext(appContext);
 
     return (
-        <div className="p-0 mx-0 mb-4">
-            <NewProductForm />
-            { state.isModal && <FormRequestModal /> }
-        </div>
+        <>
+            <h1>Create New Product</h1>
+            <div className="p-0 mx-0 mb-4">
+                <NewProductForm />
+                { state.isModal && <FormRequestModal /> }
+            </div>
+        </>
     );
 };
 

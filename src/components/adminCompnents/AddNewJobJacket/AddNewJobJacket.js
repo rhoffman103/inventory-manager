@@ -8,14 +8,17 @@ const AddNewJobJacket = () => {
     const { values, handleInputChange } = useHandleInputChange();
     
     return (
-        <Form>
-            <FormField
-                label='Company'
-                name='company'
-                value={values.company}
-                inputChange={handleInputChange}
-            />
-        </Form>
+        <>
+            <h1>Add New Job Jacket</h1>
+            <Form>
+                <FormField
+                    label='Company'
+                    name='company'
+                    value={values.company}
+                    inputChange={handleInputChange}
+                />
+            </Form>
+        </>
     );
 };
 
