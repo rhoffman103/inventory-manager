@@ -8,6 +8,7 @@ import FormField from '../../../common/Forms/FormField';
 import Button from 'react-bootstrap/Button';
 import LayerForm from './LayerForm';
 import { collectForm } from '../../../../actions/newProductActions';
+import FilmTypeOptionsList from '../../adminCommon/FilmTypeOptionsList';
 
 const NewProductForm = () => {
 
@@ -38,7 +39,7 @@ const NewProductForm = () => {
                         inputChange={handleInputChange}
                     />
                 </Col>
-                <Col xs={12} md={6}>
+                <Col xs={12}>
                     <FormField
                         controlId='productDescription'
                         value={values.productDescription || ''}
@@ -48,21 +49,6 @@ const NewProductForm = () => {
                         placeholder='WH 1.2 PP 38"'
                         inputChange={handleInputChange}
                     />
-                </Col>
-                <Col xs={12} md={6}>
-                    <Form.Group controlId="productTypeSelector">
-                        <Form.Label>Production type</Form.Label>
-                        <Form.Control
-                            as='select'
-                            name='webType'
-                            value={values.webType}
-                            onChange={handleInputChange}
-                        >
-                            <option>Release</option>
-                            <option>TPO</option>
-                            <option>Friction</option>
-                        </Form.Control>
-                    </Form.Group>
                 </Col>
             </Form.Row>
 
@@ -96,10 +82,24 @@ const NewProductForm = () => {
                         value={values.width || ''}
                         name="width"
                         type="number"
-                        label='Width (unit: inches)'
+                        label='Width (unit: inch)'
                         placeholder="38"
                         inputChange={handleInputChange}
                     />
+                </Col>
+                <Col xs={12} md={6}>
+                    <Form.Group controlId="productTypeSelector">
+                        <Form.Label>Type</Form.Label>
+                        <Form.Control
+                            as='select'
+                            name='webType'
+                            value={values.webType}
+                            className='br-sharp'
+                            onChange={handleInputChange}
+                        >
+                            <FilmTypeOptionsList />
+                        </Form.Control>
+                    </Form.Group>
                 </Col>
             </Form.Row>
 

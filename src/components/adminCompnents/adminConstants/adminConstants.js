@@ -1,0 +1,1 @@
+export const filmTypes = ['Select Type', 'Friction', 'TPO', 'Release'];
