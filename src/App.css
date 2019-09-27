@@ -17,7 +17,7 @@ div.modal-content {
 .add-icon {
   height: 35px;
   width: 35px;
-  background-color: rgb(17, 100, 102);
+  background-color: #116466;
   border-radius: 50%;
   display: inline-block;
   cursor: pointer;
@@ -40,3 +40,41 @@ div.modal-content {
 @-moz-keyframes pulse {to {box-shadow: 0 0 0 30px rgba(232, 76, 61, 0);}}
 @-ms-keyframes pulse {to {box-shadow: 0 0 0 30px rgba(232, 76, 61, 0);}}
 @keyframes pulse {to {box-shadow: 0 0 0 30px rgba(232, 76, 61, 0);}}
+
+.products-list:nth-child(even) {
+  background-color: rgba(39, 47, 195, .25);
+}
+
+.products-list:hover {
+  background-color: rgba(39, 47, 195, .5);
+}
+
+.selected-product {
+  background-color: #272fc3 !important;
+  color:rgba(255,255,255,.75);
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.min-w-618 {
+  min-width: 618px;
+}
+
+.link {
+  color: #007bff;
+}
+
+.link:hover {
+  color: #0056b3;
+}
+
+.dark-theme {
+  background-color: #343a40;
+  color: rgba(255,255,255,.75);
+}
+
+.bg-blue {
+  background-color: #272fc3
+}

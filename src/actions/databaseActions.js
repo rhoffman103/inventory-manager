@@ -92,3 +92,27 @@ export const addNewProduct = (product, dispatch) => {
         return Promise.reject({ code, message });
     });
 };
+
+export const getProductsByType = (productType, dispatch) => {
+    return database.collection('products').where('type', '==', productType).get()
+    .then(querySnapshot => {
+        let products = []
+        querySnapshot.forEach(doc => {
+            products.push({
+                ...doc.data(),
+                uid: doc.id
+            })
+        });
+        dispatch({
+            type: 'SET_PRODUCTS_LIST',
+            products
+        })
+    })
+    .catch(err => {
+        const { code, message } = err;
+        dispatch({
+            type: 'SET_PRODUCTS_LIST_ERROR',
+            productsListErr: { code, err: message }
+        });
+    });
+};
