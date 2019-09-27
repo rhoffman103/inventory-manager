@@ -22,9 +22,8 @@ const Employees = () => {
 
     return (
         <>
-            {loader && <Loading />}
-            
             <h1>Employees & Permissions</h1>
+            {loader && <Loading />}
             {employeeList.employees.map(employee => {
                 return (
                     <React.Fragment key={employee.employeeId}>
