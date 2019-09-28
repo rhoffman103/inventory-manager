@@ -13,12 +13,13 @@ const useModal = () => {
         });
     };
 
-    const closeModal = () => {
+    const closeModal = (callback) => {
         stateDispatch({
             type: 'HANDLE_MODAL',
             showSpinner: false,
             isModal: false
         });
+        if (callback) callback();
     };
 
     return { showModal, closeModal }
