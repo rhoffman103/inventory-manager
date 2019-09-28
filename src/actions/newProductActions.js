@@ -38,5 +38,18 @@ export const collectForm = (values) => {
         },
         type: values.webType
     };
+};
 
-}
+export const selectProduct = (id, productsList, dispatch) => {
+    let products = productsList.map(product => {
+        if ((product.id == id) && product.isSelected) product.isSelected = false;
+        else if (product.id === id) product.isSelected = true;
+        else product.isSelected = false;
+        return product;
+    });
+
+    dispatch({
+        type: 'SET_PRODUCTS_LIST',
+        products
+    });
+};

@@ -78,3 +78,11 @@ div.modal-content {
 .bg-blue {
   background-color: #272fc3
 }
+
+.underline {
+  text-decoration: underline;
+}
+
+.hover-light:hover {
+  color: white;;
+}

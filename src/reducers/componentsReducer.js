@@ -22,6 +22,12 @@ const componentsReducer = (state, action) => {
                 showSpinner: false,
                 isModal: action.isModal
             };
+        case 'PRODUCT_QUICK_VIEW':
+            return {
+                ...state,
+                productQuickview: action.productQuickview,
+                quickviewModal: action.quickviewModal
+            };
         default:
             return state;
     };

@@ -9,7 +9,7 @@ const SelectProduct = () => {
         <>
             <h5>Select Product</h5>
             <Form.Row>
-                <Col xs={12} md={6}>
+                <Col xs={12} md={6} className='pr-3'>
                     <Form.Group controlId="productionLineSelector">
                         <Form.Label>Production Line</Form.Label>
                         <Form.Control as="select" className='br-sharp'>
@@ -19,7 +19,7 @@ const SelectProduct = () => {
                         </Form.Control>
                     </Form.Group>
                 </Col>
-                <Col xs={12} md={6}>
+                <Col xs={12} md={6} className='pl-3'>
                     <FilterProductByType />
                 </Col>
             </Form.Row>
