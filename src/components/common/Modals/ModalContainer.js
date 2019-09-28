@@ -27,16 +27,18 @@ const ModalContainer = ({ children, title, Footer, backdrop, confirmOk, closeHan
             <Modal.Body>{children}</Modal.Body>
             { Footer
                 ?   Footer
-                :   <Modal.Footer>
-                        { confirmOk && 
-                            <Button variant="success" onClick={handleClose}>
-                                Done
+                :   (typeof Footer !== 'undefined')
+                    ?   <Modal.Footer>
+                            { confirmOk && 
+                                <Button variant="success" onClick={handleClose}>
+                                    Done
+                                </Button>
+                            }
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
                             </Button>
-                        }
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                    </Modal.Footer>  
+                        </Modal.Footer>
+                    :   <></>
             }
         </Modal>
     );
