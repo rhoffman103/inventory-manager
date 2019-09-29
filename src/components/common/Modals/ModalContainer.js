@@ -4,7 +4,7 @@ import useModal from '../../../hooks/useModal';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-const ModalContainer = ({ children, title, Footer, backdrop, confirmOk, closeHandler, centered, size }) => {
+const ModalContainer = ({ children, title, Footer, backdrop, confirmOk, closeHandler, centered, size, useFooter }) => {
     const { state } = useContext(appContext);
     const { closeModal } = useModal();
 
@@ -27,7 +27,7 @@ const ModalContainer = ({ children, title, Footer, backdrop, confirmOk, closeHan
             <Modal.Body>{children}</Modal.Body>
             { Footer
                 ?   Footer
-                :   (typeof Footer !== 'undefined')
+                :   useFooter
                     ?   <Modal.Footer>
                             { confirmOk && 
                                 <Button variant="success" onClick={handleClose}>
