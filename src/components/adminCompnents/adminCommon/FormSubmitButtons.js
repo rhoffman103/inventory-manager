@@ -3,13 +3,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-const FormSubmitButtons = ({ onSubmit, clearForm }) => (
+const FormSubmitButtons = ({ onSubmit, clearForm, isValid }) => (
     <Row>
         <Col>
             <div className="float-right mt-4">
                 <Button
                     variant="primary"
                     type="button"
+                    disabled={!isValid}
                     onClick={onSubmit}
                 >
                     Create

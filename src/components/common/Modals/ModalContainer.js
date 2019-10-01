@@ -9,8 +9,7 @@ const ModalContainer = ({ children, title, Footer, backdrop, confirmOk, closeHan
     const { closeModal } = useModal();
 
     const handleClose = () => {
-        if (closeHandler) closeModal(closeHandler);
-        else closeModal();
+        closeHandler ? closeModal(closeHandler) : closeModal();
     };
 
     return (

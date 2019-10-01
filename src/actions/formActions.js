@@ -41,3 +41,23 @@ export const removeHasInput = (validation) => {
         stateUpdate: newValidationObj
     };
 };
+
+export const collectJobJacketForm = (values, productsList) => {
+    let jobJacket = { ...values };
+    productsList.some(product => {
+        if (product.isSelected) {
+            jobJacket.productKey = product.key;
+            return true;
+        }
+    });
+    return jobJacket;
+};
+
+export const cleanupJobJacket = () => ({
+    type: 'CLEANUP_JOB_JACKET',
+    jobJacket: undefined,
+    productsList: undefined,
+    productQuickview: undefined,
+    productsList: undefined,
+    productSelected: false,
+})

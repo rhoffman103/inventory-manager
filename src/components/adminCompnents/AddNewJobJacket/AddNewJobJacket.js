@@ -1,8 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import appContext from '../../../context/appContext';
+import { selectProduct } from '../../../actions/newProductActions';
+import { collectJobJacketForm } from '../../../actions/formActions';
+import { addNewJobJacket } from '../../../actions/databaseActions';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
 import Form from 'react-bootstrap/Form';
 import OrderSpecs from './OrderSpecs';
+import FormRequestModal from '../modals/FormRequestModal';
 import CalendarModal from '../modals/CalendarModal';
 import FormulaModal from '../modals/FormulaModal';
 import CustomerInfo from './CustomerInfo';
@@ -11,19 +15,13 @@ import FormSubmitButtons from '../adminCommon/FormSubmitButtons';
 
 const AddNewJobJacket = () => {
 
-    const { state } = useContext(appContext);
+    const { state, stateDispatch } = useContext(appContext);
     const { values, handleInputChange, emptyValues } = useHandleInputChange();
 
-    const collectForm = () => {
-        let jobJacket = { ...values };
-        state.productsList.some(product => {
-            if (product.isSelected) {
-                jobJacket.product = product;
-                return true;
-            }
-        });
+    const submitForm = () => {
+        addNewJobJacket(collectJobJacketForm(values, state.productsList), stateDispatch);
         emptyValues();
-        console.log('values: ', jobJacket);
+        selectProduct('none', state.productsList, stateDispatch);
     };
 
     return (
@@ -41,22 +39,34 @@ const AddNewJobJacket = () => {
                     handleInputChange={handleInputChange}
                 />
 
-                <SelectProduct />
+                <SelectProduct handleInputChange={handleInputChange} />
                 <FormSubmitButtons
-                    onSubmit={collectForm}
+                    onSubmit={submitForm}
                     clearForm={emptyValues}
+                    isValid={
+                        state.productSelected &&
+                        values.coreDiameter &&
+                        values.customer &&
+                        values.dueDate &&
+                        values.purchaseOrder &&
+                        values.rollLength &&
+                        values.totalMSF &&
+                        values.totalRolls
+                    }
                 />
             </Form>
 
             { state.isModal && 
-                state.quickviewModal
-                ?   <FormulaModal />
-                :
-                    <CalendarModal
-                        name='dueDate'
-                        value={values.dueDate}
-                        onChange={handleInputChange}
-                    />
+                (state.quickviewModal || state.calendarModal
+                ?   state.quickviewModal
+                    ?   <FormulaModal />
+                    :   <CalendarModal
+                            name='dueDate'
+                            value={values.dueDate}
+                            onChange={handleInputChange}
+                        />
+                :   <FormRequestModal />
+                )
             }
         </>
     );

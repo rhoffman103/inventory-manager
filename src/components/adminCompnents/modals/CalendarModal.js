@@ -2,8 +2,14 @@ import React from 'react'
 import ModalContainer from '../../common/Modals/ModalContainer';
 import Calendar from 'react-calendar';
 
-const CalendarModal = ({ value, onChange}) => (
-    <ModalContainer title='Job Jacket Due Date' confirmOk useFooter>
+const CalendarModal = ({ value, onChange }) => (
+    <ModalContainer
+        title='Job Jacket Due Date'
+        backdrop='static'
+        closeHandler='calendarModal'
+        confirmOk
+        useFooter
+    >
         <div className='d-flex justify-content-center'>
             <Calendar
                 value={value || new Date()}

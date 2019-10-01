@@ -1,4 +1,12 @@
-import database from '../config/firebaseConfig';
+import database, { firebase } from '../config/firebaseConfig';
+import moment from 'moment';
+
+const formRequestDispatch = (formRequest) => ({
+    type: 'FORM_REQUEST_COMPLETE',
+    showSpinner: false,
+    formRequest,
+    isModal: true
+});
 
 export const getEmployeesByPermission = () => {
     return database.collection('employees').where('admin', '==', false).get()
@@ -100,7 +108,7 @@ export const getProductsByType = (productType, dispatch) => {
         querySnapshot.forEach(doc => {
             products.push({
                 ...doc.data(),
-                uid: doc.id
+                key: doc.id
             })
         });
         dispatch({
@@ -114,5 +122,51 @@ export const getProductsByType = (productType, dispatch) => {
             type: 'SET_PRODUCTS_LIST_ERROR',
             productsListErr: { code, err: message }
         });
+    });
+};
+
+export const addNewJobJacket = (jobJacket, dispatch) => {
+    dispatch({
+        type: 'SET_MODAL_SPINNER',
+        showSpinner: true
+    });
+    
+    const jacketControlRef = database.collection('control').doc('jobJackets')
+    const increment = firebase.firestore.FieldValue.increment(1);
+    let jacketId = '';
+
+    return jacketControlRef.update({ count: increment })
+    .then(() => jacketControlRef.get())
+    .then(doc => {
+        if (doc.exists) return Promise.resolve(doc.data());
+        else return Promise.reject({
+            code: 'No Document',
+            message: 'No such document!'
+        });
+    })
+    .then(data => {
+        let jacketNum = [jobJacket.productionLine];
+        const count = data.count.toString();
+
+        for (let i = 0; i < 6 - count.length; i++) jacketNum.push('0');
+        jacketId = jacketNum.join('') + count
+        
+        return database.collection('jobJackets').add({
+            ...jobJacket,
+            complete: false,
+            dueDate: moment(jobJacket.dueDate, 'MM-DD-YYYY').format('x'),
+            id: jacketId
+        });
+    })
+    .then(() => {
+        dispatch(formRequestDispatch({
+            code: 'Add Job Jacket Success',
+            message: `Successfully added Job Jacket ${jacketId} for ${jobJacket.customer}`
+        }));
+        return Promise.resolve({ jobJacket: jacketId });
+    })
+    .catch(err => {
+        dispatch(formRequestDispatch(err));
+        return Promise.reject(err);
     });
 };

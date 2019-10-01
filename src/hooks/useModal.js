@@ -5,21 +5,26 @@ const useModal = () => {
     
     const { stateDispatch } = useContext(appContext);
 
-    const showModal = () => {
-        stateDispatch({
-            type: 'HANDLE_MODAL',
-            showSpinner: false,
-            isModal: true
-        });
+    const auxAction = (auxModal, bool) => ({
+        type: 'HANDLE_AUX_MODAL',
+        auxModal: [auxModal],
+        value: bool
+    });
+
+    const modalAction = (bool) => ({
+        type: 'HANDLE_MODAL',
+        showSpinner: false,
+        isModal: bool
+    });
+
+    const showModal = (auxModal) => {
+        auxModal && stateDispatch(auxAction(auxModal, true));
+        stateDispatch(modalAction(true));
     };
 
-    const closeModal = (callback) => {
-        stateDispatch({
-            type: 'HANDLE_MODAL',
-            showSpinner: false,
-            isModal: false
-        });
-        if (callback) callback();
+    const closeModal = (auxModal) => {
+        auxModal && stateDispatch(auxAction(auxModal, false));
+        stateDispatch(modalAction(false));
     };
 
     return { showModal, closeModal }

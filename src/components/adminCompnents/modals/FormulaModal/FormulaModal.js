@@ -13,15 +13,7 @@ const FormulaModal = () => {
 
     const selectAndClose = () => {
         selectProduct(productQuickview.id, productsList, stateDispatch);
-        closeModal(closeFormulaModal);
-    };
-
-    const closeFormulaModal = () => {
-        stateDispatch({
-            type: 'PRODUCT_QUICK_VIEW',
-            productQuickview: null,
-            quickviewModal: false
-        });
+        closeModal('quickviewModal');
     };
 
     return (
@@ -30,7 +22,11 @@ const FormulaModal = () => {
             backdrop='static'
             centered
             size="lg"
-            Footer={<Footer select={selectAndClose} close={closeFormulaModal} isSelected={productQuickview.isSelected} />}
+            Footer={<Footer
+                select={selectAndClose}
+                close={() => closeModal('quickviewModal')}
+                isSelected={productQuickview.isSelected}
+            />}
         >
             <div>
                 <p>

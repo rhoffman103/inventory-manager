@@ -14,7 +14,7 @@ const CustomerInfo = ({ values, handleInputChange }) => {
                 <Col xs={12} md={6}>
                     <span
                         className='cursor-pointer link font-weight-bolder'
-                        onClick={showModal}
+                        onClick={() => showModal('calendarModal')}
                     >
                         Due Date
                     </span>
