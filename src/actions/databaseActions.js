@@ -1,17 +1,6 @@
 import database, { firebase } from '../config/firebaseConfig';
+import { modalSpinner, formRequestAction } from './commonActions';
 import moment from 'moment';
-
-const formRequestAction = ({ data, emptyCurrentForm = false, employee = {} }) => ({
-    type: 'FORM_REQUEST_COMPLETE',
-    emptyCurrentForm,
-    employee,
-    data
-});
-
-const spinnerModal = () => ({
-    type: 'OPEN_MODAL',
-    modal: 'spinner'
-});
 
 export const getEmployeesByPermission = () => {
     return database.collection('employees').where('admin', '==', false).get()
@@ -26,7 +15,7 @@ export const getEmployeesByPermission = () => {
 };
 
 export const updateAdminStatus = (stateDispatch, employee) => {
-    stateDispatch(spinnerModal());
+    stateDispatch(modalSpinner());
 
     return database.collection('employees').doc(employee.dbId)
         .update({ admin: true })
@@ -46,7 +35,7 @@ export const updateAdminStatus = (stateDispatch, employee) => {
 };
 
 export const addNewProduct = (product, dispatch) => {
-    dispatch(spinnerModal());
+    dispatch(modalSpinner());
 
     return database.collection('products').where('id', '==', product.id).get()
     .then(querySnapshot => {
@@ -109,7 +98,7 @@ export const getProductsByType = (productType, dispatch) => {
 };
 
 export const addNewJobJacket = (jobJacket, dispatch) => {
-    dispatch(spinnerModal());
+    dispatch(modalSpinner());
     
     const jacketControlRef = database.collection('control').doc('jobJackets')
     const increment = firebase.firestore.FieldValue.increment(1);
