@@ -14,7 +14,7 @@ const ModalContainer = ({ children, title, Footer, backdrop, confirmOk, closeHan
 
     return (
         <Modal
-            show={state.isModal}
+            show={state.modal.show}
             onHide={closeModal}
             backdrop={backdrop}
             centered={centered}

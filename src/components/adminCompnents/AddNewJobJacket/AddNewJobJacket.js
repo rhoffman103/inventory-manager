@@ -17,11 +17,11 @@ const AddNewJobJacket = () => {
 
     const { state, stateDispatch } = useContext(appContext);
     const { values, handleInputChange, emptyValues } = useHandleInputChange();
-
+    const { productSelected, productsList } = state.db;
     const submitForm = () => {
-        addNewJobJacket(collectJobJacketForm(values, state.productsList), stateDispatch);
+        addNewJobJacket(collectJobJacketForm(values, productsList), stateDispatch);
         emptyValues();
-        selectProduct('none', state.productsList, stateDispatch);
+        selectProduct('none', productsList, stateDispatch);
     };
 
     return (
@@ -44,7 +44,7 @@ const AddNewJobJacket = () => {
                     onSubmit={submitForm}
                     clearForm={emptyValues}
                     isValid={
-                        state.productSelected &&
+                        productSelected &&
                         values.coreDiameter &&
                         values.customer &&
                         values.dueDate &&
@@ -56,18 +56,13 @@ const AddNewJobJacket = () => {
                 />
             </Form>
 
-            { state.isModal && 
-                (state.quickviewModal || state.calendarModal
-                ?   state.quickviewModal
-                    ?   <FormulaModal />
-                    :   <CalendarModal
-                            name='dueDate'
-                            value={values.dueDate}
-                            onChange={handleInputChange}
-                        />
-                :   <FormRequestModal />
-                )
-            }
+            <FormulaModal />
+            <CalendarModal
+                name='dueDate'
+                value={values.dueDate}
+                onChange={handleInputChange}
+            />
+            <FormRequestModal />
         </>
     );
 };

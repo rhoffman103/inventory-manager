@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 const StateProvider = ({ children }) => {
 
     const [state, stateDispatch] = useReducer(appReducer, initialState);
-    const { admin } = state.auth;
+    const { admin, redirectTo } = state.auth;
 
     useEffect(() => {
         stateDispatch({
@@ -31,7 +31,7 @@ const StateProvider = ({ children }) => {
 
     return (
         <appContext.Provider value={{ state, stateDispatch }}>
-            { admin && <Redirect to={state.redirectTo || '/'} /> }
+            { admin && <Redirect to={redirectTo || '/'} /> }
             { children }
         </appContext.Provider>
     );

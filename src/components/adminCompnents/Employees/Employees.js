@@ -1,13 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
-import appContext from '../../../context/appContext';
+import React, { useEffect, useState } from 'react';
 import { getEmployeesByPermission } from '../../../actions/databaseActions';
 import AdminPermissions from '../forms/AdminPermissions/index';
 import FormRequestModal from '../modals/FormRequestModal';
 import Loading from '../../common/Loading/Loading';
 
 const Employees = () => {
-
-    const { state } = useContext(appContext);
 
     const [employeeList, setEmployeeList] = useState({ employees: [] });
     const [loader, setLoader] = useState(true);
@@ -34,7 +31,7 @@ const Employees = () => {
                     </React.Fragment>
                 )
             })}
-            { state.isModal && <FormRequestModal /> }
+            <FormRequestModal />
         </>
     );
 };

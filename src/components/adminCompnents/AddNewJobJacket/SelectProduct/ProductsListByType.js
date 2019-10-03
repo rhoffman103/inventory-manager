@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import appContext from '../../../../context/appContext';
-import useModal from '../../../../hooks/useModal';
 import { selectProduct } from '../../../../actions/newProductActions';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,22 +7,19 @@ import FormCheck from 'react-bootstrap/FormCheck';
 
 const ProductsListByType = () => {
     const { state, stateDispatch } = useContext(appContext);
-    const { productsList } = state;
-    const { showModal } = useModal();
+    const { productsList } = state.db;
 
     const openFormulaModal = (id) => {
         productsList.some((product) => {
             if (product.id === id) {
                 stateDispatch({
                     type: 'PRODUCT_QUICK_VIEW',
-                    productQuickview: product,
-                    quickviewModal: true
+                    product
                 });
                 return true;
             }
             else return false;
         });
-        showModal();
     }
     
     return (

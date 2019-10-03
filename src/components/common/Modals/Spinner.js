@@ -7,7 +7,7 @@ const Spinner = () => {
     const { state } = useContext(appContext);
 
     return (
-        state.showSpinner
+        state.modal.spinner
         ?   <div className="fade modal-backdrop show modal-dialog-centered justify-content-center">
                 <SpinWheel className="" animation="border" variant="primary" />
             </div>

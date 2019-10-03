@@ -1,11 +1,16 @@
 import database, { firebase } from '../config/firebaseConfig';
 import moment from 'moment';
 
-const formRequestDispatch = (formRequest) => ({
+const formRequestAction = ({ data, emptyCurrentForm = false, employee = {} }) => ({
     type: 'FORM_REQUEST_COMPLETE',
-    showSpinner: false,
-    formRequest,
-    isModal: true
+    emptyCurrentForm,
+    employee,
+    data
+});
+
+const spinnerModal = () => ({
+    type: 'OPEN_MODAL',
+    modal: 'spinner'
 });
 
 export const getEmployeesByPermission = () => {
@@ -21,43 +26,27 @@ export const getEmployeesByPermission = () => {
 };
 
 export const updateAdminStatus = (stateDispatch, employee) => {
-    stateDispatch({
-        type: 'SET_MODAL_SPINNER',
-        showSpinner: true
-    });
+    stateDispatch(spinnerModal());
 
     return database.collection('employees').doc(employee.dbId)
         .update({ admin: true })
         .then(() => {
-            stateDispatch({
-                type: 'FORM_REQUEST_COMPLETE',
-                showSpinner: false,
-                formRequest: { 
-                    ...employee,
-                    message: `${employee.displayName} now has Admin permissions.`
-                },
-                isModal: true
-            });
+            stateDispatch(formRequestAction({
+                data: { message: `${employee.displayName} now has Admin permissions.` },
+                employee
+            }));
             return Promise.resolve(employee);
         })
         .catch(err => {
-            stateDispatch({
-                type: 'FORM_REQUEST_COMPLETE',
-                showSpinner: false,
-                formRequest: {
-                    ...employee,
-                    err: err.message
-                },
-                isModal: true
-            });
+            stateDispatch(formRequestAction({
+                data: { err: err.message, code: err.code },
+                employee
+            }));
         });
 };
 
 export const addNewProduct = (product, dispatch) => {
-    dispatch({
-        type: 'SET_MODAL_SPINNER',
-        showSpinner: true
-    });
+    dispatch(spinnerModal());
 
     return database.collection('products').where('id', '==', product.id).get()
     .then(querySnapshot => {
@@ -78,25 +67,19 @@ export const addNewProduct = (product, dispatch) => {
     })
     .then(() => database.collection('products').add(product))
     .then(() => {
-        dispatch({
-            type: 'FORM_REQUEST_COMPLETE',
-            showSpinner: false,
-            formRequest: {
+        dispatch(formRequestAction({
+            data: {
                 code: 'Add Product Success',
                 message: `Successfully added product ID: ${product.id}`
-            },
-            isModal: true
-        });
+            }
+        }));
         return Promise.resolve();
     })
     .catch((err) => {
         const { code, message } = err;
-        dispatch({
-            type: 'FORM_REQUEST_COMPLETE',
-            showSpinner: false,
-            formRequest: { code, err: message },
-            isModal: true
-        });
+        dispatch(formRequestAction({
+            data: { code, err: message }
+        }));
         return Promise.reject({ code, message });
     });
 };
@@ -126,10 +109,7 @@ export const getProductsByType = (productType, dispatch) => {
 };
 
 export const addNewJobJacket = (jobJacket, dispatch) => {
-    dispatch({
-        type: 'SET_MODAL_SPINNER',
-        showSpinner: true
-    });
+    dispatch(spinnerModal());
     
     const jacketControlRef = database.collection('control').doc('jobJackets')
     const increment = firebase.firestore.FieldValue.increment(1);
@@ -159,14 +139,16 @@ export const addNewJobJacket = (jobJacket, dispatch) => {
         });
     })
     .then(() => {
-        dispatch(formRequestDispatch({
-            code: 'Add Job Jacket Success',
-            message: `Successfully added Job Jacket ${jacketId} for ${jobJacket.customer}`
+        dispatch(formRequestAction({
+            data: {
+                code: 'Add Job Jacket Success',
+                message: `Successfully added Job Jacket ${jacketId} for ${jobJacket.customer}`
+            }
         }));
         return Promise.resolve({ jobJacket: jacketId });
     })
     .catch(err => {
-        dispatch(formRequestDispatch(err));
+        dispatch(formRequestAction(err));
         return Promise.reject(err);
     });
 };

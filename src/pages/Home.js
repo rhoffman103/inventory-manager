@@ -26,7 +26,7 @@ const Home = () => {
                 </div>
             :   <></>
             }
-            { state.isModal && <LoginForm /> }
+            <LoginForm />
         </>
     );
 };

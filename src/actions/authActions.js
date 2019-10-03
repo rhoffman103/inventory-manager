@@ -8,16 +8,13 @@ const loginUser = (dispatch, user) => {
             name: user.displayName,
             onFirebaseAuth: true,
             loginError: false
-        },
-        isModal: false
+        }
     });
+    dispatch({ type: 'CLOSE_MODAL' });
 };
 
 const exit = (dispatch) => {
-    dispatch({
-        type: 'SIGNOUT',
-        auth: { onFirebaseAuth: true }
-    });
+    dispatch({ type: 'SIGNOUT' });
 };
 
 export const signIn = (user, dispatch) => {
@@ -81,8 +78,8 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
     };
 
     dispatch({
-        type: 'SET_MODAL_SPINNER',
-        showSpinner: true
+        type: 'OPEN_MODAL',
+        modal: 'spinner'
     });
     
     return database.collection('employees').where('employeeId', '==', newEmployee.employeeId).get()
@@ -123,27 +120,19 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
             newEmployees.push({ employee: user.displayName, id: newEmployee.employeeId, uid: newUID });
 
             dispatch({
-                type: 'ADD_NEW_EMPLOYEE_COMPLETE',
-                newEmployees,
-                showSpinner: false,
+                type: 'FORM_REQUEST_COMPLETE',
                 emptyCurrentForm: true,
-                addNewEmployeeError: false,
-                formRequest: {
-                    message: `Added new employee: ${user.displayName}`
-                }
+                data: { message: `Added new employee: ${user.displayName}` }
             });
+
             return Promise.resolve({ employee: user.displayName, id: newEmployee.employeeId, uid: newUID })
         })
         .catch((err) => {
             const { code, message } = err;
             console.log(err);
             dispatch({
-                type: 'ADD_NEW_EMPLOYEE_COMPLETE',
-                showSpinner: false,
-                addNewEmployeeError: { code, message },
-                formRequest: {
-                    err: message 
-                }
+                type: 'FORM_REQUEST_COMPLETE',
+                data: { err: { message, code } }
             });
             return Promise.reject({ code, message });
         });
