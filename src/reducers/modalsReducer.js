@@ -2,7 +2,8 @@ const modalsReducer = (state = {}, action) => {
     switch(action.type) {
         case 'OPEN_MODAL':
             return { [action.modal]: true, show: true };
-        case ('CLOSE_MODAL' || 'LOGIN_USER'):
+        case 'CLOSE_MODAL':
+        case 'LOGIN_USER':
             return {};
         case 'MODAL_SPINNER':
             return { spinner: true };

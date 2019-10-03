@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getEmployeesByPermission } from '../../../actions/databaseActions';
+import { getEmployeesByPermission } from '../../../database/employeesAccess';
 import AdminPermissions from '../forms/AdminPermissions/index';
 import FormRequestModal from '../modals/FormRequestModal';
 import Loading from '../../common/Loading/Loading';

@@ -19,7 +19,7 @@ const LoginForm = () => {
         password: ''
     });
     const [validation, validationDispatch] = useReducer(formReducer, {email: {}});
-    const { loginError } = state.auth;
+    const { loginError, displayName } = state.auth;
     const { closeModal } = useModal();
 
     const onSubmit = (e) => {
@@ -32,8 +32,8 @@ const LoginForm = () => {
     }, [values.email]);
 
     useEffect(() => {
-            if (loginError) emptyValues('email password');
-    }, [loginError]);
+            if (loginError || displayName) emptyValues('email password');
+    }, [loginError, displayName]);
 
     return (
         state.modal.login
