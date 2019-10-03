@@ -1,24 +1,12 @@
 import database, { firebase } from '../config/firebaseConfig';
+import { setAdminStatus } from '../database/employeesAccess';
 import { modalSpinner, formRequestAction } from './commonActions';
 import moment from 'moment';
-
-export const getEmployeesByPermission = () => {
-    return database.collection('employees').where('admin', '==', false).get()
-        .then(querySnapshot => {
-            let employeeArray = []
-            querySnapshot.forEach(employee => {
-                employeeArray.push({ ...employee.data(), dbId: employee.id })
-            });
-            return Promise.resolve({ employees: employeeArray});
-        })
-        .catch(err => console.log("Error getting documents: ", err));
-};
 
 export const updateAdminStatus = (stateDispatch, employee) => {
     stateDispatch(modalSpinner());
 
-    return database.collection('employees').doc(employee.dbId)
-        .update({ admin: true })
+    return setAdminStatus(employee.dbId, true)
         .then(() => {
             stateDispatch(formRequestAction({
                 data: { message: `${employee.displayName} now has Admin permissions.` },
