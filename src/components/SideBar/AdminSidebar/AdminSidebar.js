@@ -3,10 +3,10 @@ import NavLink from 'react-bootstrap/NavLink';
 import Accordion from 'react-bootstrap/Accordion'
 import AccordionCollapse from '../AccordionComponents/AccordionCollapse';
 import SideBar from '../SideBar';
-import AddNewEmployee from '../Links/AddNewEmployee';
-import Employees from '../Links/Employees';
-import CreateNewProduct from '../Links/CreateNewProduct';
-import AddNewJobJacket from '../Links/AddNewJobJacket';
+import AddNewEmployee from './Links/AddNewEmployee';
+import Employees from './Links/Employees';
+import CreateNewProduct from './Links/CreateNewProduct';
+import AddNewJobJacket from './Links/AddNewJobJacket';
 
 const AdminSidebar = () => {
     return (
