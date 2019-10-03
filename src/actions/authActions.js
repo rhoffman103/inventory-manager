@@ -1,4 +1,5 @@
 import database, { firebase, secondaryApp } from '../config/firebaseConfig';
+import { modalSpinner, formRequestAction } from './commonActions';
 
 const loginUser = (dispatch, user) => {
     dispatch({
@@ -8,17 +9,19 @@ const loginUser = (dispatch, user) => {
             name: user.displayName,
             onFirebaseAuth: true,
             loginError: false
-        },
-        isModal: false
+        }
     });
 };
 
 const exit = (dispatch) => {
-    dispatch({
-        type: 'SIGNOUT',
-        auth: { onFirebaseAuth: true }
-    });
+    dispatch({ type: 'SIGNOUT' });
 };
+
+const loginErrorAction = ({auth, loginError = false }) => ({
+    type: 'SET_LOGIN_ERROR',
+    auth,
+    loginError
+})
 
 export const signIn = (user, dispatch) => {
     const { email, password } = user;
@@ -31,19 +34,14 @@ export const signIn = (user, dispatch) => {
         })
         .catch((err) => {
             const { code, message } = err;
-            dispatch({
-                type: 'SET_LOGIN_ERROR',
+            dispatch(loginErrorAction({
                 loginError: { code, message }
-            });
+            }));
         });
 };
 
 export const resetLoginError = (auth, dispatch) => {
-    dispatch({
-        type: 'SET_LOGIN_ERROR',
-        auth,
-        loginError: false
-    });
+    dispatch(loginErrorAction({ auth }));
 };
 
 export const signOut = (dispatch) => {
@@ -80,10 +78,7 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
         admin: false
     };
 
-    dispatch({
-        type: 'SET_MODAL_SPINNER',
-        showSpinner: true
-    });
+    dispatch(modalSpinner());
     
     return database.collection('employees').where('employeeId', '==', newEmployee.employeeId).get()
         .then((querySnapshot) => {
@@ -122,29 +117,19 @@ export const addNewEmployee = (newEmployee, state, dispatch) => {
 
             newEmployees.push({ employee: user.displayName, id: newEmployee.employeeId, uid: newUID });
 
-            dispatch({
-                type: 'ADD_NEW_EMPLOYEE_COMPLETE',
-                newEmployees,
-                showSpinner: false,
+            dispatch(formRequestAction({
                 emptyCurrentForm: true,
-                addNewEmployeeError: false,
-                formRequest: {
-                    message: `Added new employee: ${user.displayName}`
-                }
-            });
+                data: { message: `Added new employee: ${user.displayName}` }
+            }));
+
             return Promise.resolve({ employee: user.displayName, id: newEmployee.employeeId, uid: newUID })
         })
         .catch((err) => {
             const { code, message } = err;
             console.log(err);
-            dispatch({
-                type: 'ADD_NEW_EMPLOYEE_COMPLETE',
-                showSpinner: false,
-                addNewEmployeeError: { code, message },
-                formRequest: {
-                    err: message 
-                }
-            });
+            dispatch(formRequestAction({
+                data: { err: { message, code } }
+            }));
             return Promise.reject({ code, message });
         });
 };

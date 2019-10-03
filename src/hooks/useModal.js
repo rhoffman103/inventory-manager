@@ -5,20 +5,15 @@ const useModal = () => {
     
     const { stateDispatch } = useContext(appContext);
 
-    const showModal = () => {
+    const showModal = (modal) => {
         stateDispatch({
-            type: 'HANDLE_MODAL',
-            showSpinner: false,
-            isModal: true
+            type: 'OPEN_MODAL',
+            modal
         });
     };
 
     const closeModal = () => {
-        stateDispatch({
-            type: 'HANDLE_MODAL',
-            showSpinner: false,
-            isModal: false
-        });
+        stateDispatch({ type: 'CLOSE_MODAL' });
     };
 
     return { showModal, closeModal }

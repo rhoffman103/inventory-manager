@@ -3,9 +3,7 @@ const navReducer = (state, action) => {
         case 'UPDATE_PAGE_STATE':
             return {
                 ...state,
-                navbar: {
-                    page: action.page
-                }
+                page: action.page
             };
         default:
             return state;

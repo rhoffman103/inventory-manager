@@ -6,7 +6,7 @@ const LogIn = () => {
     return (
         <span
         className="nav-link pointer"
-        onClick={showModal}
+        onClick={() => showModal('login')}
     >
         login
     </span>

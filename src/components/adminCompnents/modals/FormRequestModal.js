@@ -5,14 +5,17 @@ import ModalContainer from '../../common/Modals/ModalContainer';
 const FormRequestModal = () => {
 
     const { state } = useContext(appContext);
-    const { formRequest } = state;
-    const title = !formRequest.err ? 'Success!' : 'Woops!'
+    const { forms, modal } = state;
 
     return (
-        <ModalContainer title={title} backdrop='static'>
-            { formRequest.message && <p>{formRequest.message}</p> }
-            { formRequest.err && <p className='text-danger'>{formRequest.err}</p> }
-        </ModalContainer>
+        modal.formRequestModal && forms.data
+        ?   <ModalContainer title={!forms.data.err ? 'Success!' : 'Woops!'} backdrop='static'>
+                { forms.data.message
+                    ? <p>{forms.data.message}</p>
+                    : <p className='text-danger'>{forms.data.err.message}</p>
+                }
+            </ModalContainer>
+        :   <></>
     );
 };
 

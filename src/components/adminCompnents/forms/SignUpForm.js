@@ -6,7 +6,6 @@ import { checkHasInput, removeHasInput } from '../../../actions/formActions';
 import formReducer from '../../../reducers/formReducer';
 import { addNewEmployee } from '../../../actions/authActions';
 import FormRequestModal from '../modals/FormRequestModal';
-import useModal from '../../../hooks/useModal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -33,7 +32,6 @@ const SignupForm = () => {
         lastName: { hasHadInput: false },
         employeeId: { hasHadInput: false }
     });
-    const { showModal } = useModal();
 
     const clearForm = () => {
         emptyValues();
@@ -41,13 +39,7 @@ const SignupForm = () => {
     };
     
     const onSubmit = () => {
-        addNewEmployee(values, state, stateDispatch)
-        .then(() => {
-            emptyValues();
-            showModal();
-            validateDispatch(removeHasInput(validation));
-        })
-        .catch((err) => showModal());
+        addNewEmployee(values, state, stateDispatch);
     };
 
     useEffect(() => {
@@ -59,6 +51,10 @@ const SignupForm = () => {
         validateDispatch(checkHasInput({ key: 'lastName', value: lastName, hasHadInput: validation.lastName.hasHadInput, type: 'CHECK_HAS_INPUT' }));
         validateDispatch(checkHasInput({ key: 'employeeId', value: employeeId, hasHadInput: validation.employeeId.hasHadInput, type: 'CHECK_HAS_INPUT' }));
     }, [values]);
+
+    useEffect(() => {
+        if (state.forms.emptyCurrentForm) clearForm();
+    }, [state.forms])
 
     return (
         <>
@@ -167,7 +163,7 @@ const SignupForm = () => {
                     </Card>
                 </Col>
             </Row>
-            { state.isModal && <FormRequestModal /> }
+            <FormRequestModal />
         </>
     );
 };

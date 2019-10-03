@@ -4,14 +4,17 @@ const appContext = createContext();
 
 const initialState = {
     auth: {},
-    currentPage: {
-        page: 'homePage',
-        msg: null,
-        components: {},
-        title: ''
+    components: {
+        currentPage: {
+            page: 'homePage',
+            msg: null,
+            components: { title: '' },
+        }
     },
-    emptyCurrentForm: false,
+    db: {},
+    forms: {},
     updateEmployee: {},
+    modal: {},
     navbar: { page: 'home' }
 };
 

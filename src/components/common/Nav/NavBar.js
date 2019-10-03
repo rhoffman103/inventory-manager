@@ -15,7 +15,7 @@ const NavBar = (props) => {
     }, [ stateDispatch, props.page]);
 
     return (
-        <BootNavbar bg="light" expand="sm" className="sticky-top">
+        <BootNavbar bg='blue' variant='dark' expand="sm" className="sticky-top">
             <div className="container">
                 <Link to="/" className="navbar-brand">Inventory Manager</Link>
                 <BootNavbar.Toggle aria-controls="basic-navbar-nav" />
