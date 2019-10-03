@@ -1,7 +1,7 @@
-import database, { firebase } from '../config/firebaseConfig';
 import { setAdminStatus } from '../database/employeesAccess';
+import dbProducts from '../database/productsAccess';
+import dbJobJackets from '../database/jobJacketAccess';
 import { modalSpinner, formRequestAction } from './commonActions';
-import moment from 'moment';
 
 export const updateAdminStatus = (stateDispatch, employee) => {
     stateDispatch(modalSpinner());
@@ -25,24 +25,7 @@ export const updateAdminStatus = (stateDispatch, employee) => {
 export const addNewProduct = (product, dispatch) => {
     dispatch(modalSpinner());
 
-    return database.collection('products').where('id', '==', product.id).get()
-    .then(querySnapshot => {
-        let idExists = false;
-            querySnapshot.forEach(doc => {
-                if (doc.exists) {
-                    idExists = true;
-                    return false;
-                }
-            })
-            if (idExists) {
-                return Promise.reject({
-                    code: 'Product ID exists',
-                    message: `Product ID: ${product.id} already exists!`
-                });
-            }
-            else return Promise.resolve();
-    })
-    .then(() => database.collection('products').add(product))
+    return dbProducts.addNewProduct(product)
     .then(() => {
         dispatch(formRequestAction({
             data: {
@@ -62,19 +45,12 @@ export const addNewProduct = (product, dispatch) => {
 };
 
 export const getProductsByType = (productType, dispatch) => {
-    return database.collection('products').where('type', '==', productType).get()
-    .then(querySnapshot => {
-        let products = []
-        querySnapshot.forEach(doc => {
-            products.push({
-                ...doc.data(),
-                key: doc.id
-            })
-        });
+    return dbProducts.getProductsByType(productType)
+    .then(products => {
         dispatch({
             type: 'SET_PRODUCTS_LIST',
             products
-        })
+        });
     })
     .catch(err => {
         const { code, message } = err;
@@ -87,35 +63,9 @@ export const getProductsByType = (productType, dispatch) => {
 
 export const addNewJobJacket = (jobJacket, dispatch) => {
     dispatch(modalSpinner());
-    
-    const jacketControlRef = database.collection('control').doc('jobJackets')
-    const increment = firebase.firestore.FieldValue.increment(1);
-    let jacketId = '';
 
-    return jacketControlRef.update({ count: increment })
-    .then(() => jacketControlRef.get())
-    .then(doc => {
-        if (doc.exists) return Promise.resolve(doc.data());
-        else return Promise.reject({
-            code: 'No Document',
-            message: 'No such document!'
-        });
-    })
-    .then(data => {
-        let jacketNum = [jobJacket.productionLine];
-        const count = data.count.toString();
-
-        for (let i = 0; i < 6 - count.length; i++) jacketNum.push('0');
-        jacketId = jacketNum.join('') + count
-        
-        return database.collection('jobJackets').add({
-            ...jobJacket,
-            complete: false,
-            dueDate: moment(jobJacket.dueDate, 'MM-DD-YYYY').format('x'),
-            id: jacketId
-        });
-    })
-    .then(() => {
+    return dbJobJackets.addNewJobJacket(jobJacket)
+    .then((jacketId) => {
         dispatch(formRequestAction({
             data: {
                 code: 'Add Job Jacket Success',
