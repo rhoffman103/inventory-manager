@@ -15,7 +15,10 @@ const UpdateSchedule = () => {
    
     useEffect(() => {
         if (productionLine && productionLine !== 'Select')
-            getJobJacketsByProductionLine(productionLine, stateDispatch);
+            Promise.all([
+                getJobJacketsByProductionLine({ line: productionLine }, stateDispatch),
+                getJobJacketsByProductionLine({ line: productionLine, inSchedule: true }, stateDispatch)
+            ])
     }, [productionLine]);
 
     useEffect(() => {
@@ -28,7 +31,16 @@ const UpdateSchedule = () => {
             <Form>
                 <SelectProductionLine onChange={handleInputChange} />
             </Form>
-            <JobJacketList />
+            <JobJacketList
+                title='Open Job Jackets'
+                jobType='jobJackets'
+                select='Add'
+            />
+            <JobJacketList
+                title='Schedule'
+                jobType='schedule'
+                select='Remove'
+            />
             <FormRequestModal />
         </>
     );

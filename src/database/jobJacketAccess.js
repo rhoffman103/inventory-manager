@@ -36,11 +36,12 @@ const dbJobJackets = {
             .catch(err => Promise.reject(err))
     },
 
-    getJobJacketsByProductionLine: (line) => {
+    getJobJacketsByProductionLine: ({ line, isCompleted = false, inSchedule = false }) => {
         let jobJackets = [];
         return database.collection('jobJackets')
             .where('productionLine', '==', line)
-            .where('complete', '==', false)
+            .where('complete', '==', isCompleted)
+            .where('inSchedule', '==', inSchedule)
             .get()
             .then(querySnapshot => {
                 querySnapshot.forEach((jobJacket, index) => {
@@ -59,7 +60,9 @@ const dbJobJackets = {
                         }
                     });
                 });
-                return Promise.resolve({ jobJackets });
+                
+                if (jobJackets.length) return Promise.resolve({ jobJackets });
+                return Promise.resolve();
             })
             .catch(() => Promise.reject({
                 code: 'db error',

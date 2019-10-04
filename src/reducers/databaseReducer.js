@@ -11,7 +11,7 @@ const databaseReducer = (state = {}, action) => {
         case 'PRODUCT_QUICK_VIEW':
             return { ...state, productQuickview: action.product };
         case 'JOB_JACKETS':
-            return { ...state, jobJackets: action.jobJackets };
+            return { ...state, [action.key]: action.value };
         default:
             return state;
     };

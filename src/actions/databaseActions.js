@@ -80,15 +80,21 @@ export const addNewJobJacket = (jobJacket, dispatch) => {
     });
 };
 
-export const getJobJacketsByProductionLine = (line, dispatch) => {
+export const getJobJacketsByProductionLine = ({ line, isCompleted = false, inSchedule = false }, dispatch) => {
     dispatch(modalSpinner());
 
-    return dbJobJackets.getJobJacketsByProductionLine(line)
+    let property = 'jobJackets';
+    inSchedule && (property = 'schedule');
+
+    return dbJobJackets.getJobJacketsByProductionLine({line, inSchedule})
     .then(data => {
-        dispatch({
-            type: 'JOB_JACKETS',
-            jobJackets: data.jobJackets
-        })
+        data 
+        ?   dispatch({
+                type: 'JOB_JACKETS',
+                key: property,
+                value: data.jobJackets
+            })
+        :   dispatch({ type: 'CLOSE_MODAL' })
     })
     .catch(err => dispatch(formRequestAction({ data: { ...err }})))
 };
