@@ -11,3 +11,5 @@ export const formRequestAction = ({ data, emptyCurrentForm = false, employee = {
     employee,
     data
 });
+
+export const emptyDBReducer = () => ({ type: 'EMPTY_DB' });

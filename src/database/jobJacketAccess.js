@@ -1,4 +1,5 @@
 import database, { firebase } from '../config/firebaseConfig';
+import dbProducts from './productsAccess';
 import moment from 'moment';
 
 const dbJobJackets = {
@@ -33,6 +34,37 @@ const dbJobJackets = {
             })
             .then(() => Promise.resolve(jacketId))
             .catch(err => Promise.reject(err))
+    },
+
+    getJobJacketsByProductionLine: (line) => {
+        let jobJackets = [];
+        return database.collection('jobJackets')
+            .where('productionLine', '==', line)
+            .where('complete', '==', false)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach((jobJacket, index) => {
+                    jobJackets.push({ ...jobJacket.data(), dbId: jobJacket.id });
+                });
+                return dbProducts.getAllProductsByKey(Object.keys(jobJackets)
+                    .map(i => jobJackets[i].productKey)
+                );
+            })
+            .then(querySnapshot => {
+                querySnapshot.forEach((product, i) => {
+                    jobJackets.filter(job => {
+                        if (job.productKey === product.id) {
+                            job.description = product.data().description;
+                            return true;
+                        }
+                    });
+                });
+                return Promise.resolve({ jobJackets });
+            })
+            .catch(() => Promise.reject({
+                code: 'db error',
+                err: 'Something went wrong fetching Job Jackets'
+            }))
     }
 };
 

@@ -34,6 +34,18 @@ const dbProducts = {
             });
             return Promise.resolve(products);
         })
+    },
+
+    getProductByKey: (key) => {
+        return database.collection('products').doc(key).get()
+        .then(doc => Promise.resolve(doc.data()))
+        .catch(err => Promise.reject(err));
+    },
+
+    getAllProductsByKey: (keys) => {
+        return Promise.all([].concat(keys)
+            .map(key => database.collection('products').doc(key).get())
+        );
     }
 };
 

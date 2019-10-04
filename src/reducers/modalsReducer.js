@@ -2,9 +2,6 @@ const modalsReducer = (state = {}, action) => {
     switch(action.type) {
         case 'OPEN_MODAL':
             return { [action.modal]: true, show: true };
-        case 'CLOSE_MODAL':
-        case 'LOGIN_USER':
-            return {};
         case 'MODAL_SPINNER':
             return { spinner: true };
         case 'MODAL_WITH_DATA':
@@ -13,6 +10,10 @@ const modalsReducer = (state = {}, action) => {
             return { show: true, formRequestModal: true };
         case 'PRODUCT_QUICK_VIEW':
             return { show: true, formulaModal: true };
+        case 'CLOSE_MODAL':
+        case 'LOGIN_USER':
+        case 'JOB_JACKETS':
+            return {};
         default:
             return state;
     };

@@ -1,5 +1,7 @@
 const databaseReducer = (state = {}, action) => {
     switch(action.type) {
+        case 'EMPTY_DB':
+            return {};
         case 'SET_PRODUCTS_LIST':
             return {
                 ...state,
@@ -8,6 +10,8 @@ const databaseReducer = (state = {}, action) => {
             };
         case 'PRODUCT_QUICK_VIEW':
             return { ...state, productQuickview: action.product };
+        case 'JOB_JACKETS':
+            return { ...state, jobJackets: action.jobJackets };
         default:
             return state;
     };

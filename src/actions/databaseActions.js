@@ -79,3 +79,16 @@ export const addNewJobJacket = (jobJacket, dispatch) => {
         return Promise.reject(err);
     });
 };
+
+export const getJobJacketsByProductionLine = (line, dispatch) => {
+    dispatch(modalSpinner());
+
+    return dbJobJackets.getJobJacketsByProductionLine(line)
+    .then(data => {
+        dispatch({
+            type: 'JOB_JACKETS',
+            jobJackets: data.jobJackets
+        })
+    })
+    .catch(err => dispatch(formRequestAction({ data: { ...err }})))
+};
