@@ -29,7 +29,8 @@ const dbJobJackets = {
                     ...jobJacket,
                     complete: false,
                     dueDate: moment(jobJacket.dueDate, 'MM-DD-YYYY').format('x'),
-                    id: jacketId
+                    id: jacketId,
+                    inSchedule: false
                 });
             })
             .then(() => Promise.resolve(jacketId))
@@ -68,6 +69,28 @@ const dbJobJackets = {
                 code: 'db error',
                 err: 'Something went wrong fetching Job Jackets'
             }))
+    },
+
+    updateJobJackets: ({ jobJackets, updateObj }) => {
+        const keys = Object.keys(jobJackets).map((key, index) => jobJackets[index].dbId);
+        return Promise.all(
+            keys
+                .map(key => database.collection('jobJackets')
+                .doc(key).update(updateObj))
+        );
+    },
+
+    getAllJobJacketsByKey: (keys, where) => {
+        if (where) {
+            return Promise.all([].concat(keys)
+                .map(key => database.collection('jobJackets')
+                .where(where.property, where.condition, where.value)
+                .get()))
+        }
+        else {
+            return Promise.all([].concat(keys)
+                .map(key => database.collection('jobJackets').doc(key).get()))
+        }
     }
 };
 

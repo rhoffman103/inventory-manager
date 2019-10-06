@@ -12,6 +12,14 @@ const databaseReducer = (state = {}, action) => {
             return { ...state, productQuickview: action.product };
         case 'JOB_JACKETS':
             return { ...state, [action.key]: action.value };
+        case 'SCHEDULE_RETRIEVED':
+            return { ...state, ...action.db };
+        case 'SCHEDULE_UPDATE':
+            return {
+                ...state,
+                jobJackets: action.jobJackets,
+                schedule: action.schedule
+            };
         default:
             return state;
     };

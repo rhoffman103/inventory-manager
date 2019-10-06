@@ -13,6 +13,7 @@ const modalsReducer = (state = {}, action) => {
         case 'CLOSE_MODAL':
         case 'LOGIN_USER':
         case 'JOB_JACKETS':
+        case 'SCHEDULE_RETRIEVED':
             return {};
         default:
             return state;

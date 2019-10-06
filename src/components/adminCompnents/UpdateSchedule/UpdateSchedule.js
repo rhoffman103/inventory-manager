@@ -1,9 +1,15 @@
 import React, { useContext, useEffect } from 'react';
 import appContext from '../../../context/appContext';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
-import { getJobJacketsByProductionLine } from '../../../actions/databaseActions';
+import { 
+    getJacketsAndScheduleByLine,
+    addToSchedule,
+    removeFromSchedule,
+    updateScheduleAndJobJackets
+} from '../../../actions/databaseActions';
 import { emptyDBReducer } from '../../../actions/commonActions';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import SelectProductionLine from '../adminCommon/SelectProductionLine';
 import FormRequestModal from '../modals/FormRequestModal';
 import JobJacketList from './JobJacketList';
@@ -16,8 +22,7 @@ const UpdateSchedule = () => {
     useEffect(() => {
         if (productionLine && productionLine !== 'Select')
             Promise.all([
-                getJobJacketsByProductionLine({ line: productionLine }, stateDispatch),
-                getJobJacketsByProductionLine({ line: productionLine, inSchedule: true }, stateDispatch)
+                getJacketsAndScheduleByLine(productionLine, stateDispatch),
             ])
     }, [productionLine]);
 
@@ -33,14 +38,26 @@ const UpdateSchedule = () => {
             </Form>
             <JobJacketList
                 title='Open Job Jackets'
+                inSchedule={false}
                 jobType='jobJackets'
-                select='Add'
+                select={addToSchedule}
+                actionType='Add'
             />
             <JobJacketList
                 title='Schedule'
-                jobType='schedule'
-                select='Remove'
+                inSchedule={true}
+                jobType='jobJackets'
+                select={removeFromSchedule}
+                actionType='Remove'
             />
+            {state.db.schedule &&
+                <Button
+                    className='mt-3 float-right'
+                    onClick={() => updateScheduleAndJobJackets(state.db, productionLine, stateDispatch)}
+                >
+                    Apply
+                </Button>
+            }
             <FormRequestModal />
         </>
     );
