@@ -46,7 +46,23 @@ const dbProducts = {
         return Promise.all([].concat(keys)
             .map(key => database.collection('products').doc(key).get())
         );
-    }
+    },
+    
+    getAllProductDescriptionsByKey: (keys) => {
+        return Promise.all([].concat(keys)
+            .map(key => database.collection('products').doc(key).get())
+        )
+        .then(querySnapshot => {
+            let products = [];
+            querySnapshot.forEach(product => {
+                products.push({
+                    description: product.data().description,
+                    productKey: product.id
+                }); 
+            });
+            return Promise.resolve(products);
+        });
+    },
 };
 
 export default dbProducts;

@@ -37,34 +37,31 @@ const dbJobJackets = {
             .catch(err => Promise.reject(err))
     },
 
-    getJobJacketsByProductionLine: ({ line, isCompleted = false, inSchedule = false }) => {
+    applyProductDescriptions: (querySnapshot) => {
         let jobJackets = [];
+        querySnapshot.forEach(jobJacket => {
+            jobJackets.push({
+                ...jobJacket.data(),
+                jobJacketKey: jobJacket.id
+            });
+        });
+        return dbProducts.getAllProductDescriptionsByKey(jobJackets.map(jacket => jacket.productKey))
+        .then(products => {
+            const fullJobJackets = jobJackets.map(jacket => {
+                const found = products.find(product => product.productKey === jacket.productKey)
+                return { ...jacket, ...found };
+            });
+            return Promise.resolve({ jobJackets: fullJobJackets });
+        })
+    },
+
+    getJobJacketsByProductionLine: ({ line, isCompleted = false, inSchedule = false }) => {
         return database.collection('jobJackets')
             .where('productionLine', '==', line)
             .where('complete', '==', isCompleted)
             .where('inSchedule', '==', inSchedule)
             .get()
-            .then(querySnapshot => {
-                querySnapshot.forEach((jobJacket, index) => {
-                    jobJackets.push({ ...jobJacket.data(), dbId: jobJacket.id });
-                });
-                return dbProducts.getAllProductsByKey(Object.keys(jobJackets)
-                    .map(i => jobJackets[i].productKey)
-                );
-            })
-            .then(querySnapshot => {
-                querySnapshot.forEach((product, i) => {
-                    jobJackets.filter(job => {
-                        if (job.productKey === product.id) {
-                            job.description = product.data().description;
-                            return true;
-                        }
-                    });
-                });
-                
-                if (jobJackets.length) return Promise.resolve({ jobJackets });
-                return Promise.resolve();
-            })
+            .then(querySnapshot => dbJobJackets.applyProductDescriptions(querySnapshot))
             .catch(() => Promise.reject({
                 code: 'db error',
                 err: 'Something went wrong fetching Job Jackets'
@@ -80,17 +77,17 @@ const dbJobJackets = {
         );
     },
 
-    getAllJobJacketsByKey: (keys, where) => {
-        if (where) {
-            return Promise.all([].concat(keys)
-                .map(key => database.collection('jobJackets')
-                .where(where.property, where.condition, where.value)
-                .get()))
-        }
-        else {
-            return Promise.all([].concat(keys)
-                .map(key => database.collection('jobJackets').doc(key).get()))
-        }
+    getAllJobJacketsByKey: (keys) => {
+        return Promise.all([].concat(keys)
+            .map(key => database.collection('jobJackets').doc(key).get()))
+            .then(querySnapshot => dbJobJackets.applyProductDescriptions(querySnapshot));
+    },
+
+    getAllJobJacketsWhere: (where) => {
+        return database.collection('jobJackets')
+            .where(where.property, where.condition, where.value)
+            .get()
+            .then(querySnapshot => dbJobJackets.applyProductDescriptions(querySnapshot));
     }
 };
 

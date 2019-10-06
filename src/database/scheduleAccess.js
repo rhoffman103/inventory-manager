@@ -4,10 +4,6 @@ import dbJobJackets from './jobJacketAccess';
 const dbSchedule = {
     addToSchedule: ({ line, job }) => {
         return database.collection(`${line}Schedule`).add({
-            customer: job.customer,
-            description: job.description,
-            dueDate: job.dueDate,
-            jacketId: job.id,
             jobJacketKey: job.dbId,
             position: job.position
         });
@@ -30,20 +26,17 @@ const dbSchedule = {
                 .map(i => schedule[i].jobJacketKey)
             );
         })
-        .then(querySnapshot => {
-            let mutatedSchedule = [];
-            querySnapshot.forEach((jobJacket, i) => {
-                mutatedSchedule.push({
+        .then(data => {
+            let mutatedSchedule = data.jobJackets.map(jobJacket => {
+                return {
                     ...schedule.find(job => {
-                        if (job.jobJacketKey === jobJacket.id) {
+                        if (job.jobJacketKey === jobJacket.jobJacketKey) {
                             return job;
-                        };
+                        }
                     }),
-                    ...jobJacket.data(),
-                    jobJacketKey: jobJacket.id
-                });
+                    ...jobJacket
+                };
             });
-            
             return Promise.resolve({ jobJackets: mutatedSchedule });
         })
         .catch(() => Promise.reject({
