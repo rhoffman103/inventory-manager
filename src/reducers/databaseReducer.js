@@ -18,7 +18,7 @@ const databaseReducer = (state = {}, action) => {
             return {
                 ...state,
                 jobJackets: action.jobJackets,
-                schedule: action.schedule
+                scheduleUpdated: true
             };
         default:
             return state;

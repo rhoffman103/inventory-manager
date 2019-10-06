@@ -13,7 +13,7 @@ const JobJacketList = ({ title, jobType, select, actionType, inSchedule }) => {
         ?   <div className='products-grid overflow-auto'>
                 <h4>{title}</h4>
                 <Row className='dark-theme border mx-0 py-2 min-w-618'>
-                    <Col xs={1} className='border-right'>{actionType ? 'Order' : ''}</Col>
+                    <Col xs={1} className='border-right'>{'#'}</Col>
                     <Col xs={2} className='border-right'>Company</Col>
                     <Col xs={3} className='border-right'>Description</Col>
                     <Col xs={2} className='border-right'>Due Date</Col>

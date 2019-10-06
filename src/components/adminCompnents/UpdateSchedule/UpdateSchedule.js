@@ -27,7 +27,7 @@ const UpdateSchedule = () => {
     }, [productionLine]);
 
     useEffect(() => {
-        return () => emptyDBReducer();
+        return () => stateDispatch(emptyDBReducer());
     }, []);
     
     return (
@@ -50,7 +50,7 @@ const UpdateSchedule = () => {
                 select={removeFromSchedule}
                 actionType='Remove'
             />
-            {state.db.schedule &&
+            {state.db.scheduleUpdated &&
                 <Button
                     className='mt-3 float-right'
                     onClick={() => updateScheduleAndJobJackets(state.db, productionLine, stateDispatch)}

@@ -131,16 +131,11 @@ export const getJacketsAndScheduleByLine = (line, dispatch) => {
     
     return dbSchedule.getScheduleByLine(line)
     .then(data => {
-        if (data) {
-            db.jobJackets = data.jobJackets.map(job => job);
-            console.log('dbActions line 136 schedule: ', data.jobJackets)
-        }
+        if (data) db.jobJackets = data.jobJackets.map(job => job);
         else Promise.reject(genericDbError);
-        console.log('about to get job jackets')
         return dbJobJackets.getJobJacketsByProductionLine({ line })
     })
     .then(data => {
-        console.log('dbActions line 141 jobJackets: ', data.jobJackets)
         if (data) {
             db.jobJackets.push(
                 ...data.jobJackets.map(jacket => ({
@@ -152,7 +147,6 @@ export const getJacketsAndScheduleByLine = (line, dispatch) => {
         }
         else Promise.resolve();
 
-        console.log('ADDING JOB JACKETS TO STATE: ', db);
         dispatch({
             type: 'SCHEDULE_RETRIEVED',
             db
@@ -181,7 +175,7 @@ export const addToSchedule = (jobJacket, stateDb, dispatch) => {
 
     dispatch({
         type: 'SCHEDULE_UPDATE',
-        jobJackets: newJobJacketsArray
+        jobJackets: newJobJacketsArray,
     });
 };
 
