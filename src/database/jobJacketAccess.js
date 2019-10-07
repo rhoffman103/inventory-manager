@@ -68,12 +68,10 @@ const dbJobJackets = {
             }))
     },
 
-    updateJobJackets: ({ jobJackets, updateObj }) => {
-        const keys = Object.keys(jobJackets).map((key, index) => jobJackets[index].dbId);
+    updateJobJackets: (jobJackets) => {
         return Promise.all(
-            keys
-                .map(key => database.collection('jobJackets')
-                .doc(key).update(updateObj))
+            jobJackets.map(job => database.collection('jobJackets')
+                .doc(job.jobJacketKey).update(job.updateObj))
         );
     },
 

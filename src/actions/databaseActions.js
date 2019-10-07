@@ -14,7 +14,7 @@ const genericDbError = {
 export const updateAdminStatus = (stateDispatch, employee) => {
     stateDispatch(modalSpinner());
 
-    return setAdminStatus(employee.dbId, true)
+    return setAdminStatus(employee.scheduleKey, true)
         .then(() => {
             stateDispatch(formRequestAction({
                 data: { message: `${employee.displayName} now has Admin permissions.` },
@@ -140,7 +140,7 @@ export const getJacketsAndScheduleByLine = (line, dispatch) => {
             db.jobJackets.push(
                 ...data.jobJackets.map(jacket => ({
                     ...jacket,
-                    jobJacketKey: jacket.dbId,
+                    jobJacketKey: jacket.jobJacketKey,
                     position: undefined
                 }))
             );
@@ -185,11 +185,10 @@ export const removeFromSchedule = (jobJacket, stateDb, dispatch) => {
     let removedJob = {};
     let newJobJacketsArray = stateDb.jobJackets.filter(jacket => {
         if ((jobJacket.id !== jacket.id) && (!jacket.inSchedule)) {
-            if (jobJacket.id === jacket.id) console.log(jobJacket.customer)
             return { ...jacket, inSchedule: false, position: undefined };
         }
         else if (jobJacket.id === jacket.id) {
-            removedJob = { ...jacket, inSchedule: false, position: undefined };
+            removedJob = { ...jacket, inSchedule: false, position: undefined, };
         }
         else {
             newPosition++;
@@ -200,8 +199,6 @@ export const removeFromSchedule = (jobJacket, stateDb, dispatch) => {
 
     newJobJacketsArray.push(removedJob);
     newJobJacketsArray.push(...scheduleArray);
-
-    console.log('NEW SCHEDULE: ', newJobJacketsArray);
     
     dispatch({
         type: 'SCHEDULE_UPDATE',
@@ -212,25 +209,32 @@ export const removeFromSchedule = (jobJacket, stateDb, dispatch) => {
 export const updateScheduleAndJobJackets = (stateDb, line, dispatch) => {
     dispatch(modalSpinner());
 
-    const nonScheduledJackets = [];
-    const inScheduleJackets = stateDb.jobJackets.filter(job => {
-        if (job.inSchedule === true) return job;
-        else nonScheduledJackets.push(job);
-    });
-    const schedule = stateDb.schedule.map(job => {
-        delete job.id;
-        return job;
+    let jacketUpdates = [];
+    let schedule = [];
+    let removedKeys = [];
+    stateDb.jobJackets.forEach(job => {
+        if (job.inSchedule) {
+            schedule.push({
+                scheduleKey: job.scheduleKey,
+                position: job.position,
+                jobJacketKey: job.jobJacketKey
+            });
+            jacketUpdates.push({
+                jobJacketKey: job.jobJacketKey,
+                updateObj: { inSchedule: true }
+            })
+        }
+        else if ((job.scheduleKey) && (!job.inSchedule)) {
+            jacketUpdates.push({
+                jobJacketKey: job.jobJacketKey,
+                updateObj: { inSchedule: false }
+            });
+            removedKeys.push(job.scheduleKey);
+        }
     });
 
-    return dbSchedule.updateScheduleOrder({ schedule, line })
-    .then(() => dbJobJackets.updateJobJackets({
-        jobJackets: inScheduleJackets,
-        updateObj: { inSchedule: true }
-    }))
-    .then(() => dbJobJackets.updateJobJackets({
-        jobJackets: nonScheduledJackets,
-        updateObj: { inSchedule: false }
-    }))
+    return dbSchedule.updateScheduleOrder({ schedule, removedKeys, line })
+    .then(() => dbJobJackets.updateJobJackets(jacketUpdates))
     .then(() => getJacketsAndScheduleByLine(line, dispatch))
     .then(() => dispatch(formRequestAction({
         data: { 

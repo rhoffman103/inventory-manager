@@ -4,13 +4,17 @@ import dbJobJackets from './jobJacketAccess';
 const dbSchedule = {
     addToSchedule: ({ line, job }) => {
         return database.collection(`${line}Schedule`).add({
-            jobJacketKey: job.dbId,
+            jobJacketKey: job.scheduleKey,
             position: job.position
         });
     },
 
-    removeFromSchedule: ({ line, key }) => {
-        return database.collection(`${line}Schedule`).doc(key).delete();
+    removeFromSchedule: ({ keys, line }) => {
+        if (keys.length) {
+            if (typeof keys === 'string') return database.collection(`${line}Schedule`).doc(keys).delete();
+            else return Promise.all(keys.map(key => database.collection(`${line}Schedule`).doc(key).delete()));
+        }
+        else return Promise.resolve();
     },
 
     getScheduleByLine: (line) => {
@@ -19,7 +23,7 @@ const dbSchedule = {
         .orderBy('position').get()
         .then(querySnapshot => {
             querySnapshot.forEach(job => {
-                schedule.push({ ...job.data(), dbId: job.id });
+                schedule.push({ ...job.data(), scheduleKey: job.id });
             });
 
             return dbJobJackets.getAllJobJacketsByKey(Object.keys(schedule)
@@ -45,42 +49,32 @@ const dbSchedule = {
         }));
     },
 
-    updateScheduleOrder: ({ schedule, line }) => {
+    updateScheduleOrder: ({ schedule, removedKeys, line }) => {
         let newJobs = [];
-        let keys = []
         const existingJobs = schedule.filter(job => {
-            if (job.dbId) {
-                keys.push(job.dbId);
-                return job;
-            }
+            if (job.scheduleKey) return job;
             else newJobs.push({
-                customer: job.customer,
-                description: job.description,
-                dueDate: job.dueDate,
                 jobJacketKey: job.jobJacketKey,
                 position: job.position
             });
             return false;
         });
 
-        return new Promise (resolve => {
-            if (existingJobs.length) {
-                
-                const keys = Object.keys(existingJobs).map((key, index) => existingJobs[index].dbId)
-                Promise.all(
-                    keys
-                    .map((key, index) => database.collection(`${line}Schedule`)
-                    .doc(key).update({ position: existingJobs[index].position }))
-                )
-                .then(() => resolve(newJobs));
-            }
-            else return resolve(newJobs);
-        })
-        .then((jobs) => {
-            
-            if (jobs) {
+        return dbSchedule.removeFromSchedule({ line, keys: removedKeys })
+        .then(() => {
+            if (existingJobs.length) 
                 return Promise.all(
-                    jobs
+                    existingJobs
+                    .map((job) => database.collection(`${line}Schedule`)
+                    .doc(job.scheduleKey).update({ position: job.position }))
+                )
+            else return Promise.resolve();
+        })
+        .then(() => {
+            
+            if (newJobs.length) {
+                return Promise.all(
+                    newJobs
                     .map((job) => database.collection(`${line}Schedule`)
                     .add(job))
                 );
