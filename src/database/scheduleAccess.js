@@ -37,6 +37,7 @@ const dbSchedule = {
                         if (job.jobJacketKey === jobJacket.jobJacketKey) {
                             return job;
                         }
+                        else return false;
                     }),
                     ...jobJacket
                 };

@@ -1,13 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import appContext from '../../../context/appContext';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
-import { 
-    getJacketsAndScheduleByLine,
-    addToSchedule,
-    removeFromSchedule,
-    updateScheduleAndJobJackets
-} from '../../../actions/databaseActions';
-import { emptyDBReducer } from '../../../actions/commonActions';
+import { getJacketsAndScheduleByLine, updateScheduleAndJobJackets } from '../../../actions/databaseActions';
+import { addToSchedule, removeFromSchedule } from '../../../actions/scheduleActions';
+// import { emptyDBReducer } from '../../../actions/commonActions';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import SelectProductionLine from '../adminCommon/SelectProductionLine';
@@ -16,19 +12,17 @@ import JobJacketList from './JobJacketList';
 
 const UpdateSchedule = () => {
     const { state, stateDispatch } = useContext(appContext);
-    const { values, handleInputChange, emptyValues } = useHandleInputChange();
+    const { values, handleInputChange } = useHandleInputChange();
     const { productionLine } = values;
    
     useEffect(() => {
         if (productionLine && productionLine !== 'Select')
-            Promise.all([
-                getJacketsAndScheduleByLine(productionLine, stateDispatch),
-            ])
-    }, [productionLine]);
+           getJacketsAndScheduleByLine(productionLine, stateDispatch)
+    }, [productionLine, stateDispatch]);
 
-    useEffect(() => {
-        return () => stateDispatch(emptyDBReducer());
-    }, []);
+    // useEffect(() => {
+    //     return () => stateDispatch(emptyDBReducer());
+    // }, []);
     
     return (
         <>
