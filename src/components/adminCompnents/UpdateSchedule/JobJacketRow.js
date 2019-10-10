@@ -3,8 +3,9 @@ import appContext from '../../../context/appContext';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import moment from 'moment';
+import VerticalDragAndDropGrip from '../../common/Icons/VerticalDragAndDropGrip';
 
-const JobJacketRow = ({ job, select, actionType, dragHandle, bg }) => {
+const JobJacketRow = ({ job, select, actionType, dragHandle, bg, draggableIcon }) => {
     
     const { state, stateDispatch } = useContext(appContext);
 
@@ -13,7 +14,6 @@ const JobJacketRow = ({ job, select, actionType, dragHandle, bg }) => {
             <Col
                 xs={1}
                 className='border-right'
-                {...dragHandle}
             >
                 <span>{job.position ? job.position : 0}</span>
             </Col>
@@ -26,7 +26,8 @@ const JobJacketRow = ({ job, select, actionType, dragHandle, bg }) => {
                 className='cursor-pointer'
                 onClick={() => select(job, state.db, stateDispatch)}
             >
-                <span className='underline'>{actionType}</span>
+                <span className='underline mr-3'>{actionType}</span>
+                { draggableIcon && <VerticalDragAndDropGrip dragHandle={dragHandle} /> }
             </Col>
         </Row>
     );

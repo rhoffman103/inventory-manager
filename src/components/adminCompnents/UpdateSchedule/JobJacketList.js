@@ -20,7 +20,7 @@ const JobJacketList = ({ title, jobType, select, actionType, inSchedule }) => {
                     <Col xs={3} className='border-right'>Description</Col>
                     <Col xs={2} className='border-right'>Due Date</Col>
                     <Col xs={2} className='border-right'>Jacket ID</Col>
-                    <Col xs={1}>{actionType}</Col>
+                    <Col xs={2}>{actionType}</Col>
                 </Row>
 
                 {inSchedule

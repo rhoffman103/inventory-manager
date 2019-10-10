@@ -19,6 +19,7 @@ const DraggableJacket = ({ jacket, select, actionType, index, bg }) => (
                     select={select}
                     actionType={actionType}
                     dragHandle={provided.dragHandleProps}
+                    draggableIcon={true}
                 />
             </div>
         )}
