@@ -55,17 +55,23 @@ const dbJobJackets = {
         })
     },
 
-    getJobJacketsByProductionLine: ({ line, isCompleted = false, inSchedule = false }) => {
-        return database.collection('jobJackets')
-            .where('productionLine', '==', line)
-            .where('complete', '==', isCompleted)
-            .where('inSchedule', '==', inSchedule)
+    getJobJacketsByProductionLine: ({ line, isCompleted, inSchedule }) => {
+        let jobJacketsRef = database.collection('jobJackets');
+        jobJacketsRef = jobJacketsRef.where('productionLine', '==', line);
+        
+        if (isCompleted !== undefined)
+            jobJacketsRef = jobJacketsRef.where('complete', '==', isCompleted);
+
+        if (inSchedule !== undefined)
+            jobJacketsRef = jobJacketsRef.where('inSchedule', '==', inSchedule);
+
+        return jobJacketsRef
             .get()
             .then(querySnapshot => dbJobJackets.applyProductDescriptions(querySnapshot))
             .catch(() => Promise.reject({
                 code: 'db error',
                 err: 'Something went wrong fetching Job Jackets'
-            }))
+            }));
     },
 
     updateJobJackets: (jobJackets) => {

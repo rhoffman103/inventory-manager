@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useCallback } from 'react';
 import appContext from '../../../context/appContext';
+import { DragDropContext } from 'react-beautiful-dnd';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
-import { getJacketsAndScheduleByLine, updateScheduleAndJobJackets } from '../../../actions/databaseActions';
+import { getJacketsAndScheduleByLine, updateScheduleAndJobJackets, getDummySchedule } from '../../../actions/databaseActions';
 import { addToSchedule, removeFromSchedule } from '../../../actions/scheduleActions';
-// import { emptyDBReducer } from '../../../actions/commonActions';
+import { emptyDBReducer } from '../../../actions/commonActions';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import SelectProductionLine from '../adminCommon/SelectProductionLine';
@@ -15,17 +16,47 @@ const UpdateSchedule = () => {
     const { values, handleInputChange } = useHandleInputChange();
     const { productionLine } = values;
    
+    const onDragEnd = useCallback((result) => {
+        const { destination, source } = result;
+        if (!destination) return;
+        if (
+            destination.droppableId === source.droppableId
+            && destination.index === source.index
+        ) return;
+        
+        const column = state.db[source.droppableId];
+        const schedule = Array.from(column);
+        const job = schedule[source.index];
+        const sliceIndex = (source.index < destination.index) ? source.index : destination.index;
+        
+        schedule.splice(source.index, 1);
+        schedule.splice(destination.index, 0, job);
+        
+        let beginning = schedule.slice(0, sliceIndex);
+        let remainder = schedule.slice(sliceIndex).map((job, index) => ({ ...job, position: (index + sliceIndex + 1) }));
+
+        beginning.push(...remainder);
+
+        stateDispatch({
+            type: 'SCHEDULE_DRAG_UPDATE',
+            schedule: beginning
+        })
+    }, [state, stateDispatch]);
+
     useEffect(() => {
         if (productionLine && productionLine !== 'Select')
-           getJacketsAndScheduleByLine(productionLine, stateDispatch)
+        //    getJacketsAndScheduleByLine(productionLine, stateDispatch)
+        getDummySchedule(stateDispatch);
     }, [productionLine, stateDispatch]);
 
-    // useEffect(() => {
-    //     return () => stateDispatch(emptyDBReducer());
-    // }, []);
+    useEffect(() => {
+        return () => stateDispatch(emptyDBReducer());
+    }, [stateDispatch]);
     
     return (
-        <>
+        <DragDropContext
+          onDragEnd={onDragEnd}
+        >
             <h1>Update Schedule</h1>
             <Form>
                 <SelectProductionLine onChange={handleInputChange} />
@@ -40,7 +71,7 @@ const UpdateSchedule = () => {
             <JobJacketList
                 title='Schedule'
                 inSchedule={true}
-                jobType='jobJackets'
+                jobType='schedule'
                 select={removeFromSchedule}
                 actionType='Remove'
             />
@@ -53,7 +84,7 @@ const UpdateSchedule = () => {
                 </Button>
             }
             <FormRequestModal />
-        </>
+        </DragDropContext>
     );
 };
 

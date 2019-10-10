@@ -17,9 +17,14 @@ const databaseReducer = (state = {}, action) => {
         case 'SCHEDULE_UPDATE':
             return {
                 ...state,
+                schedule: action.schedule,
                 jobJackets: action.jobJackets,
                 scheduleUpdated: true
             };
+        case 'SCHEDULE_DRAG_UPDATE':
+            return { ...state, schedule: action.schedule };
+        case 'DUMMY_DB':
+            return { ...state, ...action.db };
         default:
             return state;
     };

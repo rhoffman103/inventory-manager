@@ -42,7 +42,9 @@ const dbSchedule = {
                     ...jobJacket
                 };
             });
-            return Promise.resolve({ jobJackets: mutatedSchedule });
+            console.log('MUTATED SCHEDULE: ', mutatedSchedule);
+
+            return Promise.resolve({ schedule: mutatedSchedule });
         })
         .catch(() => Promise.reject({
             code: 'db error',
