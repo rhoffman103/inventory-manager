@@ -4,13 +4,6 @@ import dbJobJackets from '../database/jobJacketAccess';
 import dbSchedule from '../database/scheduleAccess';
 import { modalSpinner, formRequestAction } from './commonActions';
 
-const genericDbError = {
-    data: {
-        code: 'db error',
-        err: 'Something went wrong fetching data'
-    }
-};
-
 export const updateAdminStatus = (stateDispatch, employee) => {
     stateDispatch(modalSpinner());
 
@@ -125,14 +118,22 @@ export const getScheduleByLine = (line, dispatch) => {
 
 export const getJacketsAndScheduleByLine = (line, dispatch) => {
     dispatch(modalSpinner());
+    let originalJacketScheduleState = {};
     let db = {
         jobJackets: [],
         schedule: []
     };
+
+    const assignScheduleState = (arr, obj) => {
+        arr.forEach(jacket => obj[jacket.jobJacketKey] = jacket.inSchedule)
+    };
     
     return dbSchedule.getScheduleByLine(line)
     .then(data => {
-        if (data) db.schedule = data.schedule.map(job => job);
+        if (data) {
+            db.schedule = data.schedule.map(job => job);
+            assignScheduleState(db.schedule, originalJacketScheduleState);
+        }
         return dbJobJackets.getJobJacketsByProductionLine({ line, isCompleted: false, inSchedule: false })
     })
     .then(data => {
@@ -142,11 +143,13 @@ export const getJacketsAndScheduleByLine = (line, dispatch) => {
                 jobJacketKey: jacket.jobJacketKey,
                 position: undefined
             }));
+            assignScheduleState(db.jobJackets, originalJacketScheduleState);
         }
         else Promise.resolve();
 
         dispatch({
             type: 'SCHEDULE_RETRIEVED',
+            originalJacketScheduleState,
             db
         });
 
@@ -158,29 +161,19 @@ export const getJacketsAndScheduleByLine = (line, dispatch) => {
 export const updateScheduleAndJobJackets = (stateDb, line, dispatch) => {
     dispatch(modalSpinner());
 
-    let jacketUpdates = [];
-    let schedule = [];
+    let { schedule, changedJackets } = stateDb;
     let removedKeys = [];
-    stateDb.jobJackets.forEach(job => {
-        if (job.inSchedule) {
-            schedule.push({
-                scheduleKey: job.scheduleKey,
-                position: job.position,
-                jobJacketKey: job.jobJacketKey
-            });
-            jacketUpdates.push({
-                jobJacketKey: job.jobJacketKey,
-                updateObj: { inSchedule: true }
-            })
-        }
-        else if ((job.scheduleKey) && (!job.inSchedule)) {
-            jacketUpdates.push({
-                jobJacketKey: job.jobJacketKey,
-                updateObj: { inSchedule: false }
-            });
-            removedKeys.push(job.scheduleKey);
-        }
+    let jacketUpdates = Object.keys(changedJackets).map(key => {
+        const jacket = changedJackets[key];
+        if (!jacket.inSchedule) removedKeys.push(jacket.scheduleKey);
+        return {
+            jobJacketKey: key,
+            updateObj: { inSchedule: jacket.inSchedule }
+        };
     });
+
+    console.log(jacketUpdates);
+    console.log(removedKeys)
 
     return dbSchedule.updateScheduleOrder({ schedule, removedKeys, line })
     .then(() => dbJobJackets.updateJobJackets(jacketUpdates))
@@ -198,81 +191,92 @@ export const updateScheduleAndJobJackets = (stateDb, line, dispatch) => {
 };
 
 export const getDummySchedule = (dispatch) => {
+    let originalJacketScheduleState = {};
+    const db = {
+        jobJackets: [
+            {
+                complete: false,
+                coreDiameter: "654",
+                customer: "dunder mifflin",
+                description: "Oyster 6.5 x 62\" TPO",
+                dueDate: "1571630400000",
+                id: "PX000001",
+                inSchedule: false,
+                jobJacketKey: "cq1upub2v0MFRcc0mrZq",
+                position: undefined,
+                productKey: "a278FLLU6NMHXZEt8tnU",
+                productionLine: "PX",
+                purchaseOrder: "654",
+                rollLength: "654",
+                totalMSF: "654",
+                totalRolls: "654"
+            }, {
+                complete: false,
+                coreDiameter: "3",
+                customer: "testy",
+                description: "BLK / RED 4.0 x 37\"",
+                dueDate: "1571112000000",
+                id: "PX000004",
+                inSchedule: false,
+                jobJacketKey: "oPveq7FzRDWy0H9h5SUV",
+                position: undefined,
+                productKey: "m9Z9doImVaVusANMh8C1",
+                productionLine: "PX",
+                purchaseOrder: "789456",
+                rollLength: "40000",
+                totalMSF: "40000",
+                totalRolls: "26"
+            }
+        ],
+        schedule: [
+            {
+                complete: false,
+                coreDiameter: "3",
+                customer: "Tiki Liki",
+                description: "BLK 3.0 x 37\" Fric",
+                dueDate: "1572321600000",
+                id: "PX000007",
+                inSchedule: true,
+                jobJacketKey: "fF5A2vUdwo6iF7L7ok06",
+                position: 1,
+                productKey: "9PvYRNwfKO5p1JTf7qdj",
+                productionLine: "PX",
+                purchaseOrder: "654321",
+                rollLength: "70000",
+                scheduleKey: "hfz3HW3plQBFJKcefm5F",
+                totalMSF: "100000",
+                totalRolls: "26"
+            }, {
+                complete: false,
+                coreDiameter: "6",
+                customer: "Mike FearMe",
+                description: "BLK / RED 4.0 x 37\"",
+                dueDate: "1572753600000",
+                id: "PX000006",
+                inSchedule: true,
+                jobJacketKey: "zNC5fypRGKEJMsIwIpov",
+                position: 2,
+                productKey: "m9Z9doImVaVusANMh8C1",
+                productionLine: "PX",
+                purchaseOrder: "123456",
+                rollLength: "321321",
+                scheduleKey: "FA9IsY8poR2ZfWX7aogB",
+                totalMSF: "321321",
+                totalRolls: "32"
+            }
+        ]
+    };
+
+    const assignScheduleState = (arr, obj) => {
+        arr.forEach(jacket => obj[jacket.jobJacketKey] = jacket.inSchedule)
+    }
+    
+    assignScheduleState(db.jobJackets, originalJacketScheduleState);
+    assignScheduleState(db.schedule, originalJacketScheduleState);
+    
     dispatch({
-        type: 'DUMMY_DB',
-        db: {
-            jobJackets: [
-                {
-                    complete: false,
-                    coreDiameter: "654",
-                    customer: "dunder mifflin",
-                    description: "Oyster 6.5 x 62\" TPO",
-                    dueDate: "1571630400000",
-                    id: "PX000001",
-                    inSchedule: false,
-                    jobJacketKey: "cq1upub2v0MFRcc0mrZq",
-                    position: undefined,
-                    productKey: "a278FLLU6NMHXZEt8tnU",
-                    productionLine: "PX",
-                    purchaseOrder: "654",
-                    rollLength: "654",
-                    totalMSF: "654",
-                    totalRolls: "654"
-                }, {
-                    complete: false,
-                    coreDiameter: "3",
-                    customer: "testy",
-                    description: "BLK / RED 4.0 x 37\"",
-                    dueDate: "1571112000000",
-                    id: "PX000004",
-                    inSchedule: false,
-                    jobJacketKey: "oPveq7FzRDWy0H9h5SUV",
-                    position: undefined,
-                    productKey: "m9Z9doImVaVusANMh8C1",
-                    productionLine: "PX",
-                    purchaseOrder: "789456",
-                    rollLength: "40000",
-                    totalMSF: "40000",
-                    totalRolls: "26"
-                }
-            ],
-            schedule: [
-                {
-                    complete: false,
-                    coreDiameter: "3",
-                    customer: "Tiki Liki",
-                    description: "BLK 3.0 x 37\" Fric",
-                    dueDate: "1572321600000",
-                    id: "PX000007",
-                    inSchedule: true,
-                    jobJacketKey: "fF5A2vUdwo6iF7L7ok06",
-                    position: 1,
-                    productKey: "9PvYRNwfKO5p1JTf7qdj",
-                    productionLine: "PX",
-                    purchaseOrder: "654321",
-                    rollLength: "70000",
-                    scheduleKey: "hfz3HW3plQBFJKcefm5F",
-                    totalMSF: "100000",
-                    totalRolls: "26"
-                }, {
-                    complete: false,
-                    coreDiameter: "6",
-                    customer: "Mike FearMe",
-                    description: "BLK / RED 4.0 x 37\"",
-                    dueDate: "1572753600000",
-                    id: "PX000006",
-                    inSchedule: true,
-                    jobJacketKey: "zNC5fypRGKEJMsIwIpov",
-                    position: 2,
-                    productKey: "m9Z9doImVaVusANMh8C1",
-                    productionLine: "PX",
-                    purchaseOrder: "123456",
-                    rollLength: "321321",
-                    scheduleKey: "FA9IsY8poR2ZfWX7aogB",
-                    totalMSF: "321321",
-                    totalRolls: "32"
-                }
-            ]
-        }
+        type: 'SCHEDULE_RETRIEVED',
+        originalJacketScheduleState,
+        db
     });
 }

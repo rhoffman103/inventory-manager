@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useCallback } from 'react';
 import appContext from '../../../context/appContext';
 import { DragDropContext } from 'react-beautiful-dnd';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
-import { getJacketsAndScheduleByLine, updateScheduleAndJobJackets, getDummySchedule } from '../../../actions/databaseActions';
+import { getJacketsAndScheduleByLine, updateScheduleAndJobJackets } from '../../../actions/databaseActions';
 import { addToSchedule, removeFromSchedule } from '../../../actions/scheduleActions';
 import { emptyDBReducer } from '../../../actions/commonActions';
 import Form from 'react-bootstrap/Form';
@@ -45,8 +45,7 @@ const UpdateSchedule = () => {
 
     useEffect(() => {
         if (productionLine && productionLine !== 'Select')
-        //    getJacketsAndScheduleByLine(productionLine, stateDispatch)
-        getDummySchedule(stateDispatch);
+           getJacketsAndScheduleByLine(productionLine, stateDispatch);
     }, [productionLine, stateDispatch]);
 
     useEffect(() => {

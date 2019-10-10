@@ -42,7 +42,7 @@ div.modal-content {
 @keyframes pulse {to {box-shadow: 0 0 0 30px rgba(232, 76, 61, 0);}}
 
 .products-list:nth-child(even) {
-  background-color: rgba(39, 47, 195, .25);
+  background-color: #C4C6EE;
 }
 
 .products-list:hover {
@@ -77,6 +77,10 @@ div.modal-content {
 
 .bg-blue {
   background-color: #272fc3
+}
+
+.bg-light-blue {
+  background-color: #C4C6EE;
 }
 
 .underline {

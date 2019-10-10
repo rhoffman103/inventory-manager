@@ -4,16 +4,15 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import moment from 'moment';
 
-const JobJacketRow = ({ job, index, select, actionType, dragHandle }) => {
+const JobJacketRow = ({ job, select, actionType, dragHandle, bg }) => {
     
     const { state, stateDispatch } = useContext(appContext);
 
     return (
-        <Row className={`border border-top-0 mx-0 products-list min-w-618 ${job.isSelected && 'selected-product'}`}>
+        <Row className={`border border-top-0 mx-0 products-list min-w-618 ${job.isSelected && 'selected-product'} ${bg}`}>
             <Col
                 xs={1}
                 className='border-right'
-                onClick={() => console.log(job.dbId)}
                 {...dragHandle}
             >
                 <span>{job.position ? job.position : 0}</span>

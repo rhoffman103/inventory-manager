@@ -42,7 +42,6 @@ const dbSchedule = {
                     ...jobJacket
                 };
             });
-            console.log('MUTATED SCHEDULE: ', mutatedSchedule);
 
             return Promise.resolve({ schedule: mutatedSchedule });
         })
