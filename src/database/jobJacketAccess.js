@@ -75,10 +75,12 @@ const dbJobJackets = {
     },
 
     updateJobJackets: (jobJackets) => {
-        return Promise.all(
-            jobJackets.map(job => database.collection('jobJackets')
-                .doc(job.jobJacketKey).update(job.updateObj))
-        );
+        if (jobJackets.length)
+            return Promise.all(
+                jobJackets.map(job => database.collection('jobJackets')
+                    .doc(job.jobJacketKey).update(job.updateObj))
+            );
+        else return Promise.resolve();
     },
 
     getAllJobJacketsByKey: (keys) => {

@@ -57,7 +57,8 @@ const dbSchedule = {
             if (job.scheduleKey) return job;
             else newJobs.push({
                 jobJacketKey: job.jobJacketKey,
-                position: job.position
+                position: job.position,
+                instructions: job.instructions || []
             });
             return false;
         });
@@ -68,8 +69,11 @@ const dbSchedule = {
                 return Promise.all(
                     existingJobs
                     .map((job) => database.collection(`${line}Schedule`)
-                    .doc(job.scheduleKey).update({ position: job.position }))
-                )
+                    .doc(job.scheduleKey).update({ 
+                        position: job.position,
+                        instructions: job.instructions || []
+                    }))
+                );
             else return Promise.resolve();
         })
         .then(() => {

@@ -3,13 +3,14 @@ import appContext from '../../../context/appContext';
 import { DragDropContext } from 'react-beautiful-dnd';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
 import { getJacketsAndScheduleByLine, updateScheduleAndJobJackets } from '../../../actions/databaseActions';
-import { addToSchedule, removeFromSchedule } from '../../../actions/scheduleActions';
+import { addToSchedule } from '../../../actions/scheduleActions';
 import { emptyDBReducer } from '../../../actions/commonActions';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import SelectProductionLine from '../adminCommon/SelectProductionLine';
 import FormRequestModal from '../modals/FormRequestModal';
 import JobJacketList from './JobJacketList';
+import EditScheduleModal from '../modals/EditScheduleModal';
 
 const UpdateSchedule = () => {
     const { state, stateDispatch } = useContext(appContext);
@@ -43,6 +44,14 @@ const UpdateSchedule = () => {
         })
     }, [state, stateDispatch]);
 
+    const openEditModal = (job) => {
+        stateDispatch({
+            type: 'MODAL_WITH_DATA',
+            modal: 'editScheduleModal',
+            data: job
+        });
+    };
+
     useEffect(() => {
         if (productionLine && productionLine !== 'Select')
            getJacketsAndScheduleByLine(productionLine, stateDispatch);
@@ -61,18 +70,18 @@ const UpdateSchedule = () => {
                 <SelectProductionLine onChange={handleInputChange} />
             </Form>
             <JobJacketList
+                title='Schedule'
+                inSchedule={true}
+                jobType='schedule'
+                select={openEditModal}
+                actionType='Edit'
+            />
+            <JobJacketList
                 title='Open Job Jackets'
                 inSchedule={false}
                 jobType='jobJackets'
                 select={addToSchedule}
                 actionType='Add'
-            />
-            <JobJacketList
-                title='Schedule'
-                inSchedule={true}
-                jobType='schedule'
-                select={removeFromSchedule}
-                actionType='Remove'
             />
             {state.db.scheduleUpdated &&
                 <Button
@@ -83,6 +92,7 @@ const UpdateSchedule = () => {
                 </Button>
             }
             <FormRequestModal />
+            <EditScheduleModal />
         </DragDropContext>
     );
 };

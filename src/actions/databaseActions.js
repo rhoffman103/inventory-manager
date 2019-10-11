@@ -163,17 +163,18 @@ export const updateScheduleAndJobJackets = (stateDb, line, dispatch) => {
 
     let { schedule, changedJackets } = stateDb;
     let removedKeys = [];
-    let jacketUpdates = Object.keys(changedJackets).map(key => {
-        const jacket = changedJackets[key];
-        if (!jacket.inSchedule) removedKeys.push(jacket.scheduleKey);
-        return {
-            jobJacketKey: key,
-            updateObj: { inSchedule: jacket.inSchedule }
-        };
-    });
-
-    console.log(jacketUpdates);
-    console.log(removedKeys)
+    let jacketUpdates = []; 
+    
+    if(changedJackets) {
+        jacketUpdates = Object.keys(changedJackets).map(key => {
+            const jacket = changedJackets[key];
+            if (!jacket.inSchedule) removedKeys.push(jacket.scheduleKey);
+            return {
+                jobJacketKey: key,
+                updateObj: { inSchedule: jacket.inSchedule }
+            };
+        });
+    }
 
     return dbSchedule.updateScheduleOrder({ schedule, removedKeys, line })
     .then(() => dbJobJackets.updateJobJackets(jacketUpdates))

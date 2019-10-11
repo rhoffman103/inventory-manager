@@ -10,7 +10,7 @@ const JobJacketRow = ({ job, select, actionType, dragHandle, bg, draggableIcon }
     const { state, stateDispatch } = useContext(appContext);
 
     return (
-        <Row className={`border border-top-0 mx-0 products-list min-w-618 ${job.isSelected && 'selected-product'} ${bg}`}>
+        <Row className={`border border-top-0 mx-0 py-2 products-list min-w-618 ${job.isSelected && 'selected-product'} ${bg}`}>
             <Col
                 xs={1}
                 className='border-right'

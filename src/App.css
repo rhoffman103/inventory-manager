@@ -87,6 +87,10 @@ div.modal-content {
   text-decoration: underline;
 }
 
+.underline-hover:hover {
+  text-decoration: underline;
+}
+
 .hover-light:hover {
   color: white;;
 }

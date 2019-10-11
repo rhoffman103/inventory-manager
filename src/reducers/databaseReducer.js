@@ -13,7 +13,12 @@ const databaseReducer = (state = {}, action) => {
         case 'JOB_JACKETS':
             return { ...state, [action.key]: action.value };
         case 'SCHEDULE_RETRIEVED':
-                return { ...state, ...action.db, originalJacketScheduleState: action.originalJacketScheduleState };
+                return {
+                    ...state,
+                    ...action.db,
+                    scheduleUpdated: false,
+                    originalJacketScheduleState: action.originalJacketScheduleState
+                };
         case 'SCHEDULE_UPDATE':
             return {
                 ...state,
@@ -23,7 +28,14 @@ const databaseReducer = (state = {}, action) => {
                 changedJackets: action.changedJackets
             };
         case 'SCHEDULE_DRAG_UPDATE':
-            return { ...state, schedule: action.schedule };
+            return { ...state, schedule: action.schedule, scheduleUpdated: true };
+        case 'EDIT_JOB_INSTRUCTIONS':
+            return {
+                ...state,
+                schedule: action.updatedSchedule,
+                scheduleUpdated: true,
+                changedJackets: { ...state.changedJackets = {}, [action.jacketKey]: action.changedJacket }
+            };
         default:
             return state;
     };
