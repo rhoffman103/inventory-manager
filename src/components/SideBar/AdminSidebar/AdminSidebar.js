@@ -8,6 +8,7 @@ import Employees from './Links/Employees';
 import CreateNewProduct from './Links/CreateNewProduct';
 import AddNewJobJacket from './Links/AddNewJobJacket';
 import UpdateSchedule from './Links/UpdateSchedule';
+import UpdateProduct from './Links/UpdateProduct';
 
 const AdminSidebar = () => {
     return (
@@ -39,7 +40,7 @@ const AdminSidebar = () => {
                 </Accordion.Toggle>
                 <AccordionCollapse eventKey="Products">
                     <CreateNewProduct />
-                    <NavLink>Update Product</NavLink>
+                    <UpdateProduct />
                 </AccordionCollapse>
             </Accordion>
 
