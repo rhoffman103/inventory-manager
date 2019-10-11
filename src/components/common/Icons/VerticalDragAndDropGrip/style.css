@@ -1,0 +1,13 @@
+.dnd-grip {
+    width: 50%;
+    height: 35px;
+    border-radius: 2px;
+}
+
+.grip-line {
+    width: 20px;
+    height: 4px;
+    background-color: black;
+    margin: 5px 0;
+    border-radius: 2px;
+}
