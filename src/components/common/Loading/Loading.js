@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
-const Loading = () => {
+const Loading = ({ loader }) => {
 
-    let timerIdOne, timerIdTwo;
     const [spinnerTwo, setSpinnerTwo] = useState(false);
     const [spinnerThree, setSpinnerThree] = useState(false);
 
@@ -14,6 +13,7 @@ const Loading = () => {
     };
 
     useEffect(() => {
+        let timerIdOne, timerIdTwo;
         timerIdOne = delaySpinner(200, setSpinnerTwo);
         timerIdTwo = delaySpinner(400, setSpinnerThree);
 
@@ -24,14 +24,16 @@ const Loading = () => {
     }, []);
 
     return (
-        <>
-            <span>Loading</span>
-            <Spinner animation="grow" size="sm" role="status" >
-                <span className="sr-only">Loading...</span>
-            </Spinner>
-            { spinnerTwo && <Spinner animation="grow" size="sm" /> }
-            { spinnerThree && <Spinner animation="grow" size="sm" /> }
-        </>
+        loader
+        ?   <>
+                <span>Loading</span>
+                <Spinner animation="grow" size="sm" role="status" >
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+                { spinnerTwo && <Spinner animation="grow" size="sm" /> }
+                { spinnerThree && <Spinner animation="grow" size="sm" /> }
+            </>
+        :   <></>
     );
 };
 

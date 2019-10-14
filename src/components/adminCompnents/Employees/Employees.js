@@ -7,12 +7,10 @@ import Loading from '../../common/Loading/Loading';
 const Employees = () => {
 
     const [employeeList, setEmployeeList] = useState({ employees: [] });
-    const [loader, setLoader] = useState(true);
 
     useEffect(() => {
         getEmployeesByPermission(setEmployeeList)
         .then((employees) => {
-            setLoader(false);
             setEmployeeList(employees);
         });
     }, []);
@@ -20,7 +18,7 @@ const Employees = () => {
     return (
         <>
             <h1>Employees & Permissions</h1>
-            {loader && <Loading />}
+            <Loading loader={!employeeList.employees.length} />
             {employeeList.employees.map(employee => {
                 return (
                     <React.Fragment key={employee.employeeId}>
