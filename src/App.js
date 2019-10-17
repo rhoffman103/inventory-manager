@@ -4,6 +4,7 @@ import StateProvider from './components/contextProvider/StateProvider';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
+import Production from './pages/Production';
 import './App.css';
 import './responsive.css';
 
@@ -14,6 +15,7 @@ const App = () => (
 				<Switch>
 					<Route exact path="/" component={Home} />
 					<Route path="/admin" component={Admin} />
+					<Route path="/production" component={Production} />
 				</Switch>
 			</StateProvider>
 		</ScrollToTop>

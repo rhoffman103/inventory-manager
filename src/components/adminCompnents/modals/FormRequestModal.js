@@ -11,8 +11,11 @@ const FormRequestModal = () => {
         modal.formRequestModal && forms.data
         ?   <ModalContainer title={!forms.data.err ? 'Success!' : 'Woops!'} backdrop='static'>
                 { forms.data.message
-                    ? <p>{forms.data.message}</p>
-                    : <p className='text-danger'>{forms.data.err.message}</p>
+                    ?   <p>{forms.data.message}</p>
+                    :   <>
+                            <p>{forms.data.code}</p>
+                            <p className='text-danger'>{forms.data.err}</p>
+                        </>
                 }
             </ModalContainer>
         :   <></>

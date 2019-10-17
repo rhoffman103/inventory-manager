@@ -2,24 +2,24 @@ import React, { useContext } from 'react';
 import appContext from '../context/appContext';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../components/common/Nav';
-import AdminSidebar from '../components/SideBar/AdminSidebar';
+import ProductionSidebar from '../components/SideBar/ProductionSidebar';
 import MainContainer from '../components/common/Main/MainContainer';
 import Main from '../components/common/Main';
 import Spinner from '../components/common/Modals/Spinner';
-import AdminComponentsRouter from '../routers/AdminComponentsRouter';
+import ProductionComponentsRouter from '../routers/ProductionComponentsRouter';
 
-const Admin = () => {
+const Production = () => {
 
     const { state } = useContext(appContext);
 
     return (
         <>
-            { !state.auth.admin && <Redirect to='/' /> }
-            <NavBar page='admin' />
+            { !state.auth && <Redirect to='/' /> }
+            <NavBar page='production' />
             <MainContainer>
-                <AdminSidebar />
+                <ProductionSidebar />
                 <Main>
-                    <AdminComponentsRouter />
+                    <ProductionComponentsRouter />
                 </Main>
             </MainContainer>
             <Spinner />
@@ -27,4 +27,4 @@ const Admin = () => {
     );
 };
 
-export default Admin;
+export default Production;

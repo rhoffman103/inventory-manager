@@ -7,7 +7,7 @@ import { modalSpinner, formRequestAction } from './commonActions';
 export const updateAdminStatus = (stateDispatch, employee) => {
     stateDispatch(modalSpinner());
 
-    return setAdminStatus(employee.scheduleKey, true)
+    return setAdminStatus(employee.dbId, true)
         .then(() => {
             stateDispatch(formRequestAction({
                 data: { message: `${employee.displayName} now has Admin permissions.` },

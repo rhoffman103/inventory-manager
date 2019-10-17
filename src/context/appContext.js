@@ -5,11 +5,11 @@ const appContext = createContext();
 const initialState = {
     auth: {},
     components: {
-        currentPage: {
-            page: 'homePage',
-            msg: null,
-            components: { title: '' },
-        }
+        // currentPage: {
+        //     page: 'homePage',
+        //     msg: null,
+        //     components: { title: '' },
+        // }
     },
     db: {},
     forms: {},

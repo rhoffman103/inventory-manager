@@ -5,6 +5,7 @@ export const collectForm = (values) => {
         return keysArray.filter(key => {
             if (key.includes(`layer${layer}material`) && key.includes(specifier))
                 return key;
+            else return false;
         });
     };
 

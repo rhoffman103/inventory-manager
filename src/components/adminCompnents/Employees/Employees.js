@@ -7,20 +7,24 @@ import Loading from '../../common/Loading/Loading';
 const Employees = () => {
 
     const [employeeList, setEmployeeList] = useState({ employees: [] });
-    const [loader, setLoader] = useState(true);
+    const [isMounted, setMount] = useState(false);
 
     useEffect(() => {
         getEmployeesByPermission(setEmployeeList)
         .then((employees) => {
-            setLoader(false);
-            setEmployeeList(employees);
+            if (isMounted) setEmployeeList(employees);
         });
+    }, [isMounted]);
+
+    useEffect(() => {
+        setMount(true);
+        return () => setMount(false);
     }, []);
 
     return (
         <>
             <h1>Employees & Permissions</h1>
-            {loader && <Loading />}
+            <Loading loader={!employeeList.employees.length} />
             {employeeList.employees.map(employee => {
                 return (
                     <React.Fragment key={employee.employeeId}>
