@@ -7,12 +7,18 @@ import Loading from '../../common/Loading/Loading';
 const Employees = () => {
 
     const [employeeList, setEmployeeList] = useState({ employees: [] });
+    const [isMounted, setMount] = useState(false);
 
     useEffect(() => {
         getEmployeesByPermission(setEmployeeList)
         .then((employees) => {
-            setEmployeeList(employees);
+            if (isMounted) setEmployeeList(employees);
         });
+    }, [isMounted]);
+
+    useEffect(() => {
+        setMount(true);
+        return () => setMount(false);
     }, []);
 
     return (

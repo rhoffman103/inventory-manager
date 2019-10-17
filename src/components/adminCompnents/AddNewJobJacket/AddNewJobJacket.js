@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import appContext from '../../../context/appContext';
 import { selectProduct } from '../../../actions/newProductActions';
 import { collectJobJacketForm } from '../../../actions/formActions';

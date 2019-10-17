@@ -49,6 +49,7 @@ export const collectJobJacketForm = (values, productsList) => {
             jobJacket.productKey = product.key;
             return true;
         }
+        return false;
     });
     return jobJacket;
 };
@@ -58,6 +59,5 @@ export const cleanupJobJacket = () => ({
     jobJacket: undefined,
     productsList: undefined,
     productQuickview: undefined,
-    productsList: undefined,
     productSelected: false,
 })

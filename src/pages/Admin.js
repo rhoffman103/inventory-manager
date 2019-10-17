@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import appContext from '../context/appContext';
-import useHandleComponents from '../hooks/useHandleComponents';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../components/common/Nav';
 import AdminSidebar from '../components/SideBar/AdminSidebar';
@@ -11,32 +10,11 @@ import AdminComponentsRouter from '../routers/AdminComponentsRouter';
 
 const Admin = () => {
 
-    const { state, stateDispatch } = useContext(appContext);
-    const { auth, currentPage } = state;
-    const { unmountAll } = useHandleComponents();
-
-    useEffect(() => {
-        stateDispatch({
-            type: 'UPDATE_PAGE',
-            currentPage: {
-                ...currentPage,
-                components: {
-                    title: 'Dashboard'
-                },
-                page: 'adminPage',
-                msg: 'Admin Page',
-            }
-        });
-
-        return () => {
-            unmountAll();
-        };
-
-    }, [stateDispatch]);
+    const { state } = useContext(appContext);
 
     return (
         <>
-            { !auth.admin && <Redirect to='/' /> }
+            { !state.auth.admin && <Redirect to='/' /> }
             <NavBar page='admin' />
             <MainContainer>
                 <AdminSidebar />
