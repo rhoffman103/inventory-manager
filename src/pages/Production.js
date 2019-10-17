@@ -14,7 +14,7 @@ const Production = () => {
 
     return (
         <>
-            { !state.auth && <Redirect to='/' /> }
+            { !state.auth.uid && <Redirect to='/' /> }
             <NavBar page='production' />
             <MainContainer>
                 <ProductionSidebar />
