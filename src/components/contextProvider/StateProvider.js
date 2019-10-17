@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 const StateProvider = ({ children }) => {
 
     const [state, stateDispatch] = useReducer(appReducer, initialState);
-    const { admin, redirectTo } = state.auth;
+    const { admin, redirectTo, uid } = state.auth;
 
     useEffect(() => {
         stateDispatch({
@@ -18,12 +18,18 @@ const StateProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (admin)
-            stateDispatch({
-                type: 'IS_ADMIN_AT_LOGIN',
-                redirectTo: '/admin'
-            });
-    }, [admin]);
+        let redirect = '/';
+        
+        if (uid) {
+            if (admin) redirect = '/admin';
+            else redirect = '/production';
+        }
+
+        stateDispatch({
+            type: 'REDIRECT_AT_LOGIN',
+            redirectTo: redirect
+        });
+    }, [admin, uid]);
     
     useEffect(() => {
         console.log('UPDATED STATE: ', state);
@@ -31,7 +37,7 @@ const StateProvider = ({ children }) => {
 
     return (
         <appContext.Provider value={{ state, stateDispatch }}>
-            { admin && <Redirect to={redirectTo || '/'} /> }
+            { uid && <Redirect to={redirectTo || '/'} /> }
             { children }
         </appContext.Provider>
     );

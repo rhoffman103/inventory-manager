@@ -9,8 +9,9 @@ const AdminNav = () => {
 
     return (
         <>
-            { navbar.page !== 'home' && <Link to="/" className="nav-link">Production</Link> }
+            { navbar.page !== 'home' && <Link to="/" className="nav-link">Home</Link> }
             { navbar.page !== 'admin' && <Link to="/admin" className="nav-link">Admin</Link>}
+            { navbar.page !== 'production' && <Link to="/production" className="nav-link">Production</Link>}
             <LogOut />
         </>
     );

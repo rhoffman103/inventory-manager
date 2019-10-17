@@ -12,7 +12,7 @@ const authenticationReducer = (state = {}, action) => {
                 ...action.auth,
                 loginError: action.loginError
             };
-        case 'IS_ADMIN_AT_LOGIN':
+        case 'REDIRECT_AT_LOGIN':
             return { ...state, redirectTo: action.redirectTo };
         case 'SIGNOUT':
             return { onFirebaseAuth: true };
