@@ -1,9 +1,6 @@
 import React from 'react';
 import { Route, Switch } from "react-router-dom";
-
-const Schedule = ({ line }) => (
-    <div>{line}</div>
-);
+import Schedule from '../components/productionComponents/Schedule';
 
 const ProductionComponentsRouter = () => (
     <Switch>
