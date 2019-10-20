@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Switch } from "react-router-dom";
-import Schedule from '../components/productionComponents/Schedule';
+import LineSwitch from './LineSwitch';
 
 const ProductionComponentsRouter = () => (
     <Switch>
         <Route
-            exact path='/production/px/schedule'
-            render={(props) => <Schedule {...props} line='PX' />}
+            path='/production/px'
+            render={(props) => <LineSwitch {...props} line='PX' />}
         />
     </Switch>
 );

@@ -17,6 +17,20 @@ const dbSchedule = {
         else return Promise.resolve();
     },
 
+    pairScheduleWithJobJacket: (data, schedule) => {
+        return data.jobJackets.map(jobJacket => {
+            return {
+                ...schedule.find(job => {
+                    if (job.jobJacketKey === jobJacket.jobJacketKey) {
+                        return job;
+                    }
+                    else return false;
+                }),
+                ...jobJacket
+            };
+        });
+    },
+
     getScheduleByLine: (line) => {
         let schedule = [];
         return database.collection(`${line}Schedule`)
@@ -31,18 +45,7 @@ const dbSchedule = {
             );
         })
         .then(data => {
-            let mutatedSchedule = data.jobJackets.map(jobJacket => {
-                return {
-                    ...schedule.find(job => {
-                        if (job.jobJacketKey === jobJacket.jobJacketKey) {
-                            return job;
-                        }
-                        else return false;
-                    }),
-                    ...jobJacket
-                };
-            });
-
+            let mutatedSchedule = dbSchedule.pairScheduleWithJobJacket(data, schedule);
             return Promise.resolve({ schedule: mutatedSchedule });
         })
         .catch(() => Promise.reject({
@@ -87,6 +90,26 @@ const dbSchedule = {
             }
             else return Promise.resolve();
         })
+    },
+
+    listenForScheduleByLine: (line, callback) => {
+        return database.collection(`${line}Schedule`)
+        .orderBy('position')
+        .onSnapshot(querySnapshot => {
+            let schedule = [];
+            querySnapshot.forEach(job => {
+                schedule.push({ ...job.data(), scheduleKey: job.id });
+            });
+            
+            dbJobJackets.getAllJobJacketsByKey(Object.keys(schedule)
+            .map(i => schedule[i].jobJacketKey))
+            .then(data => {
+                let mutatedSchedule = dbSchedule.pairScheduleWithJobJacket(data, schedule);
+                callback({ schedule: mutatedSchedule });
+            })
+            .catch(err => callback({ err: err.message, code: err.code }));
+        },
+        (err) => callback({ err: err.message, code: err.code }));
     }
 };
 
