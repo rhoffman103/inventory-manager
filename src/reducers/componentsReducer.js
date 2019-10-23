@@ -8,6 +8,8 @@ const componentsReducer = (state, action) => {
             return { ...state, currentPage: action.currentPage };
         case 'SET_MODAL_SPINNER':
             return { ...state, showSpinner: action.showSpinner };
+        case 'SET_LOADING_WHEEL':
+            return { ...state, showLoadingWheel: action.showLoadingWheel };
         case 'HANDLE_COMPONENT':
             return {
                 ...state,
@@ -32,6 +34,8 @@ const componentsReducer = (state, action) => {
             };
         case 'SET_COMPONENT':
             return { ...state, [action.component]: action.value }
+        case 'SCHEDULE_LISTENER':
+            return { ...state, showLoadingWheel: false };
         default:
             return state;
     };

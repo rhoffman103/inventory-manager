@@ -60,6 +60,10 @@ export const removeFromSchedule = (jobJacket, stateDb, dispatch) => {
 };
 
 export const ScheduleByLineListener = (line, dispatch) => {
+    dispatch({
+        type: 'SET_LOADING_WHEEL',
+        showLoadingWheel: true
+    })
     return dbSchedule.listenForScheduleByLine(line, (data) => {
         if (data.err) {
             dispatch({

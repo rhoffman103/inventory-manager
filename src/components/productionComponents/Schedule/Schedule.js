@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import appContext from '../../../context/appContext';
+import Loading from '../../common/Loading/Loading';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -11,6 +12,7 @@ const Schedule = ({ line }) => {
     return(
         <div>
             <h1>{line} Shedule</h1>
+            <Loading loader={state.components.showLoadingWheel && !schedule} />
             {schedule &&
                 schedule.map((job => {
                     if (job.productionLine === line) {
