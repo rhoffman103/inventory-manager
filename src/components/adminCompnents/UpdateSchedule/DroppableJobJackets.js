@@ -17,7 +17,7 @@ const DroppableJobJackets = ({ jobs, select, actionType }) => (
                                 index={index}
                                 select={select}
                                 actionType={actionType}
-                                bg={(index % 2 === 0) ? 'bg-white' : 'bg-light-blue'}
+                                bg={(index % 2 === 0) ? 'bg-white' : 'bg-light-blue-4'}
                             />
                         :   <React.Fragment key={`fragmentKey-${job.id}-${index}`}/>
                 ))}

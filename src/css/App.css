@@ -1,0 +1,71 @@
+.pointer:hover {
+  cursor: pointer;
+}
+
+.br-sharp {
+  border-radius: .1rem;
+}
+
+div.modal-content {
+  border-radius: .1rem;
+}
+
+.new-product-layer:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.add-icon {
+  height: 35px;
+  width: 35px;
+  background-color: rgb(166, 208, 96);
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  box-shadow: 0 0 0 0 rgba(166, 208, 96, 0.7);
+  font-size: 175%;
+}
+
+.add-icon:hover {
+  opacity: .75;
+}
+
+.products-list:nth-child(even) {
+  background-color: #d6ecf8;
+}
+
+.products-list:hover {
+  background-color: #9ad0ee;
+}
+
+.selected-product {
+  background-color: #105da9 !important;
+  color:rgba(255,255,255,.75);
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.min-w-618 {
+  min-width: 618px;
+}
+
+.link {
+  color: #007bff;
+}
+
+.link:hover {
+  color: #0056b3;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.underline-hover:hover {
+  text-decoration: underline;
+}
+
+.hover-light:hover {
+  color: white;
+}

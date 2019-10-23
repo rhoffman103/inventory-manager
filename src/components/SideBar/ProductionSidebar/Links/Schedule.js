@@ -9,8 +9,9 @@ const Schedule = ({ location }) => {
 
     useEffect(() => {
         if (nonViewedScheduleUpdate && !location.pathname.includes('schedule'))
-            setClasses('secondary-orange flash-notification');
+            setClasses('orange-1 flash-notification');
         else setClasses('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [nonViewedScheduleUpdate]);
 
     return (
