@@ -4,8 +4,9 @@ import Accordion from 'react-bootstrap/Accordion'
 import AccordionCollapse from '../AccordionComponents/AccordionCollapse';
 import SideBar from '../SideBar';
 import SideLink from '../Links/SideLink';
+import Schedule from './Links/Schedule';
 
-const ProductionSidebar = () => {
+const ProductionSidebar = (props) => {
     return (
         <SideBar>
             
@@ -14,7 +15,7 @@ const ProductionSidebar = () => {
                     <h5>PX</h5>
                 </Accordion.Toggle>
                 <AccordionCollapse eventKey="px">
-                    <SideLink to='/production/px/schedule' display='Schedule' />
+                    <Schedule {...props} />
                     <SideLink to='/production/px/add-new-rolls' display='Add New Rolls' />
                     <SideLink to='/production/px/report-scrap' display='Scrap' />
                     <SideLink to='/production/px/report-downtime' display='Downtime' />

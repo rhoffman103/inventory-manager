@@ -8,7 +8,7 @@ import Main from '../components/common/Main';
 import Spinner from '../components/common/Modals/Spinner';
 import ProductionComponentsRouter from '../routers/ProductionComponentsRouter';
 
-const Production = () => {
+const Production = (props) => {
 
     const { state } = useContext(appContext);
 
@@ -17,7 +17,7 @@ const Production = () => {
             { !state.auth.uid && <Redirect to='/' /> }
             <NavBar page='production' />
             <MainContainer>
-                <ProductionSidebar />
+                <ProductionSidebar {...props} />
                 <Main>
                     <ProductionComponentsRouter />
                 </Main>

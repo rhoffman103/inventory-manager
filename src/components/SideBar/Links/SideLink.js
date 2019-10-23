@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const SideLink = ({ to, display }) => (
+const SideLink = ({ to, display, className }) => (
     <Link
-        className="nav-link pointer"
+        className={`nav-link pointer ${className ? className : ''}`}
         to={to}
     >
         { display }

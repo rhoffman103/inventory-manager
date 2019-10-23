@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import appContext from '../../../context/appContext';
 import Loading from '../../common/Loading/Loading';
 import Row from 'react-bootstrap/Row';
@@ -6,8 +6,19 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 
 const Schedule = ({ line }) => {
-    const { state } = useContext(appContext);
+    const { state, stateDispatch } = useContext(appContext);
     const { schedule } = state.db;
+    const { nonViewedScheduleUpdate } = state.components;
+    
+    useEffect(() => {
+        if (nonViewedScheduleUpdate !== undefined) {
+            console.log('updating view')
+        stateDispatch({
+            type: 'VIEWED_SCHEDULE_UPDATE'
+        });
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [nonViewedScheduleUpdate]);
 
     return(
         <div>

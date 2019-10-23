@@ -63,19 +63,20 @@ export const ScheduleByLineListener = (line, dispatch) => {
     dispatch({
         type: 'SET_LOADING_WHEEL',
         showLoadingWheel: true
-    })
+    });
     return dbSchedule.listenForScheduleByLine(line, (data) => {
         if (data.err) {
             dispatch({
                 type: 'SCHEDULE_LISTENER_ERROR',
                 err: data
-            })
+            });
         }
         else {
             dispatch({
                 type: 'SCHEDULE_LISTENER',
-                schedule: data.schedule
-            })
+                schedule: data.schedule,
+                subscribedSchedule: line
+            });
         }
     });
 };

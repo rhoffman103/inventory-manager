@@ -35,7 +35,16 @@ const componentsReducer = (state, action) => {
         case 'SET_COMPONENT':
             return { ...state, [action.component]: action.value }
         case 'SCHEDULE_LISTENER':
-            return { ...state, showLoadingWheel: false };
+            return {
+                ...state,
+                showLoadingWheel: false,
+                subscribedSchedule: action.subscribedSchedule,
+                nonViewedScheduleUpdate: true
+            };
+        case 'VIEWED_SCHEDULE_UPDATE':
+            return { ...state, nonViewedScheduleUpdate: false };
+        case 'UNSUBSCRIBE_SCHEDULE_LISTENER':
+            return { ...state, subscribedSchedule: null };
         default:
             return state;
     };

@@ -28,8 +28,6 @@ const databaseReducer = (state = {}, action) => {
                 scheduleUpdated: true,
                 changedJackets: action.changedJackets
             };
-        case 'SCHEDULE_LISTENER':
-            return { ...state, schedule: action.schedule };
         case 'SCHEDULE_DRAG_UPDATE':
             return { ...state, schedule: action.schedule, scheduleUpdated: true };
         case 'EDIT_JOB_INSTRUCTIONS':
@@ -38,6 +36,11 @@ const databaseReducer = (state = {}, action) => {
                 schedule: action.updatedSchedule,
                 scheduleUpdated: true,
                 changedJackets: { ...state.changedJackets = {}, [action.jacketKey]: action.changedJacket }
+            };
+        case 'SCHEDULE_LISTENER':
+            return {
+                ...state,
+                schedule: action.schedule,
             };
         default:
             return state;

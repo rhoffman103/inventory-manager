@@ -6,12 +6,15 @@ import { ScheduleByLineListener } from '../../actions/scheduleActions';
 
 const LineSwitch = ({ line }) => {
     const { stateDispatch } = useContext(appContext);
-
+    
     useEffect(() => {
         const unsubscribe = ScheduleByLineListener(line, stateDispatch);
         return () => {
             console.log('UNSUBSCRIBE');
             unsubscribe();
+            stateDispatch({
+                type: 'UNSUBSCRIBE_SCHEDULE_LISTENER'
+            });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
