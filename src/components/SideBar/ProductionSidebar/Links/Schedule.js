@@ -1,23 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
-import appContext from '../../../../context/appContext';
+import React from 'react';
+import useBlinkNotification from '../../../../hooks/useBlinkNotification';
 import SideLink from '../../Links/SideLink';
 
-const Schedule = ({ location }) => {
-    const { state } = useContext(appContext);
-    const { nonViewedScheduleUpdate } = state.components;
-    const [classes, setClasses] = useState('');
-
-    useEffect(() => {
-        if (nonViewedScheduleUpdate && !location.pathname.includes('schedule'))
-            setClasses('orange-1 flash-notification');
-        else setClasses('');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [nonViewedScheduleUpdate]);
+const Schedule = ({ location, productionLine }) => {
+    const { notificationClasses } = useBlinkNotification(location);
 
     return (
         <SideLink
-            className={classes}
-            to='/production/px/schedule'
+            className={
+                location.pathname.toLowerCase().includes(`/production/${productionLine}`)
+                    ? notificationClasses
+                    : ''
+            }
+            to={`/production/${productionLine}/schedule`}
             display='Schedule'
         />
     );

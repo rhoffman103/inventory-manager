@@ -12,10 +12,9 @@ const Schedule = ({ line }) => {
     
     useEffect(() => {
         if (nonViewedScheduleUpdate !== undefined) {
-            console.log('updating view')
-        stateDispatch({
-            type: 'VIEWED_SCHEDULE_UPDATE'
-        });
+            stateDispatch({
+                type: 'VIEWED_SCHEDULE_UPDATE'
+            });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [nonViewedScheduleUpdate]);
