@@ -13,7 +13,7 @@ const LayerForm = ({ layer, values, handleInputChange }) => {
         const newArr = materials.map(num => num);
         newArr.push(1);
         setMaterials(newArr);
-    }
+    };
 
     const pulse = () => {
         setPulse('pulse');

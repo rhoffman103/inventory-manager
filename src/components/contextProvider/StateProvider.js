@@ -19,10 +19,11 @@ const StateProvider = ({ children }) => {
 
     useEffect(() => {
         let redirect = '/';
-        
+        // for demo purposes, redirect production employees
+        // to '/production/px' for blinking notification
         if (uid) {
             if (admin) redirect = '/admin';
-            else redirect = '/production';
+            else redirect = '/production/px';
         }
 
         stateDispatch({

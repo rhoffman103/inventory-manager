@@ -1,3 +1,5 @@
+import dbSchedule from '../database/scheduleAccess';
+
 export const addToSchedule = (jobJacket, stateDb, dispatch) => {
     let changedJackets = Object.assign({}, stateDb.changedJackets) || {};
     let schedule = Array.from(stateDb.schedule);
@@ -54,5 +56,27 @@ export const removeFromSchedule = (jobJacket, stateDb, dispatch) => {
         jobJackets,
         schedule,
         changedJackets
+    });
+};
+
+export const ScheduleByLineListener = (line, dispatch) => {
+    dispatch({
+        type: 'SET_LOADING_WHEEL',
+        showLoadingWheel: true
+    });
+    return dbSchedule.listenForScheduleByLine(line, (data) => {
+        if (data.err) {
+            dispatch({
+                type: 'SCHEDULE_LISTENER_ERROR',
+                err: data
+            });
+        }
+        else {
+            dispatch({
+                type: 'SCHEDULE_LISTENER',
+                schedule: data.schedule,
+                subscribedSchedule: line
+            });
+        }
     });
 };

@@ -1,3 +1,4 @@
+
 const databaseReducer = (state = {}, action) => {
     switch(action.type) {
         case 'EMPTY_DB':
@@ -35,6 +36,11 @@ const databaseReducer = (state = {}, action) => {
                 schedule: action.updatedSchedule,
                 scheduleUpdated: true,
                 changedJackets: { ...state.changedJackets = {}, [action.jacketKey]: action.changedJacket }
+            };
+        case 'SCHEDULE_LISTENER':
+            return {
+                ...state,
+                schedule: action.schedule,
             };
         default:
             return state;

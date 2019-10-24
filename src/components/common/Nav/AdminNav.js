@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import appContext from '../../../context/appContext';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import LogOut from './links/LogOut';
 
 const AdminNav = () => {

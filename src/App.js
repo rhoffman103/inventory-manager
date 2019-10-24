@@ -5,8 +5,10 @@ import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
 import Production from './pages/Production';
-import './App.css';
-import './responsive.css';
+import './css/App.css';
+import './css/Color.css';
+import './css/Animations.css';
+import './css/responsive.css';
 
 const App = () => (
 	<Router>
