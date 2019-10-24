@@ -2,6 +2,14 @@ import { modalSpinner, formRequestAction } from './commonActions';
 import { signInWithEmailAndPassword, onAuthStateChanged, authSignOut, addEmployee } from '../database/authAccess';
 
 const loginUser = (dispatch, user) => {
+    // For demo purposes, set blink notifications
+    let notifications = {};
+    if (!user.admin) {
+        notifications = {
+            nonViewedScheduleUpdate: true,
+            subscribedSchedule: "PX"
+        }
+    }
     dispatch({
         type: 'LOGIN_USER',
         auth: {
@@ -9,7 +17,8 @@ const loginUser = (dispatch, user) => {
             name: user.displayName,
             onFirebaseAuth: true,
             loginError: false
-        }
+        },
+        notifications
     });
 };
 

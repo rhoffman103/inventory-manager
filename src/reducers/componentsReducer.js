@@ -45,6 +45,8 @@ const componentsReducer = (state, action) => {
             return { ...state, nonViewedScheduleUpdate: false };
         case 'UNSUBSCRIBE_SCHEDULE_LISTENER':
             return { ...state, subscribedSchedule: null };
+        case 'LOGIN_USER':
+            return { ...state, ...action.notifications };
         default:
             return state;
     };
