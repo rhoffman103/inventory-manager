@@ -50,10 +50,12 @@ const SignupForm = () => {
         validateDispatch(checkHasInput({ key: 'firstName', value: firstName, hasHadInput: validation.firstName.hasHadInput, type: 'CHECK_HAS_INPUT' }));
         validateDispatch(checkHasInput({ key: 'lastName', value: lastName, hasHadInput: validation.lastName.hasHadInput, type: 'CHECK_HAS_INPUT' }));
         validateDispatch(checkHasInput({ key: 'employeeId', value: employeeId, hasHadInput: validation.employeeId.hasHadInput, type: 'CHECK_HAS_INPUT' }));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values]);
 
     useEffect(() => {
         if (state.forms.emptyCurrentForm) clearForm();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.forms])
 
     return (

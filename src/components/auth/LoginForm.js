@@ -32,7 +32,8 @@ const LoginForm = () => {
     }, [values.email]);
 
     useEffect(() => {
-            if (loginError || displayName) emptyValues('email password');
+        if (loginError || displayName) emptyValues('email password');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loginError, displayName]);
 
     return (
