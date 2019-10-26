@@ -3,8 +3,7 @@ const authenticationReducer = (state = {}, action) => {
         case 'LOGIN_USER':
             return {
                 ...state,
-                ...action.auth,
-                isModal: action.isModal
+                ...action.auth
             };
         case 'SET_LOGIN_ERROR':
             return {
