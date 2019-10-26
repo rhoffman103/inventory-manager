@@ -32,7 +32,7 @@ const ProductionSidebar = (props) => {
                 <Accordion.Toggle
                     as={NavLink}
                     eventKey="px"
-                    className={props.location.pathname.toLowerCase().includes('px') ? notificationClasses : ''}
+                    className={(!accordionStatus.px && props.location.pathname.toLowerCase().includes('px')) ? notificationClasses : ''}
                     onClick={() => toggleAccordion('px')}
                 >
                     <h5>PX</h5>

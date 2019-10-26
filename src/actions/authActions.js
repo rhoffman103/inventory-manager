@@ -3,8 +3,11 @@ import { signInWithEmailAndPassword, onAuthStateChanged, authSignOut, addEmploye
 
 const loginUser = (dispatch, user) => {
     // For demo purposes, set blink notifications
+    // redirect production employees to '/production/px'
     let notifications = {};
+    let redirectTo = '/admin'
     if (!user.admin) {
+        redirectTo = '/production/px';
         notifications = {
             nonViewedScheduleUpdate: true,
             subscribedSchedule: "PX"
@@ -16,7 +19,8 @@ const loginUser = (dispatch, user) => {
             ...user,
             name: user.displayName,
             onFirebaseAuth: true,
-            loginError: false
+            loginError: false,
+            redirectTo
         },
         notifications
     });
