@@ -1,17 +1,19 @@
 import React, { useContext, useEffect } from 'react';
 import appContext from '../../context/appContext';
+// import { ScheduleByLineListener } from '../../actions/scheduleActions';
+import { getDummySchedule } from '../../actions/databaseActions';
 import { Route, Switch } from "react-router-dom";
 import Schedule from '../../components/productionComponents/Schedule';
-import { ScheduleByLineListener } from '../../actions/scheduleActions';
+import AddFinishedProduct from '../../components/productionComponents/AddFinishedProduct';
 
 const LineSwitch = ({ line }) => {
     const { stateDispatch } = useContext(appContext);
     
     useEffect(() => {
-        const unsubscribe = ScheduleByLineListener(line, stateDispatch);
+        // const unsubscribe = ScheduleByLineListener(line, stateDispatch);
+        getDummySchedule(stateDispatch);
         return () => {
-            console.log('UNSUBSCRIBE');
-            unsubscribe();
+            // unsubscribe();
             stateDispatch({
                 type: 'UNSUBSCRIBE_SCHEDULE_LISTENER'
             });
@@ -24,6 +26,10 @@ const LineSwitch = ({ line }) => {
             <Route
                 exact path='/production/px/schedule'
                 render={(props) => <Schedule {...props} line='PX' />}
+            />
+            <Route
+                exact path='/production/px/add-new-rolls'
+                render={(props) => <AddFinishedProduct {...props} line='PX' />}
             />
         </Switch>
     );
