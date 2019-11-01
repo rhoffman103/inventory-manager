@@ -1,4 +1,3 @@
-
 const databaseReducer = (state = {}, action) => {
     switch(action.type) {
         case 'EMPTY_DB':
