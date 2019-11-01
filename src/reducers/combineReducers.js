@@ -8,4 +8,18 @@ const combineReducers = (reducers) => {
     };
 };
 
-export default combineReducers;
+const combineReducersSpreadState = (reducers) => {
+    return (state, action) => {
+        return {
+            ...state,
+            ...Object.keys(reducers).reduce((newState, key) => {
+                return {
+                    ...newState,
+                    ...reducers[key](state[key], action)	
+                };	
+            }, {})
+        };	
+    };
+};
+
+export { combineReducersSpreadState, combineReducers as default };

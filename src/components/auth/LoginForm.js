@@ -23,7 +23,7 @@ const LoginForm = () => {
     const { closeModal } = useModal();
 
     const onSubmit = (e) => {
-        if (validation.isEmail && e.which === 13) signIn(values, stateDispatch);
+        if (validation.email.validated && (e.which === 13)) signIn(values, stateDispatch);
         else if (!e.which) signIn(values, stateDispatch);
     };
 
@@ -32,7 +32,8 @@ const LoginForm = () => {
     }, [values.email]);
 
     useEffect(() => {
-            if (loginError || displayName) emptyValues('email password');
+        if (loginError || displayName) emptyValues('email password');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loginError, displayName]);
 
     return (
