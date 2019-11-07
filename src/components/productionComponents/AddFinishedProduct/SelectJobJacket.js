@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import appContext from '../../../context/appContext';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import FormControl from 'react-bootstrap/FormControl';
 
 const SelectJobJacket = () => {
@@ -19,24 +21,26 @@ const SelectJobJacket = () => {
     }, [schedule]);
 
     return (
-        <>
-        { schedule &&
-            <FormControl
-                as="select"
-                className='br-sharp'
-                onChange={(e) => setSelectJobJacket(schedule[e.target.value])}
-            >
-                { schedule.map((jobJacket, index) => (
-                    <option
-                        key={jobJacket.jobJacketKey}
-                        value={index}
+        <Row>
+            { schedule &&
+                <Col xs={8} sm={5}>
+                    <FormControl
+                        as="select"
+                        className='br-sharp'
+                        onChange={(e) => setSelectJobJacket(schedule[e.target.value])}
                     >
-                        {jobJacket.customer}: {jobJacket.id}
-                    </option>
-                ))}
-            </FormControl>
-        }
-        </>
+                        { schedule.map((jobJacket, index) => (
+                            <option
+                                key={jobJacket.jobJacketKey}
+                                value={index}
+                            >
+                                {jobJacket.customer}: {jobJacket.id}
+                            </option>
+                        ))}
+                    </FormControl>
+                </Col>
+            }
+        </Row>
     );
 };
 
