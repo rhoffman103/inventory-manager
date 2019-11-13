@@ -39,6 +39,10 @@ const ProductionSidebar = (props) => {
                 </Accordion.Toggle>
                 <AccordionCollapse eventKey="px">
                     <Schedule {...props} productionLine='px' />
+                    <SideLink
+                        to={`/production/px/progress/${state.db.schedule ? state.db.schedule[0].id : ''}`}
+                        display='Progress'
+                    />
                     <SideLink to='/production/px/add-new-rolls' display='Add New Rolls' />
                     <SideLink to='/production/px/report-scrap' display='Scrap' />
                     <SideLink to='/production/px/report-downtime' display='Downtime' />

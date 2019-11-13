@@ -5,6 +5,7 @@ import { ScheduleByLineListener } from '../../actions/scheduleActions';
 import { Route, Switch } from "react-router-dom";
 import Schedule from '../../components/productionComponents/Schedule';
 import AddFinishedProduct from '../../components/productionComponents/AddFinishedProduct';
+import JobJacketProgress from '../../components/productionComponents/JobJacketProgress';
 
 const LineSwitch = ({ line }) => {
     const { stateDispatch } = useContext(appContext);
@@ -30,6 +31,10 @@ const LineSwitch = ({ line }) => {
             <Route
                 exact path='/production/px/add-new-rolls'
                 render={(props) => <AddFinishedProduct {...props} line='PX' />}
+            />
+            <Route
+                path='/production/px/progress/:jacketKey?'
+                render={(props) => <JobJacketProgress {...props} line='PX' />}
             />
         </Switch>
     );

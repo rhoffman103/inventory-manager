@@ -1,5 +1,10 @@
 import { rollLength, rollWeight, needsRework } from '../constants/pxConstants';
 
+export const setSelectJobJacket = (jobJacket) => ({
+    type: 'SELECT_JOB_JACKET',
+    jobJacket
+});
+
 export const collectProductionForm = (values, rollSet) => {
     let greatestLength = 0;
     let productionMinutes = 0;
