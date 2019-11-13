@@ -3,7 +3,7 @@ import FormField from '../../../common/Forms/FormField';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import { pxRollSet } from '../../../../constants/pxConstants';
+import { pxRollSet, rollLength, rollWeight, needsRework } from '../../../../constants/pxConstants';
 
 const ReportPXFinishedProduct = ({ values, handleInputChange }) => {
 
@@ -19,13 +19,26 @@ const ReportPXFinishedProduct = ({ values, handleInputChange }) => {
 
     return (
         <>
+            <Row>
+                <Col xs={8} sm={5}>
+                    <FormField
+                        controlId='lineSpeedInput'
+                        value={values.lineSpeed}
+                        name='lineSpeed'
+                        type='number'
+                        label='Line Speed'
+                        placeholder={'0'}
+                        inputChange={handleInputChange}
+                    />
+                </Col>
+            </Row>
             { pxRollSet.map((rollPosition, i) => (
                 <Row key={`${rollPosition}-${i}`}>
                     <Col xs={8} sm={5}>
                         <FormField
                             controlId={rollPosition}
-                            value={values[`${rollPosition}Length`]}
-                            name={`${rollPosition}Length`}
+                            value={values[`${rollPosition}_${rollLength}`]}
+                            name={`${rollPosition}_${rollLength}`}
                             type='number'
                             label={`${rollPosition} Length`}
                             placeholder={'0'}
@@ -35,8 +48,8 @@ const ReportPXFinishedProduct = ({ values, handleInputChange }) => {
                     <Col xs={8} sm={5}>
                         <FormField
                             controlId={rollPosition}
-                            value={values[`${rollPosition}Weight`]}
-                            name={`${rollPosition}Weight`}
+                            value={values[`${rollPosition}_${rollWeight}`]}
+                            name={`${rollPosition}_${rollWeight}`}
                             type='number'
                             label={`${rollPosition} Weight`}
                             placeholder={'0'}
@@ -47,8 +60,8 @@ const ReportPXFinishedProduct = ({ values, handleInputChange }) => {
                         <Form.Group className="align-self-end pb-1" controlId="formBasicCheckbox">
                             <Form.Check
                                 type="checkbox" label="Rework?"
-                                name={`${rollPosition}Check`}
-                                checked={values[`${rollPosition}Check`]}
+                                name={`${rollPosition}_${needsRework}`}
+                                checked={values[`${rollPosition}_${needsRework}`]}
                                 onChange={handleCheck}
                             />
                         </Form.Group>

@@ -1,35 +1,31 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import appContext from '../../../context/appContext';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
 import Button from 'react-bootstrap/Button';
 import SelectJobJacket from './SelectJobJacket';
 import ReportPXFinishedProduct from './ReportPXFinishedProduct';
-import { pxRollSet } from '../../../constants/pxConstants';
+import { pxRollSet, rollLength, rollWeight, needsRework } from '../../../constants/pxConstants';
+import dbReportProduction from '../../../database/reportProductionAccess';
+import { collectProductionForm } from '../../../actions/pxProductionActions';
 
 const AddFinishedProduct = ({ line }) => {
 
     const { state } = useContext(appContext);
     const { selectedJobJacket } = state.db;
-    let { values, handleInputChange, emptyValues } = useHandleInputChange(
-        pxRollSet.reduce((newObj, key) => ({
+    let { values, handleInputChange, emptyValues } = useHandleInputChange({
+        ...pxRollSet.reduce((newObj, postion) => ({
             ...newObj,
-            [`${key}Weight`]: "",
-            [`${key}Length`]: "",
-            [`${key}Check`]: false
-        }), {})
-    );
+            [`${postion}_${rollWeight}`]: "",
+            [`${postion}_${rollLength}`]: "",
+            [`${postion}_${needsRework}`]: false
+        }), {}),
+        lineSpeed: ""
+    });
 
-    const collectForm = (values, rollSet) => (
-        rollSet.map((position) => ({
-            [`${position}Weight`]: values[`${position}Weight`],
-            [`${position}Length`]: values[`${position}Length`],
-            [`${position}Check`]: values[`${position}Check`]
-        }))
-    );
-
-    useEffect(() => {
-        console.log(values);
-    }, [values]);
+    const submitForm = () => {
+        dbReportProduction.pxAddFinishedProduct(collectProductionForm(values, pxRollSet), selectedJobJacket.jobJacketKey);
+        emptyValues();
+    };
 
     return (
         <>
@@ -46,10 +42,9 @@ const AddFinishedProduct = ({ line }) => {
                     values={values}
                     handleInputChange={handleInputChange}
                 />
-                <Button onClick={() => {
-                    console.log(collectForm(values, pxRollSet));
-                    emptyValues();
-                }}>Submit</Button>
+                <Button onClick={submitForm}>
+                    Submit
+                </Button>
             </div>
         </>
     );
