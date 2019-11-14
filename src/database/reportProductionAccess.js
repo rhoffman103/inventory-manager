@@ -39,10 +39,21 @@ const dbReportProduction = {
             return dbBatch.commit();
         })
         .then(() => {
-            console.log('COMMITTED')
+            console.log('COMMITTED');
+            return Promise.resolve({ 
+                status: 200,
+                code: '',
+                message: 'Successfully added new product.'
+            });
         })
-        .catch(err => console.log(err))
-
+        .catch(err => {
+            console.log(err);
+            return Promise.reject({
+                code: err.code,
+                message: err.message,
+                status: err.status
+            });
+        });
     }
 }
 

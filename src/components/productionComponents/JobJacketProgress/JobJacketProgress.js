@@ -1,17 +1,12 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import SelectJobJacket from '../productionCommon/SelectJobJacket';
 
 const JobJacketProgress = () => {
-
-    const { jacketKey } = useParams();
 
     return (
         <div>
             <h2>Job Jacket Progress</h2>
-            { jacketKey
-                ? <p>Jacket Key: {jacketKey}</p>
-                : <></>
-            }
+            <SelectJobJacket redirectPath='/production/px/progress' />
         </div>
     );
 };

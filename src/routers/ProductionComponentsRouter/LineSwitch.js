@@ -29,11 +29,11 @@ const LineSwitch = ({ line }) => {
                 render={(props) => <Schedule {...props} line='PX' />}
             />
             <Route
-                exact path='/production/px/add-new-rolls'
+                path='/production/px/add-new-rolls/:jacketId?'
                 render={(props) => <AddFinishedProduct {...props} line='PX' />}
             />
             <Route
-                path='/production/px/progress/:jacketKey?'
+                path='/production/px/progress/:jacketId?'
                 render={(props) => <JobJacketProgress {...props} line='PX' />}
             />
         </Switch>

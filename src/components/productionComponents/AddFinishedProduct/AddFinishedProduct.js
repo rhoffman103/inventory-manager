@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import appContext from '../../../context/appContext';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
 import Button from 'react-bootstrap/Button';
-import SelectJobJacket from './SelectJobJacket';
+import SelectJobJacket from '../productionCommon/SelectJobJacket';
 import ReportPXFinishedProduct from './ReportPXFinishedProduct';
 import { pxRollSet, rollLength, rollWeight, needsRework } from '../../../constants/pxConstants';
 import dbReportProduction from '../../../database/reportProductionAccess';
@@ -31,12 +31,7 @@ const AddFinishedProduct = ({ line }) => {
         <>
             <h1>{line}: Add New Rolls</h1>
             <div>
-                { selectedJobJacket &&
-                    <h5>
-                        Current Job Jacket: {`${selectedJobJacket.customer} - ${selectedJobJacket.id}`}
-                    </h5>
-                }
-                <SelectJobJacket />
+                <SelectJobJacket redirectPath={'/production/px/add-new-rolls'} />
                 <ReportPXFinishedProduct
                     jobJacketKey={selectedJobJacket ? selectedJobJacket.jobJacketKey : null}
                     values={values}
