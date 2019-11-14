@@ -2,6 +2,7 @@ import { setAdminStatus } from '../database/employeesAccess';
 import dbProducts from '../database/productsAccess';
 import dbJobJackets from '../database/jobJacketAccess';
 import dbSchedule from '../database/scheduleAccess';
+import reportProductionAccess from '../database/reportProductionAccess';
 import { modalSpinner, formRequestAction } from './commonActions';
 
 export const updateAdminStatus = (stateDispatch, employee) => {
@@ -189,6 +190,20 @@ export const updateScheduleAndJobJackets = (stateDb, line, dispatch) => {
         console.log(err);
         dispatch(formRequestAction({ data: { code: err.code, err: err.message  }}))
     });
+};
+
+export const attachFinishedProductToSelecetedJobJacket = (selectedJacket, dispatch) => {
+    return reportProductionAccess.pxGetreportedProducts(selectedJacket.jobJacketKey)
+        .then((data) => {
+            dispatch({
+                type: 'SELECT_JOB_JACKET',
+                jobJacket: {
+                    ...selectedJacket,
+                    reportedProducts: data.reportedProducts
+                }
+            })
+        })
+        .catch((err) => console.log(err));
 };
 
 export const getDummySchedule = (dispatch) => {

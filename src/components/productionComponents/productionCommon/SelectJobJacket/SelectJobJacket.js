@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import appContext from '../../../../context/appContext';
+import { attachFinishedProductToSelecetedJobJacket } from '../../../../actions/databaseActions';
 import { Redirect, useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -12,10 +13,7 @@ const SelectJobJacket = ({ redirectPath }) => {
     const [ selectedId, setSelectedId ] = useState(jacketId ? jacketId : '');
     
     const setSelectJobJacket = (jobJacket) => {
-        stateDispatch({
-            type: 'SELECT_JOB_JACKET',
-            jobJacket
-        });
+        attachFinishedProductToSelecetedJobJacket(jobJacket, stateDispatch);
     };
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import database, { firebase } from '../config/firebaseConfig';
 
 const dbReportProduction = {
-    pxAddFinishedProduct: (productsObj, jobJacketKey) => {
+    pxAddFinishedProduct: function (productsObj, jobJacketKey) {
         const dbBatch = database.batch();
         const jobJacketRef = database.collection('jobJackets').doc(jobJacketKey);
         const reportedRef = database.collection('jobJackets').doc(jobJacketKey).collection('reportedProducts');
@@ -54,6 +54,25 @@ const dbReportProduction = {
                 status: err.status
             });
         });
+    },
+
+    pxGetreportedProducts: function (jobJacketKey) {
+        return database.collection('jobJackets').doc(jobJacketKey).collection('reportedProducts').get()
+        .then((doc) => {
+            return doc.docs.length
+            ?   Promise.resolve({
+                    reportedProducts: doc.docs.map((docSnapshot) => docSnapshot.data())
+                })
+            :   Promise.reject({
+                    code: 'No Document',
+                    message: 'No such document!'
+                });   
+        })
+        .catch((err) => Promise.reject({
+            code: err.code,
+            message: err.message,
+            status: err.status
+        }))
     }
 }
 
