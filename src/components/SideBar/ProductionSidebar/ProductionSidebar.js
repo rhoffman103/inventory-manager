@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, setState } from 'react';
 import appContext from '../../../context/appContext';
 import useBlinkNotification from '../../../hooks/useBlinkNotification';
 import NavLink from 'react-bootstrap/NavLink';
@@ -11,8 +11,10 @@ import Schedule from './Links/Schedule';
 const ProductionSidebar = (props) => {
     const { state } = useContext(appContext);
     const { subscribedSchedule, nonViewedScheduleUpdate } = state.components;
+    const { schedule } = state.db;
     const [accordionStatus, setAccordion] = useState({});
     const { notificationClasses, setNotificationClasses } = useBlinkNotification(props.location);
+    const [scheduleId, setScheduleId] = useState('');
 
     const toggleAccordion = (accordionKey) => {
         if (accordionStatus[accordionKey]) {
@@ -24,6 +26,10 @@ const ProductionSidebar = (props) => {
             setNotificationClasses('');
         }
     };
+
+    useEffect(() => {
+        if (schedule) setScheduleId(schedule[0].id);
+    }, [schedule]);
 
     return (
         <SideBar>
@@ -40,7 +46,7 @@ const ProductionSidebar = (props) => {
                 <AccordionCollapse eventKey="px">
                     <Schedule {...props} productionLine='px' />
                     <SideLink
-                        to={`/production/px/progress/${state.db.schedule ? state.db.schedule[0].id : ''}`}
+                        to={`/production/px/progress/${scheduleId}`}
                         display='Progress'
                     />
                     <SideLink to='/production/px/add-new-rolls' display='Add New Rolls' />
