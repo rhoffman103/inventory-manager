@@ -58,7 +58,7 @@ const dbReportProduction = {
 
     pxGetreportedProducts: function (jobJacketKey) {
         return database
-        .collection('jobJacketss')
+        .collection('jobJackets')
         .doc(jobJacketKey)
         .collection('reportedProducts')
         .orderBy('tagId', 'desc')
