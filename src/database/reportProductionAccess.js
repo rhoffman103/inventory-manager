@@ -7,7 +7,7 @@ const dbReportProduction = {
         const reportedRef = database.collection('jobJackets').doc(jobJacketKey).collection('reportedProducts');
         const incrementTotalRolls = firebase.firestore.FieldValue.increment(productsObj.rolls.length);
         const incrementProductionMinutes = firebase.firestore.FieldValue.increment(productsObj.productionMinutes);
-        
+
         return jobJacketRef.get()
         .then(doc => {
             if (doc.exists) return Promise.resolve(doc.data());
@@ -57,21 +57,22 @@ const dbReportProduction = {
     },
 
     pxGetreportedProducts: function (jobJacketKey) {
-        return database.collection('jobJackets').doc(jobJacketKey).collection('reportedProducts').get()
+        return database
+        .collection('jobJacketss')
+        .doc(jobJacketKey)
+        .collection('reportedProducts')
+        .orderBy('tagId', 'desc')
+        .get()
         .then((doc) => {
             return doc.docs.length
             ?   Promise.resolve({
                     reportedProducts: doc.docs.map((docSnapshot) => docSnapshot.data())
                 })
-            :   Promise.reject({
-                    code: 'No Document',
-                    message: 'No such document!'
-                });   
+            :   Promise.resolve({ reportedProducts: [] });   
         })
         .catch((err) => Promise.reject({
             code: err.code,
-            message: err.message,
-            status: err.status
+            message: err.message
         }))
     }
 }
