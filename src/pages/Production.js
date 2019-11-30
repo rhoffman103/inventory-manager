@@ -5,6 +5,7 @@ import MainContainer from '../components/common/Main/MainContainer';
 import Main from '../components/common/Main';
 import Spinner from '../components/common/Modals/Spinner';
 import ProductionComponentsRouter from '../routers/ProductionComponentsRouter';
+import GenericMessageModal from '../components/common/Modals/GenreicMessageModal';
 
 const Production = (props) => (
     <>
@@ -16,6 +17,7 @@ const Production = (props) => (
             </Main>
         </MainContainer>
         <Spinner />
+        <GenericMessageModal />
     </>
 );
 

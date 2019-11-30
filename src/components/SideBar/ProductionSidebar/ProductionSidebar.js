@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, setState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import appContext from '../../../context/appContext';
 import useBlinkNotification from '../../../hooks/useBlinkNotification';
 import NavLink from 'react-bootstrap/NavLink';
@@ -49,7 +49,7 @@ const ProductionSidebar = (props) => {
                         to={`/production/px/progress/${scheduleId}`}
                         display='Progress'
                     />
-                    <SideLink to='/production/px/add-new-rolls' display='Add New Rolls' />
+                    <SideLink to={`/production/px/add-new-rolls/${scheduleId}`} display='Add New Rolls' />
                     <SideLink to='/production/px/report-scrap' display='Scrap' />
                     <SideLink to='/production/px/report-downtime' display='Downtime' />
                 </AccordionCollapse>

@@ -1,4 +1,14 @@
 import database, { firebase } from '../config/firebaseConfig';
+const getDocFromRef = (ref) => {
+    return ref.get()
+    .then(doc => {
+        if (doc.exists) return Promise.resolve(doc.data());
+        else return Promise.reject({
+            code: 'No Document',
+            message: 'No such document!'
+        });
+    })
+};
 
 const dbReportProduction = {
     pxAddFinishedProduct: function (productsObj, jobJacketKey) {
@@ -8,14 +18,7 @@ const dbReportProduction = {
         const incrementTotalRolls = firebase.firestore.FieldValue.increment(productsObj.rolls.length);
         const incrementProductionMinutes = firebase.firestore.FieldValue.increment(productsObj.productionMinutes);
 
-        return jobJacketRef.get()
-        .then(doc => {
-            if (doc.exists) return Promise.resolve(doc.data());
-            else return Promise.reject({
-                code: 'No Document',
-                message: 'No such document!'
-            });
-        })
+        return getDocFromRef(jobJacketRef)
         .then(data => {
             let finishedRolls = 0;
             
@@ -39,7 +42,7 @@ const dbReportProduction = {
             return dbBatch.commit();
         })
         .then(() => {
-            console.log('COMMITTED');
+            console.log('COMMITTED PRODUCTS');
             return Promise.resolve({ 
                 status: 200,
                 code: '',
@@ -74,6 +77,42 @@ const dbReportProduction = {
             code: err.code,
             message: err.message
         }))
+    },
+
+    reportScrap: function (scrapObj) {
+        const dbBatch = database.batch();
+        const jobJacketRef = database.collection('jobJackets').doc(scrapObj.jobJacketKey);
+        const scrapRef = database.collection('jobJackets').doc(scrapObj.jobJacketKey).collection('reportedScrap');
+        const incrementTotalScrap = firebase.firestore.FieldValue.increment(scrapObj.totalWeight);
+        const incrementScrapEntries = firebase.firestore.FieldValue.increment(scrapObj.scrapArray.length);
+
+        return getDocFromRef(jobJacketRef)
+        .then((docData) => {
+            scrapObj.scrapArray.forEach((elem, index) => {
+                dbBatch.set(scrapRef.doc(), {
+                    ...elem,
+                    tagId: `${docData.id}S${docData.scrapEntries + (index + 1)}`
+                })
+            });
+
+            dbBatch.update(jobJacketRef, {
+                totalScrap: incrementTotalScrap,
+                scrapEntries: incrementScrapEntries
+            });
+
+            return dbBatch.commit();
+
+        })
+        .then(() => Promise.resolve({ 
+            status: 200,
+            code: '',
+            message: 'Successfully added scrap.'
+        }))
+        .catch(err => Promise.reject({
+            code: err.code,
+            message: err.message,
+            status: err.status
+        }));
     }
 }
 

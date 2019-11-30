@@ -34,7 +34,9 @@ const dbJobJackets = {
                     totalRollCount: 0,
                     finishedRollCount: 0,
                     productionMinutes: 0,
-                    downtimeMinutes: 0 
+                    downtimeMinutes: 0,
+                    totalScrap: 0,
+                    scrapEntries: 0
                 });
             })
             .then(() => Promise.resolve(jacketId))

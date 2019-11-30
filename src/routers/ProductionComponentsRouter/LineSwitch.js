@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import Schedule from '../../components/productionComponents/Schedule';
 import AddFinishedProduct from '../../components/productionComponents/AddFinishedProduct';
 import JobJacketProgress from '../../components/productionComponents/JobJacketProgress';
+import ReportScrap from '../../components/productionComponents/ReportScrap';
 
 const LineSwitch = ({ line }) => {
     const { stateDispatch } = useContext(appContext);
@@ -35,6 +36,10 @@ const LineSwitch = ({ line }) => {
             <Route
                 path='/production/px/progress/:jacketId?'
                 render={(props) => <JobJacketProgress {...props} line='PX' />}
+            />
+            <Route
+                path='/production/px/report-scrap/:jacketId?'
+                render={(props) => <ReportScrap {...props} line='PX' />}
             />
         </Switch>
     );
