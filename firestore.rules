@@ -11,16 +11,16 @@ service cloud.firestore {
     function isAdmin() {
     	return get(/databases/$(database)/documents/employees/$(request.auth.uid)).data.admin == true;
     }
+        
+    match /employees/{employeeId} {
+    	allow read, write: if isAdmin();
+    	allow read: if request.auth.uid == employeeId;
+    }
     
 		match /control/{count} {
     	allow read, write: if isAdmin();
     }
-    
-    match /jobJackets/{jobJaket} {
-      allow read, write: if isAdmin();
-    	allow read: if signedIn();
-    }
-    
+
     match /products/{product} {
       allow read, write: if isAdmin();
     	allow read: if signedIn();
@@ -31,9 +31,19 @@ service cloud.firestore {
     	allow read: if signedIn();
     }
     
-    match /employees/{employeeId} {
+    match /jobJackets/{jobJaket} {
+      allow read, write: if isAdmin();
+    	allow read, update: if signedIn();
+    }
+    
+    match /jobJackets/{jobJaket}/reportedProducts/{product} {
     	allow read, write: if isAdmin();
-    	allow read: if request.auth.uid == employeeId;
+      allow read, create, update: if signedIn();
+    }
+    
+    match /jobJackets/{jobJaket}/reportedScrap/{scrap} {
+    	allow read, write: if isAdmin();
+      allow read, create, update: if signedIn();
     }
   }
 }
