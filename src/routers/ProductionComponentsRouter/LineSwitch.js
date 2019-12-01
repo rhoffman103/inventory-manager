@@ -1,19 +1,21 @@
 import React, { useContext, useEffect } from 'react';
 import appContext from '../../context/appContext';
-// import { ScheduleByLineListener } from '../../actions/scheduleActions';
-import { getDummySchedule } from '../../actions/databaseActions';
+import { ScheduleByLineListener } from '../../actions/scheduleActions';
+// import { getDummySchedule } from '../../actions/databaseActions';
 import { Route, Switch } from "react-router-dom";
 import Schedule from '../../components/productionComponents/Schedule';
 import AddFinishedProduct from '../../components/productionComponents/AddFinishedProduct';
+import JobJacketProgress from '../../components/productionComponents/JobJacketProgress';
+import ReportScrap from '../../components/productionComponents/ReportScrap';
 
 const LineSwitch = ({ line }) => {
     const { stateDispatch } = useContext(appContext);
     
     useEffect(() => {
-        // const unsubscribe = ScheduleByLineListener(line, stateDispatch);
-        getDummySchedule(stateDispatch);
+        const unsubscribe = ScheduleByLineListener(line, stateDispatch);
+        // getDummySchedule(stateDispatch);
         return () => {
-            // unsubscribe();
+            unsubscribe();
             stateDispatch({
                 type: 'UNSUBSCRIBE_SCHEDULE_LISTENER'
             });
@@ -28,8 +30,16 @@ const LineSwitch = ({ line }) => {
                 render={(props) => <Schedule {...props} line='PX' />}
             />
             <Route
-                exact path='/production/px/add-new-rolls'
+                path='/production/px/add-new-rolls/:jacketId?'
                 render={(props) => <AddFinishedProduct {...props} line='PX' />}
+            />
+            <Route
+                path='/production/px/progress/:jacketId?'
+                render={(props) => <JobJacketProgress {...props} line='PX' />}
+            />
+            <Route
+                path='/production/px/report-scrap/:jacketId?'
+                render={(props) => <ReportScrap {...props} line='PX' />}
             />
         </Switch>
     );

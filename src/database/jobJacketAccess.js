@@ -30,7 +30,13 @@ const dbJobJackets = {
                     complete: false,
                     dueDate: moment(jobJacket.dueDate, 'MM-DD-YYYY').format('x'),
                     id: jacketId,
-                    inSchedule: false
+                    inSchedule: false,
+                    totalRollCount: 0,
+                    finishedRollCount: 0,
+                    productionMinutes: 0,
+                    downtimeMinutes: 0,
+                    totalScrap: 0,
+                    scrapEntries: 0
                 });
             })
             .then(() => Promise.resolve(jacketId))

@@ -7,7 +7,7 @@ const loginUser = (dispatch, user) => {
     let notifications = {};
     let redirectTo = '/admin'
     if (!user.admin) {
-        redirectTo = '/production/px';
+        redirectTo = '/production/px/add-new-rolls';
         notifications = {
             nonViewedScheduleUpdate: true,
             subscribedSchedule: "PX"

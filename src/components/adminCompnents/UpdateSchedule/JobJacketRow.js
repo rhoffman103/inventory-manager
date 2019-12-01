@@ -24,9 +24,13 @@ const JobJacketRow = ({ job, select, actionType, dragHandle, bg, draggableIcon }
             <Col
                 xs={2}
                 className='cursor-pointer'
-                onClick={() => select(job, state.db, stateDispatch)}
             >
-                <span className='underline mr-3'>{actionType}</span>
+                <span
+                    className='underline mr-3'
+                    onClick={() => select(job, state.db, stateDispatch)}
+                >
+                    {actionType}
+                </span>
                 { draggableIcon && <VerticalDragAndDropGrip dragHandle={dragHandle} /> }
             </Col>
         </Row>

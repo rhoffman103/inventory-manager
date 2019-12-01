@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row'
 const FormField = ({ label, controlId, message, name, type, placeholder, inputChange, value }) => (
     <Form.Group controlId={controlId}>
         <Row>
-            <Col xs={6}>
+            <Col xs={message ? 6 : 12}>
                 <Form.Label>{label}</Form.Label>
             </Col>
             { message &&

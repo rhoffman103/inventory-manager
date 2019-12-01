@@ -36,6 +36,9 @@ const AppRouter = () => {
                 component={Production}
                 auth={state.auth}
             />
+            <Route path ='*'>
+                <Redirect to='/' />
+            </Route>
         </Switch>
     );
 };

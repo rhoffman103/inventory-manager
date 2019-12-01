@@ -12,4 +12,10 @@ export const formRequestAction = ({ data, emptyCurrentForm = false, employee = {
     data
 });
 
+export const genericModalWithData = (data) => ({
+    type: 'MODAL_WITH_DATA',
+    modal: 'genericMessageModal',
+    data
+});
+
 export const emptyDBReducer = () => ({ type: 'EMPTY_DB' });
