@@ -44,6 +44,7 @@ bower_components
 build/Release
 
 # Dependency directories
+/client/node_modules
 /node_modules
 /.pnp
 .pnp.js
@@ -70,7 +71,7 @@ build/Release
 /coverage
 
 # production
-/build
+/client/build
 
 # misc
 .DS_Store
