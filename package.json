@@ -1,65 +1,18 @@
 {
   "name": "inventory-manager",
-  "author": "Bobby Hoffman",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "cross-env": "^5.2.0",
-    "electron-is-dev": "^1.1.0",
-    "firebase": "^6.3.5",
-    "isemail": "^3.2.0",
-    "moment": "^2.24.0",
-    "react": "^16.9.0",
-    "react-beautiful-dnd": "^11.0.5",
-    "react-bootstrap": "^1.0.0-beta.11",
-    "react-calendar": "^2.19.2",
-    "react-dom": "^16.9.0",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.0.1",
-    "update-electron-app": "^1.5.0",
-    "zxcvbn": "^4.4.2"
-  },
-  "devDependencies": {
-    "concurrently": "^4.1.1",
-    "electron": "^6.0.1",
-    "electron-builder": "^21.2.0",
-    "wait-on": "^3.3.0"
-  },
-  "build": {
-    "appId": "com.inventory-manager.electron-cra",
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
-  },
-  "homepage": "./",
-  "main": "public/electron.js",
+  "version": "1.0.0",
+  "description": "mockup app for managing production inventory.",
   "scripts": {
-    "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test --env=jsdom",
-    "react-eject": "react-scripts eject",
-    "electron-build": "electron-builder",
-    "release": "yarn react-build && electron-builder --publish=always",
-    "build": "yarn react-build && yarn electron-build",
-    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "start": "npm run start:dev",
+    "start:dev": "concurrently \"npm run functions\" \"npm run client\"",
+    "functions": "cd functions && npm run serve",
+    "client": "cd client && yarn run start"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "author": "Bobby Hoffman",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^3.5.0",
+    "nodemon": "^1.11.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "dependencies": {}
 }
