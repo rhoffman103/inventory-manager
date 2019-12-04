@@ -1,4 +1,6 @@
 import database, { firebase } from '../config/firebaseConfig';
+import moment from 'moment';
+
 const getDocFromRef = (ref) => {
     return ref.get()
     .then(doc => {
@@ -111,7 +113,23 @@ const dbReportProduction = {
         .catch(err => Promise.reject({
             code: err.code,
             message: err.message,
-            status: err.status
+            status: err.statusCode
+        }));
+    },
+    addDowntime: function(downtimeObj) {
+        return database.collection('downtime').add({
+            ...downtimeObj,
+            createdAt: moment().format('x')
+        })
+        .then(() => Promise.resolve({ 
+            status: 200,
+            code: '',
+            message: 'Successfully added scrap.'
+        }))
+        .catch(err => Promise.reject({
+            code: err.code,
+            message: err.message,
+            status: err.statusCode
         }));
     }
 }

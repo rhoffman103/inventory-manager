@@ -8,14 +8,13 @@ import Button from 'react-bootstrap/Button';
 import SelectJobJacket from '../productionCommon/SelectJobJacket';
 import FormField from '../../common/Forms/FormField';
 import { reportScrap } from '../../../actions/reportProductionActions';
+import { scrapReasons as scrapReasonList } from '../../../constants/pxConstants';
 
 const ReportScrap = () => {
     const { state, stateDispatch } = useContext(appContext);
     const { selectedJobJacket } = state.db;
     const [scrapArray, setScrapArray] = useState([]);
-    const [scrapReasons, setScrapReasons] = useState([
-        'Startup', 'Holes', 'Wrinkles', 'IBC', 'GBR'
-    ]);
+    const [scrapReasons, setScrapReasons] = useState(scrapReasonList);
     const { values, handleInputChange, emptyValues } = useHandleInputChange({
         rollLength: '',
         rollWeight: '',
