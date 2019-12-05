@@ -15,11 +15,17 @@ const ReportScrap = () => {
     const { selectedJobJacket } = state.db;
     const [scrapArray, setScrapArray] = useState([]);
     const [scrapReasons, setScrapReasons] = useState(scrapReasonList);
+    const [computedLength, setLength] = useState(0);
     const { values, handleInputChange, emptyValues } = useHandleInputChange({
         rollLength: '',
         rollWeight: '',
         reason: ''
     });
+
+    const computeLength = (weight = 0, width = 0, mill = 0) => {
+        const parsedWeight = parseInt(weight);
+        return Math.ceil(!isNaN(parsedWeight) ? parsedWeight : 0 / ((0.935 * 62.428) * (parseInt(width) / 12) * ((parseInt(mill) / 1000) / 12)));
+    };
 
     const addScrap = () => {
         let arrangedReasons = Array.from(scrapReasons);
@@ -47,6 +53,10 @@ const ReportScrap = () => {
             <h2>Report Scrap</h2>
             <SelectJobJacket redirectPath='/production/px/report-scrap' />
             <Row className='mt-3'>
+                <Col xs={12} className='mb-3'>
+                    <p className='mb-1'>Approximated Length: <span className='font-weight-bold'>{computedLength}</span> ft.</p>
+                    <span>*Based off 0.935 g/cm3 density.</span>
+                </Col>
                 <Col xs={8} sm={5}>
                     <FormField
                         controlId='length'
@@ -68,7 +78,10 @@ const ReportScrap = () => {
                         label='Weight'
                         placeholder={'0'}
                         value={values.rollWeight}
-                        inputChange={handleInputChange}
+                        inputChange={(e) => {
+                            handleInputChange(e);
+                            setLength(computeLength(e.target.value, 37, 1.2));
+                        }}
                     />
                 </Col>
             </Row>
