@@ -7,6 +7,7 @@ import Schedule from '../../components/productionComponents/Schedule';
 import AddFinishedProduct from '../../components/productionComponents/AddFinishedProduct';
 import JobJacketProgress from '../../components/productionComponents/JobJacketProgress';
 import ReportScrap from '../../components/productionComponents/ReportScrap';
+import ReportDowntime from '../../components/productionComponents/ReportDowntime';
 
 const LineSwitch = ({ line }) => {
     const { stateDispatch } = useContext(appContext);
@@ -40,6 +41,10 @@ const LineSwitch = ({ line }) => {
             <Route
                 path='/production/px/report-scrap/:jacketId?'
                 render={(props) => <ReportScrap {...props} line='PX' />}
+            />
+            <Route
+                path='/production/px/report-downtime/:jacketId?'
+                render={(props) => <ReportDowntime {...props} line='PX' />}
             />
         </Switch>
     );

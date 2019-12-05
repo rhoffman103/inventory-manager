@@ -4,7 +4,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row'
 
-const FormField = ({ label, controlId, message, name, type, placeholder, inputChange, value }) => (
+const FormField = ({ label, controlId, message, name, type, placeholder, inputChange, value, as }) => (
     <Form.Group controlId={controlId}>
         <Row>
             <Col xs={message ? 6 : 12}>
@@ -17,6 +17,7 @@ const FormField = ({ label, controlId, message, name, type, placeholder, inputCh
             }
         </Row>
         <FormControl
+            as={as || "input"}
             name={name}
             type={type || 'text'}
             value={value}
