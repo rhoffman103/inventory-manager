@@ -24,7 +24,7 @@ const ReportScrap = () => {
 
     const computeLength = (weight = 0, width = 0, mill = 0) => {
         const parsedWeight = parseInt(weight);
-        return Math.ceil(!isNaN(parsedWeight) ? parsedWeight : 0 / ((0.935 * 62.428) * (parseInt(width) / 12) * ((parseInt(mill) / 1000) / 12)));
+        return Math.ceil((!isNaN(parsedWeight) ? parsedWeight : 0) / ((0.935 * 62.428) * (parseInt(width) / 12) * ((parseInt(mill) / 1000) / 12)));
     };
 
     const addScrap = () => {
