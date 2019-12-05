@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import appContext from '../../../context/appContext';
 import useHandleInputChange from '../../../hooks/useHandleInputChange';
 import Row from 'react-bootstrap/Row';
@@ -24,7 +24,7 @@ const ReportScrap = () => {
 
     const computeLength = (weight = 0, width = 0, mill = 0) => {
         const parsedWeight = parseInt(weight);
-        return Math.ceil(!isNaN(parsedWeight) ? parsedWeight : 0 / ((0.935 * 62.428) * (parseInt(width) / 12) * ((parseInt(mill) / 1000) / 12)));
+        return Math.ceil((!isNaN(parsedWeight) ? parsedWeight : 0) / ((0.935 * 62.428) * (parseInt(width) / 12) * ((parseInt(mill) / 1000) / 12)));
     };
 
     const addScrap = () => {
@@ -34,6 +34,13 @@ const ReportScrap = () => {
         setScrapReasons(arrangedReasons);
         setScrapArray([values, ...scrapArray]);
         emptyValues();
+        setLength(0);
+    };
+
+    const resetForm = () => {
+        emptyValues();
+        setScrapArray([]);
+        setLength(0);
     };
 
     const submitForm = () => {
@@ -44,9 +51,14 @@ const ReportScrap = () => {
         };
         scrapArray.forEach(scrap => scrapObj.totalWeight += parseInt(scrap.rollWeight))
         reportScrap(scrapObj, stateDispatch)
-        .then(() => setScrapArray([]))
+        .then(() => resetForm())
         .catch((err) => console.log(err));
     };
+
+    useEffect(() => {
+        resetForm();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedJobJacket]);
 
     return (
         <div>
@@ -80,7 +92,7 @@ const ReportScrap = () => {
                         value={values.rollWeight}
                         inputChange={(e) => {
                             handleInputChange(e);
-                            setLength(computeLength(e.target.value, 37, 1.2));
+                            setLength(computeLength(e.target.value, selectedJobJacket.product.specs.width, selectedJobJacket.product.specs.gauge));
                         }}
                     />
                 </Col>
@@ -102,44 +114,47 @@ const ReportScrap = () => {
                     </FormControl>
                 </Col>
             </Row>
-            <Button
-                variant='secondary'
-                className='mt-3 mr-3'
-                onClick={addScrap}
-                disabled={
-                    !values.rollLength ||
-                    !values.rollWeight ||
-                    !values.reason
-                }
-            >
-                Stage Scrap
-            </Button>
-            <Button
-                variant='primary'
-                className='mt-3 bm-2'
-                onClick={submitForm}
-                disabled={
-                    !scrapArray.length ||
-                    values.rollLength ||
-                    values.rollWeight ||
-                    values.reason
-                }
-            >
-                Submit All
-            </Button>
-            
-            { scrapArray.map((stagedScrap, index) => (
-                <p
-                    key={`${stagedScrap.rollWeight}-${index}`}
-                    className='my-2'
+            <div className="mb-3">
+                <Button
+                    variant='secondary'
+                    className='mt-3 mr-3'
+                    onClick={addScrap}
+                    disabled={
+                        !values.rollLength ||
+                        !values.rollWeight ||
+                        !values.reason
+                    }
                 >
-                    {index + 1}. <span className="font-weight-bold">
-                        {stagedScrap.rollWeight}
-                    </span> lb. at <span className="font-weight-bold">
-                        {stagedScrap.rollLength}
-                    </span> ft.
-                </p>
-            ))}
+                    Stage Scrap
+                </Button>
+                <Button
+                    variant='primary'
+                    className='mt-3 bm-2'
+                    onClick={submitForm}
+                    disabled={
+                        !scrapArray.length ||
+                        values.rollLength ||
+                        values.rollWeight ||
+                        values.reason
+                    }
+                >
+                    Submit All
+                </Button>
+            </div>
+            <div className="mb-5">
+                { scrapArray.map((stagedScrap, index) => (
+                    <p
+                        key={`${stagedScrap.rollWeight}-${index}`}
+                        className='mb-2'
+                    >
+                        {index + 1}. <span className="font-weight-bold">
+                            {stagedScrap.rollWeight}
+                        </span> lb. at <span className="font-weight-bold">
+                            {stagedScrap.rollLength}
+                        </span> ft.
+                    </p>
+                ))}
+            </div>
         </div>
     );
 };
