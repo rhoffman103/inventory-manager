@@ -2,6 +2,7 @@ import React from 'react';
 
 const UnderConstruction = () => (
     <>
+        <p>This feature is currently under construction</p>
         <iframe
             title='Under Construction Gif'
             src="https://giphy.com/embed/zOvBKUUEERdNm"
