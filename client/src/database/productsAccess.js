@@ -1,4 +1,5 @@
-import database from '../config/firebaseConfig';
+import database, { firebase } from '../config/firebaseConfig';
+import { getGroupedKeys } from './helpers';
 
 const dbProducts = {
     addNewProduct: (product) => {
@@ -57,12 +58,13 @@ const dbProducts = {
             querySnapshot.forEach(product => {
                 products.push({
                     description: product.data().description,
+                    product: product.data(),
                     productKey: product.id
                 }); 
             });
             return Promise.resolve(products);
         });
-    },
+    }
 };
 
 export default dbProducts;
