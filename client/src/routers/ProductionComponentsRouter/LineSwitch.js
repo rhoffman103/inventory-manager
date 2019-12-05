@@ -8,6 +8,7 @@ import AddFinishedProduct from '../../components/productionComponents/AddFinishe
 import JobJacketProgress from '../../components/productionComponents/JobJacketProgress';
 import ReportScrap from '../../components/productionComponents/ReportScrap';
 import ReportDowntime from '../../components/productionComponents/ReportDowntime';
+import AddNewPallet from '../../components/common/AddNewPallet';
 
 const LineSwitch = ({ line }) => {
     const { stateDispatch } = useContext(appContext);
@@ -45,6 +46,10 @@ const LineSwitch = ({ line }) => {
             <Route
                 path='/production/px/report-downtime/:jacketId?'
                 render={(props) => <ReportDowntime {...props} line='PX' />}
+            />
+            <Route
+                path='/production/px/add-new-pallet'
+                render={(props) => <AddNewPallet />}
             />
         </Switch>
     );
