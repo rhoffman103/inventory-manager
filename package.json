@@ -4,9 +4,13 @@
   "description": "mockup app for managing production inventory.",
   "scripts": {
     "start": "npm run start:dev",
+    "electron-start": "concurrently \"npm run functions\" \"npm run client\"",
     "start:dev": "concurrently \"npm run functions\" \"npm run client\"",
     "functions": "cd functions && npm run serve",
-    "client": "cd client && yarn run start"
+    "client": "cd client && yarn run start",
+    "electron": "cd client && yarn run electron-start",
+    "react-build": "cd client && yarn run react-build",
+    "electron-build": "cd client && yarn run electron-build"
   },
   "author": "Bobby Hoffman",
   "license": "ISC",
