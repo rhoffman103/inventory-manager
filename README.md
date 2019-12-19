@@ -1,6 +1,8 @@
 # Inventory Manager
 
-Inventory Manager is a mockup for a specialized manufacturing process. The MVP will allow Admin(s) to be able to create work orders and update the schedule for production. The production floor will have a simple UI to add finished product, scrap and downtime, while keeping track of the progress.
+Inventory Manager is a mockup for a specialized manufacturing process. 
+Managers can add new products to the database to create new job jackets and update the running schedule.
+Operators get an updated schedule to add new product, scrap and downtime while keeping track of a job jackets progress.
 
 For demo purposes, you can log into this app with a "managers" and "operators" account.
 
@@ -8,7 +10,7 @@ For demo purposes, you can log into this app with a "managers" and "operators" a
 >
 >Operator: operator@123.com password: pass12
 
-
+I used this project to experiement and explore some technologies, mostly Reacts new hooks with the updated context api and firebases nosql firestore.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
